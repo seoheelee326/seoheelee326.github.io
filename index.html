@@ -1,17 +1,17 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Seohee Lee — artist, arts educator, and public art practitioner." />
-  <meta name="theme-color" content="#f7f1e8" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Seohee Lee — artist, arts educator, and public art practitioner.">
+  <meta name="theme-color" content="#f7f1e8">
   <title>SEOHEE LEE</title>
-  <link rel="stylesheet" href="styles.css?v=3" />
-  <script src="app.js?v=3" defer></script>
+  <link rel="stylesheet" href="styles.css?v=4">
+  <script src="app.js?v=4" defer></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="wordmark" href="#top" aria-label="SEOHEE LEE home">SEOHEE LEE</a>
+    <a class="wordmark" href="#top">SEOHEE LEE</a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav id="site-nav" class="site-nav" aria-label="Main navigation">
       <a href="#artwork">Artwork</a>
@@ -20,94 +20,47 @@
       <a href="#about">About</a>
     </nav>
   </header>
-
   <main id="top">
-    <section class="hero">
-      <div class="hero-copy-wrap">
-        <p class="eyebrow">Artist · Educator · Public Art</p>
-        <h1>SEOHEE<br />LEE</h1>
-        <p id="intro-text" class="hero-copy">회화와 설치, 미디어를 통해 변화와 관계의 경계를 탐구합니다.</p>
+    <section class="hero" aria-label="Featured work">
+      <div id="hero-media" class="hero-media"><div class="hero-placeholder">WAYFARING</div></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-name">SEOHEE LEE</div>
+      <div class="hero-caption">
+        <p class="hero-label">Featured work</p>
+        <h1 id="hero-work-title">WAYFARING</h1>
+        <p id="hero-work-meta">2026 · Painting</p>
       </div>
-      <div class="hero-orb" aria-hidden="true">
-        <span class="orb orb-a"></span>
-        <span class="orb orb-b"></span>
-        <span class="orb orb-c"></span>
-      </div>
-      <a class="hero-scroll" href="#practice">Explore ↓</a>
+      <a class="hero-view" href="#artwork">View work <span>↓</span></a>
     </section>
 
-    <section id="practice" class="practice section">
-      <div class="section-kicker">Practice</div>
-      <div class="practice-grid">
-        <a class="practice-card practice-art" href="#artwork">
-          <span class="practice-index">01</span>
-          <h2>Artwork</h2>
-          <p>Painting · Installation · Media</p>
-          <span class="practice-arrow">↘</span>
-        </a>
-        <a class="practice-card practice-edu" href="#education">
-          <span class="practice-index">02</span>
-          <h2>Arts<br />Education</h2>
-          <p>Participation · Learning · Climate</p>
-          <span class="practice-arrow">↘</span>
-        </a>
-        <a class="practice-card practice-public" href="#public-art">
-          <span class="practice-index">03</span>
-          <h2>Public<br />Art</h2>
-          <p>Place · Community · Ecology</p>
-          <span class="practice-arrow">↘</span>
-        </a>
-      </div>
+    <section class="practice-nav" aria-label="Practice areas">
+      <a href="#artwork"><span>01</span><strong>Artwork</strong><em>Painting · Installation · Media</em></a>
+      <a href="#education"><span>02</span><strong>Arts Education</strong><em>Participation · Learning · Climate</em></a>
+      <a href="#public-art"><span>03</span><strong>Public Art</strong><em>Place · Community · Ecology</em></a>
     </section>
 
     <section id="artwork" class="section content-section">
-      <div class="section-head">
-        <div>
-          <p class="section-kicker">01 / Artwork</p>
-          <h2>Selected Works</h2>
-        </div>
-        <p id="work-count" class="count"></p>
-      </div>
+      <div class="section-head"><div><p class="section-kicker">01 / Artwork</p><h2>Selected Works</h2></div><p id="work-count" class="count"></p></div>
       <div id="works-grid" class="works-grid"></div>
     </section>
 
     <section id="education" class="section content-section soft-section">
-      <div class="section-head">
-        <div>
-          <p class="section-kicker">02 / Arts Education</p>
-          <h2>Programs & Workshops</h2>
-        </div>
-        <p class="section-note">Art as a way to observe, understand, and participate.</p>
-      </div>
+      <div class="section-head"><div><p class="section-kicker">02 / Arts Education</p><h2>Programs & Workshops</h2></div><p class="section-note">Art as a way to observe, understand, and participate.</p></div>
       <div id="education-grid" class="project-grid"></div>
     </section>
 
     <section id="public-art" class="section content-section">
-      <div class="section-head">
-        <div>
-          <p class="section-kicker">03 / Public Art</p>
-          <h2>Public Projects</h2>
-        </div>
-        <p class="section-note">Projects connecting place, community, and ecological questions.</p>
-      </div>
+      <div class="section-head"><div><p class="section-kicker">03 / Public Art</p><h2>Public Projects</h2></div><p class="section-note">Projects connecting place, community, and ecological questions.</p></div>
       <div id="public-grid" class="project-grid"></div>
     </section>
 
     <section id="exhibitions" class="section exhibitions-section">
-      <div class="section-head compact">
-        <div>
-          <p class="section-kicker">Archive</p>
-          <h2>Exhibitions</h2>
-        </div>
-      </div>
+      <div class="section-head compact"><div><p class="section-kicker">Archive</p><h2>Exhibitions</h2></div></div>
       <div id="exhibitions-list" class="exhibitions-list"></div>
     </section>
 
     <section id="about" class="section about-section">
-      <div class="about-title">
-        <p class="section-kicker">About</p>
-        <h2>Art, place,<br />and ecology.</h2>
-      </div>
+      <div class="about-title"><p class="section-kicker">About</p><h2>Art, place,<br>and ecology.</h2></div>
       <div class="about-body">
         <p id="about-text">이서희는 회화, 설치, 미디어를 기반으로 인간과 비인간의 관계와 균형이 흔들리는 순간을 탐구합니다.</p>
         <div class="profile-list">
@@ -121,7 +74,7 @@
 
   <footer id="contact" class="site-footer">
     <p class="footer-kicker">SEOHEE LEE</p>
-    <p class="footer-title">Let’s make<br />something meaningful.</p>
+    <p class="footer-title">Art, place,<br>and ecology.</p>
     <div class="footer-bottom">
       <a id="email-link">Email coming soon</a>
       <a href="https://www.instagram.com/seohee_work/" target="_blank" rel="noreferrer">Instagram ↗</a>
