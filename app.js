@@ -64,7 +64,13 @@ function renderExhibitions(exhibitions) {
 function applySiteSettings(site) {
   if (site.intro) byId("intro-text").textContent = site.intro;
   if (site.about) byId("about-text").textContent = site.about;
-  if (site.email) byId("email-link").href = `mailto:${site.email}`;
+  const emailLink = byId("email-link");
+  if (site.email) {
+    emailLink.href = `mailto:${site.email}`;
+  } else {
+    emailLink.removeAttribute("href");
+    emailLink.textContent = "Email coming soon";
+  }
   if (site.instagram_url) byId("instagram-link").href = site.instagram_url;
 }
 
