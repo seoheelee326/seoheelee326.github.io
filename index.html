@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="이서희의 회화, 설치, 미디어 작업과 전시 기록을 소개하는 공식 포트폴리오입니다."
+    />
+    <meta name="theme-color" content="#f1f0eb" />
+    <title>SEOHEE LEE — ARTWORK</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="SEOHEE LEE 홈">SEOHEE LEE</a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="주요 메뉴">
+        <a href="#works">Works</a>
+        <a href="#exhibitions">Exhibitions</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="eyebrow">Artist · Seoul / Namyangju</p>
+        <h1 id="hero-title">
+          <span>Changes, relations,</span>
+          <span>and shifting boundaries.</span>
+        </h1>
+        <div class="hero-bottom">
+          <p id="intro-text" class="hero-copy">
+            회화와 설치, 미디어를 통해 변화와 관계의 경계를 탐구합니다.
+          </p>
+          <a class="scroll-link" href="#works">Selected works ↓</a>
+        </div>
+      </section>
+
+      <section id="works" class="section works-section" aria-labelledby="works-title">
+        <div class="section-heading">
+          <h2 id="works-title">Selected Works</h2>
+          <p id="work-count" aria-live="polite"></p>
+        </div>
+        <div id="works-grid" class="works-grid"></div>
+      </section>
+
+      <section id="exhibitions" class="section exhibitions-section" aria-labelledby="exhibitions-title">
+        <div class="section-heading">
+          <h2 id="exhibitions-title">Exhibitions</h2>
+        </div>
+        <div id="exhibitions-list" class="exhibitions-list"></div>
+      </section>
+
+      <section id="about" class="section about-section" aria-labelledby="about-title">
+        <div class="section-heading">
+          <h2 id="about-title">About</h2>
+        </div>
+        <div class="about-layout">
+          <p id="about-text" class="about-copy">
+            이서희는 회화, 설치, 미디어를 기반으로 인간과 비인간의 관계와 균형이 흔들리는 순간을 탐구합니다.
+          </p>
+          <dl class="profile-list">
+            <div>
+              <dt>Practice</dt>
+              <dd>Painting · Installation · Media</dd>
+            </div>
+            <div>
+              <dt>Based in</dt>
+              <dd>Namyangju, Korea</dd>
+            </div>
+            <div>
+              <dt>Instagram</dt>
+              <dd><a id="instagram-link" href="https://www.instagram.com/seohee_work/">@seohee_work</a></dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact" class="site-footer">
+      <p class="footer-title">Let’s talk about art, place, and ecology.</p>
+      <div class="footer-bottom">
+        <a id="email-link" href="mailto:hello@example.com">Email</a>
+        <p>© <span id="current-year"></span> SEOHEE LEE</p>
+      </div>
+    </footer>
+  </body>
+</html>
