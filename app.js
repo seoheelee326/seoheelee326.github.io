@@ -152,11 +152,15 @@ function renderWorks() {
     const media = work.image
       ? '<img src="' + esc(work.image) + '" alt="' + esc(title) + '" loading="lazy">'
       : '<div class="work-placeholder">' + esc(title) + "</div>";
-    return '<article class="work-card"><div class="work-media">' +
+    return '<article class="work-card"><button class="work-card-button" type="button" data-work-index="' +
+      cached.works.indexOf(work) +
+      '"><div class="work-media">' +
       media +
-      '</div><p class="work-caption">' +
-      esc(captionText(work, currentLang)) +
-      "</p></article>";
+      '</div><div class="work-card-meta"><p class="work-card-title">' +
+      esc(title) +
+      '</p><p class="work-card-year">' +
+      esc(work.year) +
+      "</p></div></button></article>";
   }).join("");
 }
 
@@ -243,6 +247,57 @@ function renderAll() {
   renderProjects("Arts Education", "education-grid");
   renderProjects("Public Art", "public-grid");
   renderExhibitions();
+  bindWorkCards();
+}
+
+function openWorkDetail(index) {
+  const work = cached.works[index];
+  if (!work) return;
+
+  const title = titleFor(work, currentLang);
+  const detail = byId("work-detail");
+  const mainMedia = byId("detail-main-media");
+  const gallery = Array.isArray(work.gallery) ? work.gallery : [];
+
+  byId("detail-kicker").textContent =
+    currentLang === "ko" ? "작품 상세" : "Work detail";
+  byId("detail-title").textContent = title;
+  byId("detail-caption").textContent = captionText(work, currentLang);
+  byId("detail-description").textContent =
+    work["description_" + currentLang] || "";
+
+  mainMedia.innerHTML = work.image
+    ? '<img src="' + esc(work.image) + '" alt="' + esc(title) + '">'
+    : '<div class="work-placeholder">' + esc(title) + "</div>";
+
+  byId("detail-gallery").innerHTML = gallery
+    .filter(Boolean)
+    .map((src, i) =>
+      '<img src="' + esc(src) + '" alt="' + esc(title) + ' ' + (i + 1) + '" loading="lazy">'
+    )
+    .join("");
+
+  detail.dataset.workIndex = index;
+  detail.classList.add("is-open");
+  detail.setAttribute("aria-hidden", "false");
+  document.body.classList.add("detail-open");
+  history.replaceState(null, "", "#work-" + index);
+}
+
+function closeWorkDetail() {
+  const detail = byId("work-detail");
+  detail.classList.remove("is-open");
+  detail.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("detail-open");
+  history.replaceState(null, "", "#artwork");
+}
+
+function bindWorkCards() {
+  document.querySelectorAll(".work-card-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      openWorkDetail(Number(button.dataset.workIndex));
+    });
+  });
 }
 
 function setLanguage(lang) {
@@ -253,6 +308,12 @@ function setLanguage(lang) {
     button.classList.toggle("is-active", button.dataset.lang === lang);
   });
   renderAll();
+
+  const activeDetail = byId("work-detail");
+  if (activeDetail && activeDetail.classList.contains("is-open")) {
+    const index = Number(activeDetail.dataset.workIndex);
+    if (!Number.isNaN(index)) openWorkDetail(index);
+  }
 }
 
 async function init() {
@@ -297,3 +358,13 @@ addEventListener(
 );
 
 init();
+
+byId("work-detail-close").addEventListener("click", closeWorkDetail);
+byId("work-detail").addEventListener("click", (event) => {
+  if (event.target.id === "work-detail") closeWorkDetail();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && byId("work-detail").classList.contains("is-open")) {
+    closeWorkDetail();
+  }
+});
