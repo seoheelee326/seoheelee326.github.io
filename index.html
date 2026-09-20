@@ -6,20 +6,28 @@
   <meta name="description" content="Seohee Lee — artist, arts educator, and public art practitioner.">
   <meta name="theme-color" content="#f7f1e8">
   <title>SEOHEE LEE</title>
-  <link rel="stylesheet" href="styles.css?v=4">
-  <script src="app.js?v=4" defer></script>
+  <link rel="stylesheet" href="styles.css?v=5">
+  <script src="app.js?v=5" defer></script>
 </head>
 <body>
   <header class="site-header">
     <a class="wordmark" href="#top">SEOHEE LEE</a>
-    <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
-    <nav id="site-nav" class="site-nav" aria-label="Main navigation">
-      <a href="#artwork">Artwork</a>
-      <a href="#education">Arts Education</a>
-      <a href="#public-art">Public Art</a>
-      <a href="#about">About</a>
-    </nav>
+    <div class="header-actions">
+      <div class="language-switch" aria-label="Language">
+        <button class="lang-button is-active" type="button" data-lang="ko">KR</button>
+        <span>/</span>
+        <button class="lang-button" type="button" data-lang="en">EN</button>
+      </div>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+        <a href="#artwork">Artwork</a>
+        <a href="#education">Arts Education</a>
+        <a href="#public-art">Public Art</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
   </header>
+
   <main id="top">
     <section class="hero" aria-label="Featured work">
       <div id="hero-media" class="hero-media"><div class="hero-placeholder">WAYFARING</div></div>
@@ -28,7 +36,7 @@
       <div class="hero-caption">
         <p class="hero-label">Featured work</p>
         <h1 id="hero-work-title">WAYFARING</h1>
-        <p id="hero-work-meta">2026 · Painting</p>
+        <p id="hero-work-caption" class="art-caption"></p>
       </div>
       <a class="hero-view" href="#artwork">View work <span>↓</span></a>
     </section>
