@@ -1,10 +1,14 @@
 [
   {
-    "title": "Yesterday’s Tomorrow",
+    "title_ko": "Yesterday’s Tomorrow",
+    "title_en": "Yesterday’s Tomorrow",
     "year": 2026,
-    "venue": "The Narte",
-    "location": "Gyeonggi, Korea",
-    "type": "Solo Exhibition",
+    "venue_ko": "더나르떼",
+    "venue_en": "The Narte",
+    "location_ko": "경기, 대한민국",
+    "location_en": "Gyeonggi, Korea",
+    "type_ko": "개인전",
+    "type_en": "Solo Exhibition",
     "published": true
   }
 ]
