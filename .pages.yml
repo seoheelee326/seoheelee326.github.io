@@ -1,95 +1,257 @@
+settings:
+  commit:
+    identity: user
+    templates:
+      create: "admin: add {path}"
+      update: "admin: update {path}"
+      delete: "admin: remove {path}"
+
 media:
-  input: assets/images
-  output: /assets/images
-  rename: safe
-  categories: [image]
+  - name: artwork_images
+    label: 작품 이미지
+    input: assets/images/works
+    output: /assets/images/works
+    rename: safe
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp]
+
+  - name: project_images
+    label: 프로젝트 이미지
+    input: assets/images/projects
+    output: /assets/images/projects
+    rename: safe
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp]
+
+  - name: exhibition_images
+    label: 전시 이미지
+    input: assets/images/exhibitions
+    output: /assets/images/exhibitions
+    rename: safe
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp]
 
 content:
-  - name: site
-    label: 사이트 기본 정보
-    type: file
-    path: data/site.json
-    format: json
-    fields:
-      - { name: intro_ko, label: 첫 화면 소개 (한국어), type: text }
-      - { name: intro_en, label: Intro (English), type: text }
-      - { name: about_ko, label: 작가 소개 (한국어), type: text, required: true }
-      - { name: about_en, label: About (English), type: text, required: true }
-      - { name: based_in_ko, label: 활동 지역 (한국어), type: string }
-      - { name: based_in_en, label: Based in (English), type: string }
-      - { name: practice_ko, label: 작업 영역 (한국어), type: string }
-      - { name: practice_en, label: Practice (English), type: string }
-      - { name: email, label: 이메일, type: string }
-      - { name: instagram_url, label: 인스타그램 주소, type: string }
+  - name: artwork_group
+    label: 01 · 작품 관리
+    type: group
+    items:
+      - name: works
+        label: 작품 등록 · 수정
+        type: file
+        path: data/works.json
+        format: json
+        list: true
+        fields:
+          - name: published
+            label: 사이트 공개
+            type: boolean
+            description: 켜면 사이트에 표시됩니다. 작성 중이면 꺼두세요.
 
-  - name: works
-    label: Artwork
-    type: file
-    path: data/works.json
-    format: json
-    list: true
-    fields:
-      - { name: artist_ko, label: 작가명 (한국어), type: string, required: true }
-      - { name: artist_en, label: Artist name (English), type: string, required: true }
-      - { name: title, label: 공식 작품명, type: string, required: true }
-      - { name: title_translation_en, label: 영어 해석 (한국어 제목일 때만), type: string }
-      - { name: year, label: 제작연도, type: number, required: true }
-      - name: category
-        label: 작품 유형
-        type: select
-        options: { values: [Painting, Installation, Media, Drawing, Project, Other] }
-      - { name: materials_ko, label: 재료 (한국어), type: string, required: true }
-      - { name: materials_en, label: Materials (English), type: string, required: true }
-      - { name: height_cm, label: 세로 (cm), type: number, required: true }
-      - { name: width_cm, label: 가로 (cm), type: number, required: true }
-      - { name: description_ko, label: 작품 설명 (한국어), type: text }
-      - { name: description_en, label: Description (English), type: text }
-      - { name: image, label: 대표 이미지, type: image }
-      - { name: gallery, label: 추가 이미지, type: image, list: true }
-      - { name: featured, label: 대표 작품, type: boolean }
-      - { name: published, label: 사이트에 공개, type: boolean }
+          - name: featured
+            label: 메인 대표작
+            type: boolean
+            description: 메인 첫 화면에 노출할 작품은 하나만 켜두는 것을 권장합니다.
 
-  - name: projects
-    label: Arts Education / Public Art
-    type: file
-    path: data/projects.json
-    format: json
-    list: true
-    fields:
-      - { name: title_ko, label: 프로젝트명 (한국어), type: string, required: true }
-      - { name: title_en, label: Project title (English), type: string, required: true }
-      - { name: year, label: 연도, type: number }
-      - name: category
-        label: 분야
-        type: select
-        required: true
-        options: { values: [Arts Education, Public Art] }
-      - { name: type_ko, label: 유형 (한국어), type: string }
-      - { name: type_en, label: Type (English), type: string }
-      - { name: description_ko, label: 간단 소개 (한국어), type: text }
-      - { name: description_en, label: Description (English), type: text }
-      - { name: image, label: 대표 이미지, type: image }
-      - { name: gallery, label: 추가 이미지, type: image, list: true }
-      - { name: published, label: 사이트에 공개, type: boolean }
+          - name: image
+            label: 대표 이미지
+            type: image
+            required: false
+            description: 메인 화면과 작품 목록에 사용되는 이미지입니다. 가급적 고해상도 JPG 또는 WebP를 사용하세요.
+            options:
+              media: artwork_images
+              path: covers
+              extensions: [jpg, jpeg, png, webp]
+              rename: safe
 
-  - name: exhibitions
-    label: 전시
-    type: file
-    path: data/exhibitions.json
-    format: json
-    list: true
-    fields:
-      - { name: title_ko, label: 전시명 (한국어), type: string, required: true }
-      - { name: title_en, label: Exhibition title (English), type: string, required: true }
-      - { name: year, label: 연도, type: number, required: true }
-      - { name: venue_ko, label: 전시장 (한국어), type: string }
-      - { name: venue_en, label: Venue (English), type: string }
-      - { name: location_ko, label: 지역 (한국어), type: string }
-      - { name: location_en, label: Location (English), type: string }
-      - { name: type_ko, label: 전시 유형 (한국어), type: string }
-      - { name: type_en, label: Exhibition type (English), type: string }
-      - { name: description_ko, label: 전시 소개 (한국어), type: text }
-      - { name: description_en, label: Description (English), type: text }
-      - { name: image, label: 대표 이미지, type: image }
-      - { name: gallery, label: 설치 전경, type: image, list: true }
-      - { name: published, label: 사이트에 공개, type: boolean }
+          - name: title
+            label: 공식 작품명
+            type: string
+            required: true
+            description: 번역하지 않은 실제 작품 제목을 입력하세요. 한국어 제목도 그대로 유지합니다.
+
+          - name: title_translation_en
+            label: 영어 해석
+            type: string
+            description: 공식 제목이 한국어일 때만 입력합니다. 영어 화면에서는 '건초더미 (Haystacks)'처럼 표시됩니다.
+
+          - name: year
+            label: 제작연도
+            type: number
+            required: true
+
+          - name: category
+            label: 작품 유형
+            type: select
+            required: true
+            options:
+              values: [Painting, Installation, Media, Drawing, Project, Other]
+
+          - name: artist_ko
+            label: 작가명 · KR
+            type: string
+            required: true
+            description: 기본값은 이서희입니다.
+
+          - name: artist_en
+            label: Artist · EN
+            type: string
+            required: true
+            description: 기본값은 SEOHEE LEE입니다.
+
+          - name: materials_ko
+            label: 재료 · KR
+            type: string
+            required: true
+            description: 예) 캔버스에 아크릴, 목재, 큐빅, 목화솜
+
+          - name: materials_en
+            label: Materials · EN
+            type: string
+            required: true
+            description: 예) Acrylic on canvas, wood, cubic, cotton
+
+          - name: height_cm
+            label: 세로 · cm
+            type: number
+            required: true
+            description: 캡션은 항상 '세로 × 가로 cm' 순서로 자동 생성됩니다.
+
+          - name: width_cm
+            label: 가로 · cm
+            type: number
+            required: true
+
+          - name: description_ko
+            label: 작품 설명 · KR
+            type: text
+            description: 상세 페이지용 설명입니다. 비워도 됩니다.
+
+          - name: description_en
+            label: Description · EN
+            type: text
+            description: 영어 상세 페이지용 설명입니다. 비워도 됩니다.
+
+          - name: gallery
+            label: 추가 이미지
+            type: image
+            description: 디테일, 설치 전경, 측면 사진 등을 순서대로 추가하세요.
+            options:
+              media: artwork_images
+              path: gallery
+              multiple:
+                max: 20
+              unique: true
+              extensions: [jpg, jpeg, png, webp]
+              rename: safe
+
+  - name: project_group
+    label: 02 · 프로젝트 관리
+    type: group
+    items:
+      - name: projects
+        label: 문화예술교육 · 공공미술
+        type: file
+        path: data/projects.json
+        format: json
+        list: true
+        fields:
+          - { name: published, label: 사이트 공개, type: boolean }
+          - name: category
+            label: 분야
+            type: select
+            required: true
+            options:
+              values: [Arts Education, Public Art]
+          - { name: title_ko, label: 프로젝트명 · KR, type: string, required: true }
+          - { name: title_en, label: Project title · EN, type: string, required: true }
+          - { name: year, label: 연도, type: number }
+          - { name: type_ko, label: 유형 · KR, type: string }
+          - { name: type_en, label: Type · EN, type: string }
+          - { name: description_ko, label: 간단 소개 · KR, type: text }
+          - { name: description_en, label: Description · EN, type: text }
+          - name: image
+            label: 대표 이미지
+            type: image
+            options:
+              media: project_images
+              path: covers
+              extensions: [jpg, jpeg, png, webp]
+              rename: safe
+          - name: gallery
+            label: 추가 이미지
+            type: image
+            options:
+              media: project_images
+              path: gallery
+              multiple:
+                max: 30
+              unique: true
+              extensions: [jpg, jpeg, png, webp]
+              rename: safe
+
+  - name: exhibition_group
+    label: 03 · 전시 관리
+    type: group
+    items:
+      - name: exhibitions
+        label: 전시 등록 · 수정
+        type: file
+        path: data/exhibitions.json
+        format: json
+        list: true
+        fields:
+          - { name: published, label: 사이트 공개, type: boolean }
+          - { name: title_ko, label: 전시명 · KR, type: string, required: true }
+          - { name: title_en, label: Exhibition title · EN, type: string, required: true }
+          - { name: year, label: 연도, type: number, required: true }
+          - { name: venue_ko, label: 전시장 · KR, type: string }
+          - { name: venue_en, label: Venue · EN, type: string }
+          - { name: location_ko, label: 지역 · KR, type: string }
+          - { name: location_en, label: Location · EN, type: string }
+          - { name: type_ko, label: 전시 유형 · KR, type: string }
+          - { name: type_en, label: Exhibition type · EN, type: string }
+          - { name: description_ko, label: 전시 소개 · KR, type: text }
+          - { name: description_en, label: Description · EN, type: text }
+          - name: image
+            label: 대표 이미지
+            type: image
+            options:
+              media: exhibition_images
+              path: covers
+              extensions: [jpg, jpeg, png, webp]
+              rename: safe
+          - name: gallery
+            label: 설치 전경 · 추가 이미지
+            type: image
+            options:
+              media: exhibition_images
+              path: gallery
+              multiple:
+                max: 30
+              unique: true
+              extensions: [jpg, jpeg, png, webp]
+              rename: safe
+
+  - name: settings_group
+    label: 04 · 사이트 설정
+    type: group
+    items:
+      - name: site
+        label: 소개 · 연락처
+        type: file
+        path: data/site.json
+        format: json
+        operations:
+          delete: false
+        fields:
+          - { name: intro_ko, label: 첫 화면 소개 · KR, type: text }
+          - { name: intro_en, label: Intro · EN, type: text }
+          - { name: about_ko, label: 작가 소개 · KR, type: text, required: true }
+          - { name: about_en, label: About · EN, type: text, required: true }
+          - { name: based_in_ko, label: 활동 지역 · KR, type: string }
+          - { name: based_in_en, label: Based in · EN, type: string }
+          - { name: practice_ko, label: 작업 영역 · KR, type: string }
+          - { name: practice_en, label: Practice · EN, type: string }
+          - { name: email, label: 이메일, type: string }
+          - { name: instagram_url, label: 인스타그램 주소, type: string }
