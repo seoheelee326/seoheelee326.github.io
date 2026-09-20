@@ -23,15 +23,21 @@ content:
     format: json
     list: true
     fields:
-      - { name: title, label: 작품명, type: string, required: true }
+      - { name: artist_ko, label: 작가명 (한국어), type: string, required: true }
+      - { name: artist_en, label: Artist name (English), type: string, required: true }
+      - { name: title_ko, label: 작품명 (한국어), type: string, required: true }
+      - { name: title_en, label: Title (English), type: string, required: true }
       - { name: year, label: 제작연도, type: number, required: true }
       - name: category
         label: 작품 유형
         type: select
         options: { values: [Painting, Installation, Media, Drawing, Project, Other] }
-      - { name: materials, label: 재료, type: string }
-      - { name: dimensions, label: 크기, type: string }
-      - { name: description, label: 작품 설명, type: text }
+      - { name: materials_ko, label: 재료 (한국어), type: string, required: true }
+      - { name: materials_en, label: Materials (English), type: string, required: true }
+      - { name: height_cm, label: 세로 (cm), type: number, required: true }
+      - { name: width_cm, label: 가로 (cm), type: number, required: true }
+      - { name: description_ko, label: 작품 설명 (한국어), type: text }
+      - { name: description_en, label: Description (English), type: text }
       - { name: image, label: 대표 이미지, type: image }
       - { name: gallery, label: 추가 이미지, type: image, list: true }
       - { name: featured, label: 대표 작품, type: boolean }
