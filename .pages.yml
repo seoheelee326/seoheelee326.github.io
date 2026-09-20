@@ -1,0 +1,111 @@
+media:
+  input: assets/images
+  output: /assets/images
+  rename: safe
+  categories: [image]
+
+content:
+  - name: site
+    label: 사이트 기본 정보
+    type: file
+    path: data/site.json
+    format: json
+    fields:
+      - name: intro
+        label: 첫 화면 소개
+        type: text
+        required: true
+      - name: about
+        label: 작가 소개
+        type: text
+        required: true
+      - name: email
+        label: 이메일
+        type: string
+      - name: instagram_url
+        label: 인스타그램 주소
+        type: string
+
+  - name: works
+    label: 작품
+    type: file
+    path: data/works.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: 작품명
+        type: string
+        required: true
+      - name: year
+        label: 제작연도
+        type: number
+        required: true
+      - name: category
+        label: 작품 유형
+        type: select
+        required: true
+        options:
+          values: [Painting, Installation, Media, Drawing, Project, Other]
+      - name: materials
+        label: 재료
+        type: string
+      - name: dimensions
+        label: 크기
+        type: string
+      - name: description
+        label: 작품 설명
+        type: text
+      - name: image
+        label: 대표 이미지
+        type: image
+      - name: gallery
+        label: 추가 이미지
+        type: image
+        list: true
+      - name: featured
+        label: 대표 작품
+        type: boolean
+      - name: published
+        label: 사이트에 공개
+        type: boolean
+
+  - name: exhibitions
+    label: 전시
+    type: file
+    path: data/exhibitions.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: 전시명
+        type: string
+        required: true
+      - name: year
+        label: 연도
+        type: number
+        required: true
+      - name: venue
+        label: 전시장
+        type: string
+      - name: location
+        label: 지역
+        type: string
+      - name: type
+        label: 전시 유형
+        type: select
+        options:
+          values: [Solo Exhibition, Group Exhibition, Project, Screening, Other]
+      - name: description
+        label: 전시 소개
+        type: text
+      - name: image
+        label: 대표 이미지
+        type: image
+      - name: gallery
+        label: 설치 전경
+        type: image
+        list: true
+      - name: published
+        label: 사이트에 공개
+        type: boolean
