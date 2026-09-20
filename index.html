@@ -6,8 +6,8 @@
   <meta name="description" content="Seohee Lee — artist, arts educator, and public art practitioner.">
   <meta name="theme-color" content="#f7f1e8">
   <title>SEOHEE LEE</title>
-  <link rel="stylesheet" href="styles.css?v=6">
-  <script src="app.js?v=6" defer></script>
+  <link rel="stylesheet" href="styles.css?v=7">
+  <script src="app.js?v=7" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -48,8 +48,14 @@
     </section>
 
     <section id="artwork" class="section content-section">
-      <div class="section-head"><div><p class="section-kicker" data-i18n="artwork_kicker">01 / 작업</p><h2 data-i18n="selected_works">주요 작업</h2></div><p id="work-count" class="count"></p></div>
-      <div id="works-grid" class="works-grid"></div>
+      <div class="section-head">
+        <div>
+          <p class="section-kicker" data-i18n="artwork_kicker">01 / 작업</p>
+          <h2 data-i18n="selected_works">주요 작업</h2>
+        </div>
+        <p id="work-count" class="count"></p>
+      </div>
+      <div id="works-grid" class="works-grid works-grid-uniform"></div>
     </section>
 
     <section id="education" class="section content-section soft-section">
@@ -79,6 +85,22 @@
       </div>
     </section>
   </main>
+
+  <section id="work-detail" class="work-detail" aria-hidden="true">
+    <div class="work-detail-shell">
+      <button id="work-detail-close" class="detail-close" type="button" aria-label="Close">×</button>
+      <div class="detail-main">
+        <div id="detail-main-media" class="detail-main-media"></div>
+        <div class="detail-info">
+          <p id="detail-kicker" class="section-kicker"></p>
+          <h2 id="detail-title"></h2>
+          <p id="detail-caption" class="detail-caption"></p>
+          <p id="detail-description" class="detail-description"></p>
+        </div>
+      </div>
+      <div id="detail-gallery" class="detail-gallery"></div>
+    </div>
+  </section>
 
   <footer id="contact" class="site-footer">
     <p class="footer-kicker">SEOHEE LEE</p>
