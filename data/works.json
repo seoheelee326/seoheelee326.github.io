@@ -2,8 +2,8 @@
   {
     "artist_ko": "이서희",
     "artist_en": "SEOHEE LEE",
-    "title_ko": "WAYFARING",
-    "title_en": "WAYFARING",
+    "title": "WAYFARING",
+    "title_translation_en": "",
     "year": 2026,
     "category": "Painting",
     "materials_ko": "캔버스에 아크릴, 목재, 큐빅, 목화솜",
@@ -19,8 +19,8 @@
   {
     "artist_ko": "이서희",
     "artist_en": "SEOHEE LEE",
-    "title_ko": "건초더미",
-    "title_en": "Haystacks",
+    "title": "건초더미",
+    "title_translation_en": "Haystacks",
     "year": 2023,
     "category": "Painting",
     "materials_ko": "패널에 아크릴, 큐빅",
@@ -36,8 +36,8 @@
   {
     "artist_ko": "이서희",
     "artist_en": "SEOHEE LEE",
-    "title_ko": "해바라기",
-    "title_en": "Sunflowers",
+    "title": "해바라기",
+    "title_translation_en": "Sunflowers",
     "year": 2023,
     "category": "Painting",
     "materials_ko": "패널에 아크릴, 큐빅",
