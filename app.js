@@ -4,35 +4,35 @@ let cached = { site: {}, works: [], exhibitions: [], projects: [] };
 
 const ui = {
   ko: {
-    nav_artwork: "작업",
-    nav_education: "문화예술교육",
-    nav_public: "공공미술",
-    nav_about: "소개",
-    featured_work: "대표작",
-    view_work: "작업 보기",
-    practice_artwork: "작업",
-    practice_artwork_sub: "회화 · 설치 · 미디어",
-    practice_education: "문화예술교육",
-    practice_education_sub: "참여 · 학습 · 기후",
-    practice_public: "공공미술",
-    practice_public_sub: "장소 · 공동체 · 생태",
-    artwork_kicker: "01 / 작업",
-    selected_works: "주요 작업",
-    education_kicker: "02 / 문화예술교육",
-    programs_title: "프로그램 & 워크숍",
-    education_note: "예술을 통해 관찰하고, 이해하고, 참여하는 방법을 탐색합니다.",
-    public_kicker: "03 / 공공미술",
-    public_title: "공공 프로젝트",
-    public_note: "장소, 공동체, 생태적 질문을 연결하는 프로젝트입니다.",
-    archive: "아카이브",
-    exhibitions_title: "전시",
-    about_kicker: "소개",
-    about_heading: "예술, 장소,<br>그리고 생태.",
-    based_in: "활동 지역",
-    practice_label: "작업 영역",
-    footer_title: "예술, 장소,<br>그리고 생태.",
-    works_suffix: "점",
-    empty: "아카이브를 준비 중입니다."
+    nav_artwork: "Artwork",
+    nav_education: "Arts Education",
+    nav_public: "Public Art",
+    nav_about: "About",
+    featured_work: "Featured work",
+    view_work: "View work",
+    practice_artwork: "Artwork",
+    practice_artwork_sub: "Painting · Installation · Media",
+    practice_education: "Arts Education",
+    practice_education_sub: "Participation · Learning · Climate",
+    practice_public: "Public Art",
+    practice_public_sub: "Place · Community · Ecology",
+    artwork_kicker: "01 / Artwork",
+    selected_works: "Selected Works",
+    education_kicker: "02 / Arts Education",
+    programs_title: "Programs & Workshops",
+    education_note: "Art as a way to observe, understand, and participate.",
+    public_kicker: "03 / Public Art",
+    public_title: "Public Projects",
+    public_note: "Projects connecting place, community, and ecological questions.",
+    archive: "Archive",
+    exhibitions_title: "Exhibitions",
+    about_kicker: "About",
+    about_heading: "Art, place,<br>and ecology.",
+    based_in: "Based in",
+    practice_label: "Practice",
+    footer_title: "Art, place,<br>and ecology.",
+    works_suffix: "works",
+    empty: "Archive in progress."
   },
   en: {
     nav_artwork: "Artwork",
@@ -142,10 +142,7 @@ function renderHero() {
 
 function renderWorks() {
   const items = cached.works.filter((x) => x.published !== false);
-  byId("work-count").textContent =
-    currentLang === "ko"
-      ? items.length + ui.ko.works_suffix
-      : items.length + " " + ui.en.works_suffix;
+  byId("work-count").textContent = items.length + " works";
 
   byId("works-grid").innerHTML = items.map((work) => {
     const title = titleFor(work, currentLang);
@@ -236,7 +233,7 @@ function renderSiteText() {
     email.textContent = site.email;
   } else {
     email.removeAttribute("href");
-    email.textContent = currentLang === "ko" ? "이메일 준비 중" : "Email coming soon";
+    email.textContent = "Email coming soon";
   }
 }
 
@@ -259,8 +256,7 @@ function openWorkDetail(index) {
   const mainMedia = byId("detail-main-media");
   const gallery = Array.isArray(work.gallery) ? work.gallery : [];
 
-  byId("detail-kicker").textContent =
-    currentLang === "ko" ? "작품 상세" : "Work detail";
+  byId("detail-kicker").textContent = "Work detail";
   byId("detail-title").textContent = title;
   byId("detail-caption").textContent = captionText(work, currentLang);
   byId("detail-description").textContent =
