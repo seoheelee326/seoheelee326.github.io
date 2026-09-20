@@ -1,6 +1,71 @@
 const byId = (id) => document.getElementById(id);
 let currentLang = "ko";
-let cachedWorks = [];
+let cached = { site: {}, works: [], exhibitions: [], projects: [] };
+
+const ui = {
+  ko: {
+    nav_artwork: "작업",
+    nav_education: "문화예술교육",
+    nav_public: "공공미술",
+    nav_about: "소개",
+    featured_work: "대표작",
+    view_work: "작업 보기",
+    practice_artwork: "작업",
+    practice_artwork_sub: "회화 · 설치 · 미디어",
+    practice_education: "문화예술교육",
+    practice_education_sub: "참여 · 학습 · 기후",
+    practice_public: "공공미술",
+    practice_public_sub: "장소 · 공동체 · 생태",
+    artwork_kicker: "01 / 작업",
+    selected_works: "주요 작업",
+    education_kicker: "02 / 문화예술교육",
+    programs_title: "프로그램 & 워크숍",
+    education_note: "예술을 통해 관찰하고, 이해하고, 참여하는 방법을 탐색합니다.",
+    public_kicker: "03 / 공공미술",
+    public_title: "공공 프로젝트",
+    public_note: "장소, 공동체, 생태적 질문을 연결하는 프로젝트입니다.",
+    archive: "아카이브",
+    exhibitions_title: "전시",
+    about_kicker: "소개",
+    about_heading: "예술, 장소,<br>그리고 생태.",
+    based_in: "활동 지역",
+    practice_label: "작업 영역",
+    footer_title: "예술, 장소,<br>그리고 생태.",
+    works_suffix: "점",
+    empty: "아카이브를 준비 중입니다."
+  },
+  en: {
+    nav_artwork: "Artwork",
+    nav_education: "Arts Education",
+    nav_public: "Public Art",
+    nav_about: "About",
+    featured_work: "Featured work",
+    view_work: "View work",
+    practice_artwork: "Artwork",
+    practice_artwork_sub: "Painting · Installation · Media",
+    practice_education: "Arts Education",
+    practice_education_sub: "Participation · Learning · Climate",
+    practice_public: "Public Art",
+    practice_public_sub: "Place · Community · Ecology",
+    artwork_kicker: "01 / Artwork",
+    selected_works: "Selected Works",
+    education_kicker: "02 / Arts Education",
+    programs_title: "Programs & Workshops",
+    education_note: "Art as a way to observe, understand, and participate.",
+    public_kicker: "03 / Public Art",
+    public_title: "Public Projects",
+    public_note: "Projects connecting place, community, and ecological questions.",
+    archive: "Archive",
+    exhibitions_title: "Exhibitions",
+    about_kicker: "About",
+    about_heading: "Art, place,<br>and ecology.",
+    based_in: "Based in",
+    practice_label: "Practice",
+    footer_title: "Art, place,<br>and ecology.",
+    works_suffix: "works",
+    empty: "Archive in progress."
+  }
+};
 
 function esc(v = "") {
   return String(v)
@@ -22,146 +87,143 @@ async function loadJson(path, fallback) {
   }
 }
 
-function workTitle(work, lang) {
-  return work["title_" + lang] || work.title || "";
-}
-
-function workMaterials(work, lang) {
-  return work["materials_" + lang] || work.materials || "";
+function titleFor(work, lang) {
+  const original = work.title || "";
+  const translation = work.title_translation_en || "";
+  if (lang === "en" && translation && translation.toLowerCase() !== original.toLowerCase()) {
+    return original + " (" + translation + ")";
+  }
+  return original;
 }
 
 function artistName(work, lang) {
-  return work["artist_" + lang] || (lang === "ko" ? "이서희" : "SEOHEE LEE");
+  return lang === "ko"
+    ? (work.artist_ko || "이서희")
+    : (work.artist_en || "SEOHEE LEE");
+}
+
+function materialsFor(work, lang) {
+  return lang === "ko"
+    ? (work.materials_ko || "")
+    : (work.materials_en || "");
 }
 
 function workSize(work) {
-  if (work.height_cm && work.width_cm) {
-    return work.height_cm + " × " + work.width_cm + " cm";
-  }
-  return work.dimensions || "";
+  return work.height_cm && work.width_cm
+    ? work.height_cm + " × " + work.width_cm + " cm"
+    : "";
 }
 
 function captionText(work, lang) {
-  const first = [artistName(work, lang), workTitle(work, lang), work.year]
+  const first = [artistName(work, lang), titleFor(work, lang), work.year]
     .filter((v) => v !== "" && v !== null && v !== undefined)
     .join(", ");
-  const second = [workMaterials(work, lang), workSize(work)]
-    .filter(Boolean)
-    .join(", ");
+  const second = [materialsFor(work, lang), workSize(work)].filter(Boolean).join(", ");
   return first + (second ? ". " + second : "") + ".";
 }
 
-function captionHtml(work) {
-  return (
-    '<span class="caption-ko">' +
-    esc(captionText(work, "ko")) +
-    '</span><span class="caption-en">' +
-    esc(captionText(work, "en")) +
-    "</span>"
-  );
-}
-
-function renderHero(works) {
+function renderHero() {
+  const works = cached.works;
   const featured =
     works.find((x) => x.published !== false && x.featured === true) ||
     works.find((x) => x.published !== false);
 
   if (!featured) return;
 
-  byId("hero-work-title").textContent = workTitle(featured, currentLang);
-  byId("hero-work-caption").innerHTML = captionHtml(featured);
+  const title = titleFor(featured, currentLang);
+  byId("hero-work-title").textContent = title;
+  byId("hero-work-caption").textContent = captionText(featured, currentLang);
 
   const media = byId("hero-media");
-  if (featured.image) {
-    media.innerHTML =
-      '<img src="' +
-      esc(featured.image) +
-      '" alt="' +
-      esc(workTitle(featured, currentLang)) +
-      '">';
-  } else {
-    media.innerHTML =
-      '<div class="hero-placeholder">' +
-      esc(workTitle(featured, currentLang)) +
-      "</div>";
-  }
+  media.innerHTML = featured.image
+    ? '<img src="' + esc(featured.image) + '" alt="' + esc(title) + '">'
+    : '<div class="hero-placeholder">' + esc(title) + "</div>";
 }
 
-function renderWorks(works) {
-  const items = works.filter((x) => x.published !== false);
-  byId("work-count").textContent = items.length + " works";
+function renderWorks() {
+  const items = cached.works.filter((x) => x.published !== false);
+  byId("work-count").textContent =
+    currentLang === "ko"
+      ? items.length + ui.ko.works_suffix
+      : items.length + " " + ui.en.works_suffix;
 
-  byId("works-grid").innerHTML = items
-    .map((work) => {
-      const title = workTitle(work, currentLang);
-      const media = work.image
-        ? '<img src="' +
-          esc(work.image) +
-          '" alt="' +
-          esc(title) +
-          '" loading="lazy">'
-        : '<div class="work-placeholder">' + esc(title) + "</div>";
-
-      return (
-        '<article class="work-card"><div class="work-media">' +
-        media +
-        '</div><p class="work-caption">' +
-        captionHtml(work) +
-        "</p></article>"
-      );
-    })
-    .join("");
+  byId("works-grid").innerHTML = items.map((work) => {
+    const title = titleFor(work, currentLang);
+    const media = work.image
+      ? '<img src="' + esc(work.image) + '" alt="' + esc(title) + '" loading="lazy">'
+      : '<div class="work-placeholder">' + esc(title) + "</div>";
+    return '<article class="work-card"><div class="work-media">' +
+      media +
+      '</div><p class="work-caption">' +
+      esc(captionText(work, currentLang)) +
+      "</p></article>";
+  }).join("");
 }
 
-function renderProjects(projects, category, target) {
-  const items = projects.filter(
+function local(item, field) {
+  return item[field + "_" + currentLang] || item[field] || "";
+}
+
+function renderProjects(category, target) {
+  const items = cached.projects.filter(
     (x) => x.published !== false && x.category === category
   );
   const el = byId(target);
 
   if (!items.length) {
-    el.innerHTML =
-      '<div class="project-empty">Archive in progress — projects will be added here.</div>';
+    el.innerHTML = '<div class="project-empty">' + esc(ui[currentLang].empty) + "</div>";
     return;
   }
 
-  el.innerHTML = items
-    .map(
-      (item) =>
-        '<article class="project-card"><div class="project-card-top"><span class="project-type">' +
-        esc(item.type || category) +
-        '</span><span class="project-year">' +
-        esc(item.year || "") +
-        "</span></div><h3>" +
-        esc(item.title) +
-        '</h3><div class="project-card-bottom"><p class="project-description">' +
-        esc(item.description || "") +
-        "</p><span>↘</span></div></article>"
-    )
-    .join("");
+  el.innerHTML = items.map((item) =>
+    '<article class="project-card"><div class="project-card-top"><span class="project-type">' +
+    esc(local(item, "type") || category) +
+    '</span><span class="project-year">' +
+    esc(item.year || "") +
+    "</span></div><h3>" +
+    esc(local(item, "title")) +
+    '</h3><div class="project-card-bottom"><p class="project-description">' +
+    esc(local(item, "description")) +
+    "</p><span>↘</span></div></article>"
+  ).join("");
 }
 
-function renderExhibitions(items) {
-  byId("exhibitions-list").innerHTML = items
+function renderExhibitions() {
+  byId("exhibitions-list").innerHTML = cached.exhibitions
     .filter((x) => x.published !== false)
-    .map(
-      (item) =>
-        '<article class="exhibition-row"><p>' +
-        esc(item.year) +
-        '</p><p class="exhibition-title">' +
-        esc(item.title) +
-        '</p><p class="exhibition-place">' +
-        esc(item.venue) +
-        (item.location ? ", " + esc(item.location) : "") +
-        '</p><p class="exhibition-type">' +
-        esc(item.type) +
-        "</p></article>"
-    )
-    .join("");
+    .map((item) =>
+      '<article class="exhibition-row"><p>' +
+      esc(item.year) +
+      '</p><p class="exhibition-title">' +
+      esc(local(item, "title")) +
+      '</p><p class="exhibition-place">' +
+      esc(local(item, "venue")) +
+      (local(item, "location") ? ", " + esc(local(item, "location")) : "") +
+      '</p><p class="exhibition-type">' +
+      esc(local(item, "type")) +
+      "</p></article>"
+    ).join("");
 }
 
-function applySite(site) {
-  if (site.about) byId("about-text").textContent = site.about;
+function renderSiteText() {
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = ui[currentLang][el.dataset.i18n] || "";
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    el.innerHTML = ui[currentLang][el.dataset.i18nHtml] || "";
+  });
+
+  const site = cached.site;
+  byId("about-text").textContent =
+    site["about_" + currentLang] || site.about || "";
+  byId("based-in-value").textContent =
+    site["based_in_" + currentLang] || (currentLang === "ko" ? "대한민국 남양주" : "Namyangju, Korea");
+  byId("practice-value").textContent =
+    site["practice_" + currentLang] ||
+    (currentLang === "ko"
+      ? "회화 · 설치 · 미디어 · 문화예술교육 · 공공미술"
+      : "Painting · Installation · Media · Arts Education · Public Art");
+
   if (site.instagram_url) byId("instagram-link").href = site.instagram_url;
 
   const email = byId("email-link");
@@ -170,7 +232,17 @@ function applySite(site) {
     email.textContent = site.email;
   } else {
     email.removeAttribute("href");
+    email.textContent = currentLang === "ko" ? "이메일 준비 중" : "Email coming soon";
   }
+}
+
+function renderAll() {
+  renderSiteText();
+  renderHero();
+  renderWorks();
+  renderProjects("Arts Education", "education-grid");
+  renderProjects("Public Art", "public-grid");
+  renderExhibitions();
 }
 
 function setLanguage(lang) {
@@ -180,8 +252,7 @@ function setLanguage(lang) {
   document.querySelectorAll(".lang-button").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.lang === lang);
   });
-  renderHero(cachedWorks);
-  renderWorks(cachedWorks);
+  renderAll();
 }
 
 async function init() {
@@ -192,14 +263,9 @@ async function init() {
     loadJson("data/projects.json", []),
   ]);
 
-  cachedWorks = works;
+  cached = { site, works, exhibitions, projects };
   document.body.dataset.lang = currentLang;
-  applySite(site);
-  renderHero(works);
-  renderWorks(works);
-  renderProjects(projects, "Arts Education", "education-grid");
-  renderProjects(projects, "Public Art", "public-grid");
-  renderExhibitions(exhibitions);
+  renderAll();
   byId("current-year").textContent = new Date().getFullYear();
 }
 
