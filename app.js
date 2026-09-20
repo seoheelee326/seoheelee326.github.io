@@ -1,4 +1,6 @@
 const byId = (id) => document.getElementById(id);
+let currentLang = "ko";
+let cachedWorks = [];
 
 function esc(v = "") {
   return String(v)
@@ -20,6 +22,45 @@ async function loadJson(path, fallback) {
   }
 }
 
+function workTitle(work, lang) {
+  return work["title_" + lang] || work.title || "";
+}
+
+function workMaterials(work, lang) {
+  return work["materials_" + lang] || work.materials || "";
+}
+
+function artistName(work, lang) {
+  return work["artist_" + lang] || (lang === "ko" ? "이서희" : "SEOHEE LEE");
+}
+
+function workSize(work) {
+  if (work.height_cm && work.width_cm) {
+    return work.height_cm + " × " + work.width_cm + " cm";
+  }
+  return work.dimensions || "";
+}
+
+function captionText(work, lang) {
+  const first = [artistName(work, lang), workTitle(work, lang), work.year]
+    .filter((v) => v !== "" && v !== null && v !== undefined)
+    .join(", ");
+  const second = [workMaterials(work, lang), workSize(work)]
+    .filter(Boolean)
+    .join(", ");
+  return first + (second ? ". " + second : "") + ".";
+}
+
+function captionHtml(work) {
+  return (
+    '<span class="caption-ko">' +
+    esc(captionText(work, "ko")) +
+    '</span><span class="caption-en">' +
+    esc(captionText(work, "en")) +
+    "</span>"
+  );
+}
+
 function renderHero(works) {
   const featured =
     works.find((x) => x.published !== false && x.featured === true) ||
@@ -27,10 +68,8 @@ function renderHero(works) {
 
   if (!featured) return;
 
-  byId("hero-work-title").textContent = featured.title || "";
-  byId("hero-work-meta").textContent = [featured.year, featured.category]
-    .filter(Boolean)
-    .join(" · ");
+  byId("hero-work-title").textContent = workTitle(featured, currentLang);
+  byId("hero-work-caption").innerHTML = captionHtml(featured);
 
   const media = byId("hero-media");
   if (featured.image) {
@@ -38,11 +77,13 @@ function renderHero(works) {
       '<img src="' +
       esc(featured.image) +
       '" alt="' +
-      esc(featured.title) +
+      esc(workTitle(featured, currentLang)) +
       '">';
   } else {
     media.innerHTML =
-      '<div class="hero-placeholder">' + esc(featured.title) + "</div>";
+      '<div class="hero-placeholder">' +
+      esc(workTitle(featured, currentLang)) +
+      "</div>";
   }
 }
 
@@ -52,32 +93,21 @@ function renderWorks(works) {
 
   byId("works-grid").innerHTML = items
     .map((work) => {
-      const title = esc(work.title);
+      const title = workTitle(work, currentLang);
       const media = work.image
         ? '<img src="' +
           esc(work.image) +
           '" alt="' +
-          title +
+          esc(title) +
           '" loading="lazy">'
-        : '<div class="work-placeholder">' + title + "</div>";
-
-      const details = [work.materials, work.dimensions]
-        .filter(Boolean)
-        .map(esc)
-        .join(" · ");
+        : '<div class="work-placeholder">' + esc(title) + "</div>";
 
       return (
         '<article class="work-card"><div class="work-media">' +
         media +
-        '</div><div class="work-info"><div class="work-info-top"><h3>' +
-        title +
-        '</h3><p class="work-meta">' +
-        esc(work.year) +
-        " · " +
-        esc(work.category) +
-        "</p></div>" +
-        (details ? '<p class="work-details">' + details + "</p>" : "") +
-        "</div></article>"
+        '</div><p class="work-caption">' +
+        captionHtml(work) +
+        "</p></article>"
       );
     })
     .join("");
@@ -116,7 +146,7 @@ function renderExhibitions(items) {
     .filter((x) => x.published !== false)
     .map(
       (item) =>
-        "<article class=\"exhibition-row\"><p>" +
+        '<article class="exhibition-row"><p>' +
         esc(item.year) +
         '</p><p class="exhibition-title">' +
         esc(item.title) +
@@ -143,6 +173,17 @@ function applySite(site) {
   }
 }
 
+function setLanguage(lang) {
+  currentLang = lang;
+  document.body.dataset.lang = lang;
+  document.documentElement.lang = lang === "ko" ? "ko" : "en";
+  document.querySelectorAll(".lang-button").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.lang === lang);
+  });
+  renderHero(cachedWorks);
+  renderWorks(cachedWorks);
+}
+
 async function init() {
   const [site, works, exhibitions, projects] = await Promise.all([
     loadJson("data/site.json", {}),
@@ -151,6 +192,8 @@ async function init() {
     loadJson("data/projects.json", []),
   ]);
 
+  cachedWorks = works;
+  document.body.dataset.lang = currentLang;
   applySite(site);
   renderHero(works);
   renderWorks(works);
@@ -175,6 +218,10 @@ nav.addEventListener("click", () => {
   menu.setAttribute("aria-expanded", "false");
   menu.textContent = "Menu";
   nav.classList.remove("is-open");
+});
+
+document.querySelectorAll(".lang-button").forEach((button) => {
+  button.addEventListener("click", () => setLanguage(button.dataset.lang));
 });
 
 addEventListener(
