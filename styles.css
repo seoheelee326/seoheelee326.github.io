@@ -1,4 +1,4 @@
-:root{--cream:#f5f1ea;--paper:#fbf8f2;--ink:#171717;--muted:#77716a;--line:rgba(20,20,20,.16);--soft:#ece7ee;--page:clamp(20px,4vw,64px)}
+:root{--cream:#fff;--paper:#fff;--ink:#171717;--muted:#707070;--line:rgba(20,20,20,.12);--soft:#fafafa;--page:clamp(20px,4vw,64px)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.55}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}
 .site-header{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 var(--page);color:white;background:linear-gradient(to bottom,rgba(0,0,0,.25),transparent);transition:.25s}.site-header.scrolled{color:var(--ink);background:rgba(245,241,234,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .wordmark{font-size:13px;font-weight:800;letter-spacing:.03em}.site-nav{display:flex;gap:clamp(18px,2.5vw,40px);font-size:12px;font-weight:700}.menu-button{display:none;border:0;background:none}
@@ -74,3 +74,21 @@ body.detail-open{overflow:hidden}
 .works-grid-uniform .work-card:hover .work-media img{
   transform:none;
 }
+
+
+/* White portfolio surfaces with Seohee's pattern as a quiet background */
+body{position:relative;background:var(--cream)}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("assets/patterns/seohee-pattern-light.png");background-repeat:repeat;background-size:500px auto;opacity:.24}
+.site-header,main,.site-footer,.work-detail{position:relative;z-index:1}
+.site-header{color:var(--ink);background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.site-header.scrolled{color:var(--ink);background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.practice-nav{background:rgba(255,255,255,.82)}
+.practice-nav a:hover{background:rgba(245,245,245,.9)}
+.content-section,.soft-section,.exhibitions-section,.about-section{background:transparent}
+.project-card{background:rgba(255,255,255,.78)}
+.works-grid-uniform .work-media{background:rgba(248,248,248,.94)}
+.work-detail{background:rgba(255,255,255,.97)}
+.detail-close{background:rgba(255,255,255,.94)}
+.site-footer{background:rgba(255,255,255,.82);color:var(--ink);border-top:1px solid var(--line)}
+.footer-bottom{border-top-color:var(--line)}
+@media(max-width:820px){.site-nav{background:rgba(255,255,255,.97);color:var(--ink)}}
