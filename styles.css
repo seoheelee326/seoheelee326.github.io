@@ -176,12 +176,13 @@ body.intro-ready .hero-meta-line{opacity:1;transform:none}
 body::before{display:none}
 .hero{background:#faf9f6}
 .hero::before{
-  background-image:url("assets/patterns/honeycomb.svg");
-  background-size:clamp(205px,24vw,330px) auto;
-  opacity:.2;
+  background-image:url("assets/patterns/seohee-pattern-light.png");
+  background-size:clamp(460px,58vw,780px) auto;
+  background-position:center;
+  opacity:.1;
 }
-body.intro-active .hero::before{opacity:.46}
-body.intro-ready .hero::before{opacity:.2}
+body.intro-active .hero::before{opacity:.2}
+body.intro-ready .hero::before{opacity:.1}
 .hero-media{background:transparent}
 .hero-media img{background:transparent;filter:drop-shadow(0 18px 30px rgba(35,30,25,.12))}
 .hero-placeholder{background:transparent;border:0}
