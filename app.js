@@ -108,17 +108,73 @@ function materialsFor(work, lang) {
     : (work.materials_en || "");
 }
 
-function workSize(work) {
-  return work.height_cm && work.width_cm
-    ? work.height_cm + " × " + work.width_cm + " cm"
-    : "";
+const CANVAS_PRESET_ROWS_MM = [
+  ["0", 180, 140, null, null, null],
+  ["1", 227, 158, 140, 120, 158],
+  ["2", 258, 179, 160, 140, 179],
+  ["3", 273, 220, 190, 160, 220],
+  ["4", 334, 242, 212, 190, 242],
+  ["5", 348, 273, 242, 212, 273],
+  ["6", 409, 318, 273, 242, 318],
+  ["8", 455, 379, 334, 273, 379],
+  ["10", 530, 455, 409, 334, 455],
+  ["12", 606, 500, 455, 409, 500],
+  ["15", 651, 530, 500, 455, 530],
+  ["20", 727, 606, 530, 500, 606],
+  ["25", 803, 651, 606, 530, 651],
+  ["30", 909, 727, 651, 606, 727],
+  ["40", 1000, 803, 727, 651, 803],
+  ["50", 1168, 910, 803, 727, 910],
+  ["60", 1303, 970, 894, 803, 970],
+  ["80", 1455, 1121, 970, 894, 1121],
+  ["100", 1622, 1303, 1121, 970, 1303],
+  ["120", 1939, 1303, 1121, 970, 1303],
+  ["150", 2273, 1818, 1621, 1455, 1818],
+  ["200", 2591, 1939, 1818, 1621, 1939],
+  ["300", 2909, 2182, 1970, 1818, 2182],
+  ["500", 3333, 2485, 2182, 1970, 2485]
+];
+
+function canvasPresetDimensions(preset) {
+  const match = /^(\d+)([FPMS])$/.exec(String(preset || "").trim().toUpperCase());
+  if (!match) return null;
+  const row = CANVAS_PRESET_ROWS_MM.find((item) => item[0] === match[1]);
+  if (!row) return null;
+  const formatIndex = ["F", "P", "M", "S"].indexOf(match[2]);
+  const widthMm = row[formatIndex + 2];
+  if (!widthMm) return null;
+  const longSideCm = row[1] / 10;
+  const shortSideCm = widthMm / 10;
+  if (match[2] === "S") return [shortSideCm, shortSideCm];
+  return match[2] === "F"
+    ? [longSideCm, shortSideCm]
+    : [shortSideCm, longSideCm];
 }
 
+function workSize(work, lang) {
+  const hasHeight = work.height_cm !== "" && work.height_cm !== null && work.height_cm !== undefined &&
+    Number.isFinite(Number(work.height_cm)) && Number(work.height_cm) > 0;
+  const hasWidth = work.width_cm !== "" && work.width_cm !== null && work.width_cm !== undefined &&
+    Number.isFinite(Number(work.width_cm)) && Number(work.width_cm) > 0;
+  const dimensions = hasHeight && hasWidth
+    ? [Number(work.height_cm), Number(work.width_cm)]
+    : canvasPresetDimensions(work.canvas_size);
+  const size = dimensions
+    ? dimensions[0] + " × " + dimensions[1] + " cm"
+    : "";
+  const variableInstallation = work.variable_installation === true ||
+    String(work.variable_installation).toLowerCase() === "true";
+  const variableLabel = lang === "en" ? "Variable installation" : "가변설치";
+
+  if (size && variableInstallation) return size + ", " + variableLabel;
+  if (size) return size;
+  return variableInstallation ? variableLabel : "";
+}
 function captionText(work, lang) {
   const first = [artistName(work, lang), titleFor(work, lang), work.year]
     .filter((v) => v !== "" && v !== null && v !== undefined)
     .join(", ");
-  const second = [materialsFor(work, lang), workSize(work)].filter(Boolean).join(", ");
+  const second = [materialsFor(work, lang), workSize(work, lang)].filter(Boolean).join(", ");
   return first + (second ? ". " + second : "") + ".";
 }
 
