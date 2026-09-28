@@ -6,12 +6,15 @@
   <meta name="description" content="Seohee Lee — artist, arts educator, and public art practitioner.">
   <meta name="theme-color" content="#ffffff">
   <title>SEOHEE LEE</title>
-  <link rel="stylesheet" href="styles.css?v=8">
-  <script src="app.js?v=7" defer></script>
+  <link rel="stylesheet" href="styles.css?v=9">
+  <script src="app.js?v=8" defer></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="wordmark" href="#top">SEOHEE LEE</a>
+    <a class="wordmark" href="#top" aria-label="Seohee Lee home">
+      <span class="wordmark-name">SEOHEE LEE</span>
+      <span class="wordmark-role">VISUAL ARTIST</span>
+    </a>
     <div class="header-actions">
       <div class="language-switch" aria-label="Language">
         <button class="lang-button is-active" type="button" data-lang="ko">KR</button>
@@ -20,24 +23,24 @@
       </div>
       <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Main navigation">
-        <a href="#artwork" data-i18n="nav_artwork">작업</a>
-        <a href="#education" data-i18n="nav_education">문화예술교육</a>
-        <a href="#public-art" data-i18n="nav_public">공공미술</a>
-        <a href="#about" data-i18n="nav_about">소개</a>
+        <a href="#artwork" data-i18n="nav_artwork">Work</a>
+        <a href="#education" data-i18n="nav_education">Arts Education</a>
+        <a href="#public-art" data-i18n="nav_public">Public Art</a>
+        <a href="#about" data-i18n="nav_about">About</a>
       </nav>
     </div>
   </header>
 
   <main id="top">
     <section class="hero" aria-label="Featured work">
-      <div id="hero-media" class="hero-media"><div class="hero-placeholder">WAYFARING</div></div>
-      <div class="hero-overlay"></div>
+      <div class="hero-meta-line"><span>SEOHEE LEE</span><span>ARTWORK / 01</span></div>
+      <div id="hero-media" class="hero-media"><div class="hero-placeholder" aria-hidden="true"></div></div>
       <div class="hero-caption">
         <p class="hero-label" data-i18n="featured_work">대표작</p>
         <h1 id="hero-work-title">WAYFARING</h1>
         <p id="hero-work-caption" class="art-caption"></p>
       </div>
-      <a class="hero-view" href="#artwork"><span data-i18n="view_work">작업 보기</span> <span>↓</span></a>
+      <a class="hero-view" href="#artwork"><span data-i18n="view_work">Explore works</span><span aria-hidden="true">↗</span></a>
     </section>
 
     <section class="practice-nav" aria-label="Practice areas">
@@ -110,5 +113,6 @@
       <p>© <span id="current-year"></span></p>
     </div>
   </footer>
+  <canvas id="cubic-cursor" class="cubic-cursor" aria-hidden="true"></canvas>
 </body>
 </html>
