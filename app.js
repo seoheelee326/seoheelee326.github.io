@@ -142,7 +142,6 @@ function renderHero() {
     media.innerHTML =
       '<div class="hero-placeholder" aria-hidden="true">' +
       '<span class="hero-placeholder-index">FEATURED / ' + esc(featured.year || "") + '</span>' +
-      '<span class="hero-placeholder-pattern"></span>' +
       '<span class="hero-placeholder-cubes">' + cubes + '</span>' +
       '<span class="hero-placeholder-year">' + esc(featured.year || "") + '</span>' +
       '</div>';
@@ -401,13 +400,14 @@ function initCubicCursor() {
     const size = index === 0 ? 5.6 : 4.7;
     const x = stone.x;
     const y = stone.y;
-    const top = { x, y: y - size * 0.9 };
-    const left = { x: x - size, y: y - size * 0.25 };
-    const right = { x: x + size, y: y - size * 0.25 };
-    const front = { x, y: y + size * 0.42 };
-    const lowerLeft = { x: x - size, y: y + size * 0.82 };
-    const lowerRight = { x: x + size, y: y + size * 0.82 };
-    const bottom = { x, y: y + size * 1.38 };
+    const outer = Array.from({ length: 6 }, (_, vertex) => {
+      const angle = -Math.PI / 2 + vertex * (Math.PI / 3);
+      return { x: x + Math.cos(angle) * size, y: y + Math.sin(angle) * size };
+    });
+    const inner = outer.map((point) => ({
+      x: x + (point.x - x) * 0.48,
+      y: y + (point.y - y) * 0.48
+    }));
 
     context.save();
     context.lineWidth = 0.55;
@@ -416,35 +416,39 @@ function initCubicCursor() {
     context.shadowBlur = shine * 15;
 
     context.beginPath();
-    context.moveTo(left.x, left.y);
-    context.lineTo(front.x, front.y);
-    context.lineTo(bottom.x, bottom.y);
-    context.lineTo(lowerLeft.x, lowerLeft.y);
+    context.moveTo(outer[0].x, outer[0].y);
+    outer.slice(1).forEach((point) => context.lineTo(point.x, point.y));
     context.closePath();
-    context.fillStyle = "rgba(161,157,148,.95)";
+    context.fillStyle = "rgba(231,228,220,.98)";
     context.fill();
-    context.strokeStyle = "rgba(60,58,54,.62)";
+    context.strokeStyle = "rgba(75,72,66,.62)";
     context.stroke();
 
-    context.beginPath();
-    context.moveTo(front.x, front.y);
-    context.lineTo(right.x, right.y);
-    context.lineTo(lowerRight.x, lowerRight.y);
-    context.lineTo(bottom.x, bottom.y);
-    context.closePath();
-    context.fillStyle = "rgba(222,219,212,.98)";
-    context.fill();
-    context.stroke();
+    for (let facet = 0; facet < 6; facet += 1) {
+      const next = (facet + 1) % 6;
+      context.beginPath();
+      context.moveTo(outer[facet].x, outer[facet].y);
+      context.lineTo(outer[next].x, outer[next].y);
+      context.lineTo(inner[next].x, inner[next].y);
+      context.lineTo(inner[facet].x, inner[facet].y);
+      context.closePath();
+      context.fillStyle = facet % 2 === 0
+        ? "rgba(255,255,255," + (0.78 + shine * 0.2) + ")"
+        : "rgba(170,166,157,.62)";
+      context.fill();
+      context.strokeStyle = "rgba(100,96,88,.38)";
+      context.lineWidth = 0.4;
+      context.stroke();
+    }
 
     context.beginPath();
-    context.moveTo(left.x, left.y);
-    context.lineTo(top.x, top.y);
-    context.lineTo(right.x, right.y);
-    context.lineTo(front.x, front.y);
+    context.moveTo(inner[0].x, inner[0].y);
+    inner.slice(1).forEach((point) => context.lineTo(point.x, point.y));
     context.closePath();
-    context.fillStyle = "rgba(255,255,255," + (0.96 + shine * 0.04) + ")";
+    context.fillStyle = "rgba(244,242,237," + (0.94 + shine * 0.06) + ")";
     context.fill();
-    context.strokeStyle = "rgba(80,78,72,.58)";
+    context.strokeStyle = "rgba(100,96,88,.46)";
+    context.lineWidth = 0.4;
     context.stroke();
 
     if (shine > 0.12) {
@@ -452,10 +456,10 @@ function initCubicCursor() {
       context.strokeStyle = "rgba(255,255,255,.98)";
       context.lineWidth = 1.15;
       context.beginPath();
-      context.moveTo(x, y - size * 0.6);
-      context.lineTo(x, y + size * 0.25);
-      context.moveTo(x - size * 0.55, y - size * 0.18);
-      context.lineTo(x + size * 0.55, y - size * 0.18);
+      context.moveTo(x, y - size * 0.58);
+      context.lineTo(x, y + size * 0.58);
+      context.moveTo(x - size * 0.5, y);
+      context.lineTo(x + size * 0.5, y);
       context.stroke();
     }
     context.restore();

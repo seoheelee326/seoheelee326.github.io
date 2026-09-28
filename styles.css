@@ -171,3 +171,25 @@ body.intro-ready .hero-meta-line{opacity:1;transform:none}
   body::before,.hero::before,.hero-media,.hero-caption,.hero-view{transition:none!important}
   body.intro-active .hero-media,body.intro-active .hero-caption,body.intro-active .hero-view,body.intro-active .hero-meta-line{opacity:1;transform:none}
 }
+
+/* Honeycomb stays behind the artwork; both the image and placeholder remain transparent. */
+body::before{display:none}
+.hero{background:#faf9f6}
+.hero::before{
+  background-image:url("assets/patterns/honeycomb.svg");
+  background-size:clamp(205px,24vw,330px) auto;
+  opacity:.2;
+}
+body.intro-active .hero::before{opacity:.46}
+body.intro-ready .hero::before{opacity:.2}
+.hero-media{background:transparent}
+.hero-media img{background:transparent;filter:drop-shadow(0 18px 30px rgba(35,30,25,.12))}
+.hero-placeholder{background:transparent;border:0}
+.hero-placeholder-pattern,.hero-placeholder::after{display:none}
+.hero-placeholder-index,.hero-placeholder-year{color:#736c62}
+.hero-placeholder-cubes i{
+  background:conic-gradient(from -30deg,#fff 0 15%,#d9d5cc 15% 31%,#f8f7f2 31% 49%,#aaa69d 49% 62%,#ece9e2 62% 82%,#fff 82%);
+  clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.17));
+}
+.cubic-cursor{mix-blend-mode:normal}
