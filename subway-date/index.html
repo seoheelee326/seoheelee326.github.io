@@ -907,7 +907,7 @@ function renderLineMini(){
 }
 function updateStationLabelVisibility(){if(!map)return;document.querySelector('#subwayMap').classList.toggle('labels-hidden',map.getZoom()<12)}
 function setLineFocus(line){
-  selectedLineLayer=line;
+  selectedLineLayer=(line&&selectedLineLayer===line)?'':line;
   renderLineMini();
   applyLineLayerFilter();
 }
