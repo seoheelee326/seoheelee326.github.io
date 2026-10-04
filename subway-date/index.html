@@ -18,7 +18,7 @@
 .leaflet-tooltip.stationLabel:before{display:none}
 #subwayMap.labels-hidden .leaflet-tooltip.stationLabel{display:none}
 .routePanel{position:absolute;z-index:500;left:22px;bottom:20px;width:min(430px,calc(100% - 44px));background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:20px;padding:14px 16px;box-shadow:0 14px 34px rgba(55,38,32,.12)}.routePanel.hidden{display:none}.routeTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.routeTime{font-size:32px;font-weight:1000;letter-spacing:-.04em}.routePath{margin-top:8px;font-size:13px;line-height:1.55;color:#635a56}.routeHint{font-size:11px;color:#9a8e89;margin-top:5px}
-.miniProgress{display:grid;grid-template-columns:180px 1fr;gap:12px;margin-top:14px}.overallMini{padding:16px}.overallMini .big{font-size:30px;font-weight:1000}.progress{height:7px;background:#eee6e2;border-radius:99px;overflow:hidden;margin-top:9px}.progress span{display:block;height:100%;border-radius:inherit;background:var(--accent)}.lineMini{padding:12px;display:flex;gap:8px;overflow:auto}.lineChip{min-width:110px;padding:9px 10px;border:1px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;transition:.15s}.lineChip:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(55,38,32,.08)}.lineChip.active{outline:2px solid #2b2523;outline-offset:1px}.lineFilterReset{min-width:auto;display:flex;align-items:center;justify-content:center;font-weight:900}.lineChip b{font-size:12px}.lineChip small{display:block;color:var(--muted);margin-top:5px}.lineChip .progress{height:5px;margin-top:6px}
+.miniProgress{display:grid;grid-template-columns:180px 1fr;gap:12px;margin-top:14px}.overallMini{padding:16px}.overallMini .big{font-size:30px;font-weight:1000}.progress{height:7px;background:#eee6e2;border-radius:99px;overflow:hidden;margin-top:9px}.progress span{display:block;height:100%;border-radius:inherit;background:var(--accent)}.lineMini{padding:12px;display:flex;gap:8px;overflow:auto}.lineChip{min-width:110px;padding:9px 10px;border:1px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;transition:.15s}.lineChip.active{outline:2px solid #2b2523;outline-offset:1px}.lineFilterReset{min-width:70px;display:flex;align-items:center;justify-content:center;font-weight:900}.lineChip b{font-size:12px}.lineChip small{display:block;color:var(--muted);margin-top:5px}.lineChip .progress{height:5px;margin-top:6px}
 .section{margin-top:26px}.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:0 4px 10px}.sectionHead h2{margin:0;font-size:24px}.memories{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.memory{overflow:hidden}.photo{aspect-ratio:4/3;background:#f5eeeb;display:grid;place-items:center;font-size:30px;color:#b9aaa4;overflow:hidden}.photo img{width:100%;height:100%;object-fit:cover}.body{padding:15px}.title{font-weight:950;font-size:18px}.note{font-size:13px;color:#675e5a;line-height:1.55;margin-top:8px}.empty{padding:30px;text-align:center;color:var(--muted)}
 .modal{position:fixed;inset:0;background:rgba(30,24,22,.48);z-index:2000;display:grid;place-items:center;padding:18px}.modal.hidden,.hidden{display:none!important}.modalCard{width:min(620px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:24px;padding:22px}.modalHead{display:flex;justify-content:space-between;align-items:center;gap:10px}.modalHead h3{margin:0}.x{border:1px solid var(--line);background:#fff;border-radius:50%;width:36px;height:36px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:15px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:850;color:#716661}input,textarea,select{border:1px solid #ded4cf;border-radius:12px;padding:11px 12px;background:#fff}textarea{min-height:96px;resize:vertical}.authWrap{min-height:70vh;display:grid;place-items:center}.authCard{width:min(520px,100%);padding:28px}.authCard h1{font-size:40px}.status{font-size:12px;color:var(--muted);margin-top:8px;min-height:18px}footer{text-align:center;color:#aaa09b;font-size:11px;padding:36px}
 @media(max-width:800px){.mapHero{height:70vh;min-height:590px}.mapTitle{left:14px;top:14px;max-width:calc(100% - 145px);padding:13px}.mapTools{right:12px;top:12px}.miniProgress{grid-template-columns:1fr}.memories{grid-template-columns:1fr 1fr}.routePanel{left:14px;bottom:14px;width:calc(100% - 28px)}}@media(max-width:560px){.shell{padding:10px}.mapTitle h1{font-size:25px}.mapTitle p{display:none}.mapStats{min-width:118px;padding:9px 11px}.mapStats strong{font-size:18px}.memories{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.brand small{display:none}.modeBtn{padding:7px 9px;font-size:12px}}
@@ -896,9 +896,13 @@ function subscribe(){if(subscription)supabase.removeChannel(subscription);subscr
 function render(){renderSummary();renderLineMini();renderMemories();if(map)renderMap();}
 function renderSummary(){const total=uniqueStations().length;const visited=new Set(records.map(r=>r.station)).size;const p=total?Math.round(visited/total*100):0;$('#visitedCount').textContent=visited;$('#visitedMini').textContent=visited;$('#totalCount').textContent=total;$('#allPct').textContent=p+'%';$('#allBar').style.width=p+'%'}
 function renderLineMini(){
-    $('#lineMini').innerHTML='<div class="lineChip lineFilterReset'+(!selectedLine?' active':'')+'" data-line="">전체</div>'+Object.entries(LINE_DATA).map(([l,d])=>{const v=new Set(records.filter(r=>r.line===l).map(r=>r.station)).size,p=Math.round(v/d.stations.length*100);return '<div class="lineChip'+(selectedLine===l?' active':'')+'" data-line="'+l+'"><b><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+d.color+';margin-right:5px"></span>'+l+'</b><small>'+v+' / '+d.stations.length+' · '+p+'%</small><div class="progress"><span style="width:'+p+'%;background:'+d.color+'"></span></div></div>'}).join('');
-    $('#lineMini .lineChip').forEach(el=>el.onclick=()=>{selectedLine=el.dataset.line||null;renderLineMini();renderMap();});
-  }
+  $('#lineMini').innerHTML='<div class="lineChip lineFilterReset'+(!selectedLine?' active':'')+'" data-line="">전체</div>'+Object.entries(LINE_DATA).map(([l,d])=>{
+    const v=new Set(records.filter(r=>r.line===l).map(r=>r.station)).size;
+    const p=Math.round(v/d.stations.length*100);
+    return '<div class="lineChip'+(selectedLine===l?' active':'')+'" data-line="'+l+'"><b><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+d.color+';margin-right:5px"></span>'+l+'</b><small>'+v+' / '+d.stations.length+' · '+p+'%</small><div class="progress"><span style="width:'+p+'%;background:'+d.color+'"></span></div></div>';
+  }).join('');
+  $('#lineMini .lineChip').forEach(el=>el.onclick=()=>{selectedLine=el.dataset.line||null;renderLineMini();renderMap();});
+}
 function updateStationLabelVisibility(){if(!map)return;document.querySelector('#subwayMap').classList.toggle('labels-hidden',map.getZoom()<12)}
 function ensureMap(){if(map)return;map=L.map('subwayMap',{zoomControl:true,minZoom:8,maxZoom:16,preferCanvas:true});map.zoomControl.setPosition('bottomright');L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxNativeZoom:19,maxZoom:20,detectRetina:true,attribution:'© OpenStreetMap contributors'}).addTo(map);const pts=allStations().map(x=>stationCoord(x.line,x.station)).filter(validCoord);map.fitBounds(pts,{padding:[40,40]});map.on('zoomend',updateStationLabelVisibility);renderMap();setTimeout(updateStationLabelVisibility,0);}
 function clearMapLayers(){mapLayers.forEach(x=>map.removeLayer(x));mapLayers=[];stationMarkers.clear();if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}}
@@ -914,7 +918,7 @@ function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(
     for(const pts of segments){
       if(pts.length>1){
         const focused=!selectedLine||selectedLine===line;
-        const poly=L.polyline(pts,{color:d.color,weight:focused?6:3,opacity:focused?0.92:0.14,lineJoin:'round'}).addTo(map);
+        const poly=L.polyline(pts,{color:d.color,weight:focused?6:3,opacity:focused?0.9:0.16,lineJoin:'round'}).addTo(map);
         poly.on('click',()=>{selectedLine=selectedLine===line?null:line;renderLineMini();renderMap();});
         mapLayers.push(poly);
       }
@@ -922,26 +926,22 @@ function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(
   });
   uniqueStations().forEach(station=>{
     const lines=stationLines(station);
-    const c=stationCoord(lines[0],station);
-    if(!validCoord(c))return;
+    const coord=stationCoord(lines[0],station);
+    if(!validCoord(coord))return;
     const lc=LINE_DATA[lines[0]]?.color||'#777';
     const cls=['station-pin'];
     if(visitedNames.has(station))cls.push('visited');
     if(routeStart?.station===station)cls.push('routeStart');
     if(routeEnd?.station===station)cls.push('routeEnd');
-    const inSelected=!selectedLine||lines.includes(selectedLine);
-    const icon=L.divIcon({className:'',html:'<div class="'+cls.join(' ')+'" style="--lc:'+lc+';opacity:'+(inSelected?1:.16)+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
-    const mk=L.marker(c,{icon,riseOnHover:true}).addTo(map).bindTooltip(station,{permanent:true,direction:'top',className:'stationLabel',offset:[0,-7],opacity:1});
-    mk.on('click',()=>stationClicked(station,lines));
-    mapLayers.push(mk);stationMarkers.set(station,mk);
+    const icon=L.divIcon({className:'',html:'<div class="'+cls.join(' ')+'" style="--lc:'+lc+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
+    const mk=L.marker(coord,{icon,riseOnHover:true}).addTo(map).bindTooltip(station,{permanent:true,direction:'top',className:'stationLabel',offset:[0,-7],opacity:1});
+    mk.on('click',()=>stationClicked(station,lines));mapLayers.push(mk);stationMarkers.set(station,mk);
   });
   const yp=LINE_COORD_OVERRIDES['경의중앙선']['양평'];
   if(validCoord(yp)){
-    const visible=!selectedLine||selectedLine==='경의중앙선';
-    const icon=L.divIcon({className:'',html:'<div class="station-pin" style="--lc:'+LINE_DATA['경의중앙선'].color+';opacity:'+(visible?1:.16)+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
+    const icon=L.divIcon({className:'',html:'<div class="station-pin" style="--lc:'+LINE_DATA['경의중앙선'].color+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
     const mk=L.marker(yp,{icon,riseOnHover:true}).addTo(map).bindTooltip('양평',{permanent:true,direction:'top',className:'stationLabel',offset:[0,-7],opacity:1});
-    mk.on('click',()=>stationClicked('양평',['경의중앙선']));
-    mapLayers.push(mk);stationMarkers.set('양평(경의중앙선)',mk);
+    mk.on('click',()=>stationClicked('양평',['경의중앙선']));mapLayers.push(mk);stationMarkers.set('양평(경의중앙선)',mk);
   }
   if(routeStart&&routeEnd)drawRoute();
 }
