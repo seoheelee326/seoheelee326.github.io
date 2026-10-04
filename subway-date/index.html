@@ -956,10 +956,25 @@ function render(){renderSummary();renderLineMini();renderMemories();if(map)rende
 function renderSummary(){const total=uniqueStations().length;const visited=new Set(records.map(r=>r.station)).size;const p=total?Math.round(visited/total*100):0;$('#visitedCount').textContent=visited;$('#visitedMini').textContent=visited;$('#totalCount').textContent=total;$('#allPct').textContent=p+'%';$('#allBar').style.width=p+'%'}
 function renderLineMini(){$('#lineMini').innerHTML=Object.entries(LINE_DATA).map(([l,d])=>{const v=new Set(records.filter(r=>r.line===l).map(r=>r.station)).size,p=Math.round(v/d.stations.length*100);return '<div class="lineChip"><b><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+d.color+';margin-right:5px"></span>'+l+'</b><small>'+v+' / '+d.stations.length+' · '+p+'%</small><div class="progress"><span style="width:'+p+'%;background:'+d.color+'"></span></div></div>'}).join('')}
 function updateStationLabelVisibility(){if(!map)return;document.querySelector('#subwayMap').classList.toggle('labels-hidden',map.getZoom()<12)}
-function ensureMap(){if(map)return;map=L.map('subwayMap',{zoomControl:true,minZoom:8,maxZoom:16,preferCanvas:true});map.zoomControl.setPosition('bottomright');L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:20,detectRetina:true,subdomains:'abcd',attribution:'© OpenStreetMap contributors © CARTO'}).addTo(map);const pts=Object.values(STATION_COORDS).filter(validCoord);map.fitBounds(pts,{padding:[40,40]});map.on('zoomend',updateStationLabelVisibility);renderMap();setTimeout(updateStationLabelVisibility,0);}
+function ensureMap(){if(map)return;map=L.map('subwayMap',{zoomControl:true,minZoom:8,maxZoom:16,preferCanvas:true});map.zoomControl.setPosition('bottomright');L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxNativeZoom:19,maxZoom:20,detectRetina:true,attribution:'© OpenStreetMap contributors'}).addTo(map);const pts=uniqueStations().map(s=>STATION_COORDS[s]).filter(validCoord);map.fitBounds(pts,{padding:[40,40]});map.on('zoomend',updateStationLabelVisibility);renderMap();setTimeout(updateStationLabelVisibility,0);}
 function clearMapLayers(){mapLayers.forEach(x=>map.removeLayer(x));mapLayers=[];stationMarkers.clear();if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}}
 function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(records.map(r=>r.station));
-  Object.entries(LINE_DATA).forEach(([line,d])=>{let pts=d.stations.map(s=>STATION_COORDS[s]).filter(validCoord);if(line==='2호선'&&pts.length>1)pts=[...pts,pts[0]];if(pts.length>1){const poly=L.polyline(pts,{color:d.color,weight:5,opacity:.78,lineJoin:'round'}).addTo(map);mapLayers.push(poly);}});
+  Object.entries(LINE_DATA).forEach(([line,d])=>{
+    const segments=[]; let seg=[];
+    for(const s of d.stations){
+      const p=STATION_COORDS[s];
+      if(validCoord(p)){seg.push(p)}
+      else if(seg.length){segments.push(seg);seg=[]}
+    }
+    if(seg.length)segments.push(seg);
+    if(line==='2호선'&&segments.length===1&&segments[0].length>1)segments[0]=[...segments[0],segments[0][0]];
+    for(const pts of segments){
+      if(pts.length>1){
+        const poly=L.polyline(pts,{color:d.color,weight:5,opacity:.78,lineJoin:'round'}).addTo(map);
+        mapLayers.push(poly);
+      }
+    }
+  });
   uniqueStations().forEach(station=>{const c=STATION_COORDS[station];if(!validCoord(c))return;const lines=stationLines(station);const lc=LINE_DATA[lines[0]]?.color||'#777';const cls=['station-pin'];if(visitedNames.has(station))cls.push('visited');if(routeStart?.station===station)cls.push('routeStart');if(routeEnd?.station===station)cls.push('routeEnd');
     const icon=L.divIcon({className:'',html:'<div class="'+cls.join(' ')+'" style="--lc:'+lc+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
     const mk=L.marker(c,{icon,riseOnHover:true}).addTo(map).bindTooltip(station,{permanent:true,direction:'top',className:'stationLabel',offset:[0,-7],opacity:1});
