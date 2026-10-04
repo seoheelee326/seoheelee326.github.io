@@ -74,7 +74,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm';
 const SUPABASE_URL='https://dicwkqxdbbjabwedhwnc.supabase.co';
 const SUPABASE_KEY='sb_publishable_H1tU_no-pk9930DUq1DPiA_z1m9ghem';
-const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage}});
 const LINE_DATA = {
   "1호선": {
     "color": "#0052A4",
@@ -904,27 +904,47 @@ function ensureMap(){if(map)return;map=L.map('subwayMap',{zoomControl:true,minZo
 function clearMapLayers(){mapLayers.forEach(x=>map.removeLayer(x));mapLayers=[];stationMarkers.clear();if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}}
 function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(records.map(r=>r.station));
   Object.entries(LINE_DATA).forEach(([line,d])=>{
-    const segments=[]; let seg=[];
+    const segments=[];let seg=[];
     for(const s of d.stations){
       const p=stationCoord(line,s);
-      if(validCoord(p)){seg.push(p)}
-      else if(seg.length){segments.push(seg);seg=[]}
+      if(validCoord(p)){seg.push(p)}else if(seg.length){segments.push(seg);seg=[]}
     }
     if(seg.length)segments.push(seg);
     if(line==='2호선'&&segments.length===1&&segments[0].length>1)segments[0]=[...segments[0],segments[0][0]];
     for(const pts of segments){
       if(pts.length>1){
-        const focused=!selectedLine||selectedLine===line;const poly=L.polyline(pts,{color:d.color,weight:focused?6:3,opacity:focused?0.92:0.14,lineJoin:'round'}).addTo(map);poly.on('click',()=>{selectedLine=selectedLine===line?null:line;renderLineMini();renderMap();});
+        const focused=!selectedLine||selectedLine===line;
+        const poly=L.polyline(pts,{color:d.color,weight:focused?6:3,opacity:focused?0.92:0.14,lineJoin:'round'}).addTo(map);
+        poly.on('click',()=>{selectedLine=selectedLine===line?null:line;renderLineMini();renderMap();});
         mapLayers.push(poly);
       }
     }
   });
-  uniqueStations().forEach(station=>{const lines=stationLines(station);const c=stationCoord(lines[0],station);if(!validCoord(c))return;const lc=LINE_DATA[lines[0]]?.color||'#777';const cls=['station-pin'];if(visitedNames.has(station))cls.push('visited');if(routeStart?.station===station)cls.push('routeStart');if(routeEnd?.station===station)cls.push('routeEnd');
-    const inSelected=!selectedLine||lines.includes(selectedLine);const icon=L.divIcon({className:'',html:'<div class="'+cls.join(' ')+'" style="--lc:'+lc+';opacity:'+(inSelected?1:.16)+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
+  uniqueStations().forEach(station=>{
+    const lines=stationLines(station);
+    const c=stationCoord(lines[0],station);
+    if(!validCoord(c))return;
+    const lc=LINE_DATA[lines[0]]?.color||'#777';
+    const cls=['station-pin'];
+    if(visitedNames.has(station))cls.push('visited');
+    if(routeStart?.station===station)cls.push('routeStart');
+    if(routeEnd?.station===station)cls.push('routeEnd');
+    const inSelected=!selectedLine||lines.includes(selectedLine);
+    const icon=L.divIcon({className:'',html:'<div class="'+cls.join(' ')+'" style="--lc:'+lc+';opacity:'+(inSelected?1:.16)+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
     const mk=L.marker(c,{icon,riseOnHover:true}).addTo(map).bindTooltip(station,{permanent:true,direction:'top',className:'stationLabel',offset:[0,-7],opacity:1});
-    mk.on('click',()=>stationClicked(station,lines));mapLayers.push(mk);stationMarkers.set(station,mk);
-  const yp=LINE_COORD_OVERRIDES['경의중앙선']['양평'];if(validCoord(yp)){const icon=L.divIcon({className:'',html:'<div class="station-pin" style="--lc:'+LINE_DATA['경의중앙선'].color+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});const mk=L.marker(yp,{icon,riseOnHover:true}).addTo(map).bindTooltip('양평',{permanent:true,direction:'top',className:'stationLabel',offset:[0,-7],opacity:1});mk.on('click',()=>stationClicked('양평',['경의중앙선']));mapLayers.push(mk);stationMarkers.set('양평(경의중앙선 물리역)',mk);} 
-  }); if(routeStart&&routeEnd)drawRoute();}
+    mk.on('click',()=>stationClicked(station,lines));
+    mapLayers.push(mk);stationMarkers.set(station,mk);
+  });
+  const yp=LINE_COORD_OVERRIDES['경의중앙선']['양평'];
+  if(validCoord(yp)){
+    const visible=!selectedLine||selectedLine==='경의중앙선';
+    const icon=L.divIcon({className:'',html:'<div class="station-pin" style="--lc:'+LINE_DATA['경의중앙선'].color+';opacity:'+(visible?1:.16)+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
+    const mk=L.marker(yp,{icon,riseOnHover:true}).addTo(map).bindTooltip('양평',{permanent:true,direction:'top',className:'stationLabel',offset:[0,-7],opacity:1});
+    mk.on('click',()=>stationClicked('양평',['경의중앙선']));
+    mapLayers.push(mk);stationMarkers.set('양평(경의중앙선)',mk);
+  }
+  if(routeStart&&routeEnd)drawRoute();
+}
 function stationClicked(station,lines){if(mode==='route'){if(!routeStart){routeStart={station,line:lines[0]};routeEnd=null;$('#routeTitle').textContent=station+' → 도착역을 선택하세요';$('#routeResult').classList.add('hidden');renderMap();return}routeEnd={station,line:lines[0]};computeRoute();renderMap();return}
   if(lines.length===1){openRecord(lines[0],station)}else{openLinePicker(station,lines)}
 }
