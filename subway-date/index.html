@@ -69,7 +69,7 @@
 
 <div id="randomModal" class="modal hidden"><div class="modalCard" style="text-align:center"><button class="x" data-close="randomModal" style="float:right">×</button><div class="eyebrow">NEXT STATION</div><div id="randomStation" style="font-size:46px;font-weight:1000;margin:22px 0 8px"></div><div id="randomLine" class="pill" style="display:inline-block"></div><div class="row" style="justify-content:center;margin-top:20px"><button id="rerollBtn" class="btn ghost">다시 뽑기</button><button id="recordRandomBtn" class="btn primary">여기로 기록하기</button></div></div></div>
 
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'"></script>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm';
 const SUPABASE_URL='https://dicwkqxdbbjabwedhwnc.supabase.co';
@@ -887,7 +887,7 @@ supabase.auth.onAuthStateChange(async(_,session)=>{user=session?.user||null;show
 $('#loginBtn').onclick=async()=>{msg('#authStatus','로그인 중…');const {error}=await supabase.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});msg('#authStatus',error?error.message:'로그인했어요.',!!error)};
 $('#signupBtn').onclick=async()=>{msg('#authStatus','가입 처리 중…');const {data,error}=await supabase.auth.signUp({email:$('#email').value.trim(),password:$('#password').value,options:{emailRedirectTo:'https://seoheelee326.github.io/subway-date/'}});msg('#authStatus',error?error.message:(data.session?'가입 완료!':'확인 메일을 보냈어요. 메일에서 확인 후 로그인해 주세요.'),!!error)};
 $('#logoutBtn').onclick=()=>supabase.auth.signOut();
-async function loadJourney(){const {data,error}=await supabase.rpc('my_journeys');if(error){console.error(error);return}journey=data?.[0]||null;$('#journeySetup').classList.toggle('hidden',!!journey);$('#journeyView').classList.toggle('hidden',!journey);if(journey){$('#journeyName').textContent=journey.name;$('#inviteCode').textContent=journey.invite_code;await loadRecords();ensureMap();subscribe();}}
+async function loadJourney(){const {data,error}=await supabase.rpc('my_journeys');if(error){console.error(error);return}journey=data?.[0]||null;$('#journeySetup').classList.toggle('hidden',!!journey);$('#journeyView').classList.toggle('hidden',!journey);if(journey){$('#journeyName').textContent=journey.name;$('#inviteCode').textContent=journey.invite_code;await loadRecords();requestAnimationFrame(()=>requestAnimationFrame(()=>ensureMap()));subscribe();}}
 $('#createJourneyBtn').onclick=async()=>{msg('#journeyStatus','만드는 중…');const {error}=await supabase.rpc('create_journey',{p_name:'Our Subway Journey'});msg('#journeyStatus',error?error.message:'완료!',!!error);if(!error)await loadJourney();};
 $('#joinJourneyBtn').onclick=async()=>{msg('#journeyStatus','연결 중…');const {error}=await supabase.rpc('join_journey',{p_invite_code:$('#inviteInput').value.trim()});msg('#journeyStatus',error?('연결 실패: '+error.message):'연결됐어요!',!!error);if(!error)await loadJourney();};
 $('#copyInvite').onclick=async()=>{await navigator.clipboard.writeText(journey.invite_code);$('#copyInvite').textContent='복사됨 ✓';setTimeout(()=>$('#copyInvite').textContent='코드 복사',1200)};
@@ -904,7 +904,33 @@ function renderLineMini(){
   $('#lineMini .lineChip').forEach(el=>el.onclick=()=>{selectedLine=el.dataset.line||null;renderLineMini();renderMap();});
 }
 function updateStationLabelVisibility(){if(!map)return;document.querySelector('#subwayMap').classList.toggle('labels-hidden',map.getZoom()<12)}
-function ensureMap(){if(map)return;map=L.map('subwayMap',{zoomControl:true,minZoom:8,maxZoom:16,preferCanvas:true});map.zoomControl.setPosition('bottomright');L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxNativeZoom:19,maxZoom:20,detectRetina:true,attribution:'© OpenStreetMap contributors'}).addTo(map);const pts=allStations().map(x=>stationCoord(x.line,x.station)).filter(validCoord);map.fitBounds(pts,{padding:[40,40]});map.on('zoomend',updateStationLabelVisibility);renderMap();setTimeout(updateStationLabelVisibility,0);}
+function ensureMap(){
+  const el=$('#subwayMap');
+  if(map){
+    setTimeout(()=>{try{map.invalidateSize(true)}catch(e){console.error(e)}},80);
+    return;
+  }
+  if(!el)return;
+  if(typeof L==='undefined'){
+    console.error('Leaflet failed to load');
+    el.innerHTML='<div style="position:absolute;inset:0;display:grid;place-items:center;color:#8e817d;font-weight:800">지도를 불러오는 중이에요. 새로고침해 주세요.</div>';
+    return;
+  }
+  try{
+    map=L.map(el,{zoomControl:true,minZoom:7,maxZoom:16,preferCanvas:true});
+    map.zoomControl.setPosition('bottomright');
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxNativeZoom:19,maxZoom:20,attribution:'© OpenStreetMap contributors'}).addTo(map);
+    const pts=allStations().map(x=>stationCoord(x.line,x.station)).filter(validCoord);
+    if(pts.length)map.fitBounds(pts,{padding:[40,40],maxZoom:11});
+    map.on('zoomend',updateStationLabelVisibility);
+    renderMap();
+    setTimeout(()=>{map.invalidateSize(true);updateStationLabelVisibility();},120);
+  }catch(err){
+    console.error('Map init failed',err);
+    map=null;
+    el.innerHTML='<div style="position:absolute;inset:0;display:grid;place-items:center;color:#8e817d;font-weight:800">지도 로딩 오류가 발생했어요.</div>';
+  }
+}
 function clearMapLayers(){mapLayers.forEach(x=>map.removeLayer(x));mapLayers=[];stationMarkers.clear();if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}}
 function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(records.map(r=>r.station));
   Object.entries(LINE_DATA).forEach(([line,d])=>{
