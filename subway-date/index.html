@@ -74,7 +74,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm';
 const SUPABASE_URL='https://dicwkqxdbbjabwedhwnc.supabase.co';
 const SUPABASE_KEY='sb_publishable_H1tU_no-pk9930DUq1DPiA_z1m9ghem';
-const supabase=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage}});
+const AUTH_BACKUP_KEY='our-subway-auth-session'; const supabase=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage,storageKey:'our-subway-supabase-auth'}});
 const LINE_DATA = {
   "1호선": {
     "color": "#0052A4",
@@ -882,11 +882,34 @@ const stationLines=name=>Object.entries(LINE_DATA).filter(([,d])=>d.stations.inc
 const LINE_COORD_OVERRIDES={'5호선':{'양평':[37.525648,126.885778]},'경의중앙선':{'양평':[37.492832,127.491814]}}; const stationCoord=(line,station)=>LINE_COORD_OVERRIDES[line]?.[station]||STATION_COORDS[station]; const today=()=>new Date().toISOString().slice(0,10); const validCoord=c=>Array.isArray(c)&&Number.isFinite(c[0])&&Number.isFinite(c[1])&&Math.abs(c[0])>1&&Math.abs(c[1])>1;
 function msg(el,t,err=false){$(el).textContent=t;$(el).style.color=err?'#c43f57':''}
 function showAuth(show){$('#authView').classList.toggle('hidden',!show);$('#app').classList.toggle('hidden',show);$('#logoutBtn').classList.toggle('hidden',show)}
-async function boot(){const {data}=await supabase.auth.getSession();user=data.session?.user||null;showAuth(!user);if(user) await loadJourney();}
-supabase.auth.onAuthStateChange(async(_,session)=>{user=session?.user||null;showAuth(!user);if(user) await loadJourney();});
-$('#loginBtn').onclick=async()=>{msg('#authStatus','로그인 중…');const {error}=await supabase.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});msg('#authStatus',error?error.message:'로그인했어요.',!!error)};
+async function boot(){
+  let {data}=await supabase.auth.getSession();
+  if(!data.session){
+    try{
+      const saved=JSON.parse(localStorage.getItem(AUTH_BACKUP_KEY)||'null');
+      if(saved?.access_token&&saved?.refresh_token){
+        const restored=await supabase.auth.setSession({access_token:saved.access_token,refresh_token:saved.refresh_token});
+        data=restored.data;
+      }
+    }catch(e){console.warn('session restore failed',e)}
+  }
+  user=data.session?.user||null;
+  showAuth(!user);
+  if(user) await loadJourney();
+}
+supabase.auth.onAuthStateChange(async(event,session)=>{
+  if(session?.access_token&&session?.refresh_token){
+    localStorage.setItem(AUTH_BACKUP_KEY,JSON.stringify({access_token:session.access_token,refresh_token:session.refresh_token}));
+  }else if(event==='SIGNED_OUT'){
+    localStorage.removeItem(AUTH_BACKUP_KEY);
+  }
+  user=session?.user||null;
+  showAuth(!user);
+  if(user) await loadJourney();
+});
+$('#loginBtn').onclick=async()=>{msg('#authStatus','로그인 중…');const {data,error}=await supabase.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});if(data?.session)localStorage.setItem(AUTH_BACKUP_KEY,JSON.stringify({access_token:data.session.access_token,refresh_token:data.session.refresh_token}));msg('#authStatus',error?error.message:'로그인했어요.',!!error)};
 $('#signupBtn').onclick=async()=>{msg('#authStatus','가입 처리 중…');const {data,error}=await supabase.auth.signUp({email:$('#email').value.trim(),password:$('#password').value,options:{emailRedirectTo:'https://seoheelee326.github.io/subway-date/'}});msg('#authStatus',error?error.message:(data.session?'가입 완료!':'확인 메일을 보냈어요. 메일에서 확인 후 로그인해 주세요.'),!!error)};
-$('#logoutBtn').onclick=()=>supabase.auth.signOut();
+$('#logoutBtn').onclick=async()=>{await supabase.auth.signOut();localStorage.removeItem(AUTH_BACKUP_KEY);};
 async function loadJourney(){const {data,error}=await supabase.rpc('my_journeys');if(error){console.error(error);return}journey=data?.[0]||null;$('#journeySetup').classList.toggle('hidden',!!journey);$('#journeyView').classList.toggle('hidden',!journey);if(journey){$('#journeyName').textContent=journey.name;$('#inviteCode').textContent=journey.invite_code;await loadRecords();setTimeout(()=>ensureMap(),50);subscribe();}}
 $('#createJourneyBtn').onclick=async()=>{msg('#journeyStatus','만드는 중…');const {error}=await supabase.rpc('create_journey',{p_name:'Our Subway Journey'});msg('#journeyStatus',error?error.message:'완료!',!!error);if(!error)await loadJourney();};
 $('#joinJourneyBtn').onclick=async()=>{msg('#journeyStatus','연결 중…');const {error}=await supabase.rpc('join_journey',{p_invite_code:$('#inviteInput').value.trim()});msg('#journeyStatus',error?('연결 실패: '+error.message):'연결됐어요!',!!error);if(!error)await loadJourney();};
