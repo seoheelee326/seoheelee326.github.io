@@ -914,7 +914,7 @@ function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(
     if(line==='2호선'&&segments.length===1&&segments[0].length>1)segments[0]=[...segments[0],segments[0][0]];
     for(const pts of segments){
       if(pts.length>1){
-        const focused=!selectedLine||selectedLine===line;const poly=L.polyline(pts,{color:d.color,weight:focused?6:3,opacity:focused?.92:.14,lineJoin:'round'}).addTo(map);poly.on('click',()=>{selectedLine=selectedLine===line?null:line;renderLineMini();renderMap();});
+        const focused=!selectedLine||selectedLine===line;const poly=L.polyline(pts,{color:d.color,weight:focused?6:3,opacity:focused?0.92:0.14,lineJoin:'round'}).addTo(map);poly.on('click',()=>{selectedLine=selectedLine===line?null:line;renderLineMini();renderMap();});
         mapLayers.push(poly);
       }
     }
