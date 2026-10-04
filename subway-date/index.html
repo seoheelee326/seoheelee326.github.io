@@ -902,7 +902,7 @@ function renderLineMini(){
     const p=Math.round(v/d.stations.length*100);
     return '<div class="lineChip'+(selectedLineLayer===l?' active':'')+'" data-line="'+l+'"><b><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+d.color+';margin-right:5px"></span>'+l+'</b><small>'+v+' / '+d.stations.length+' · '+p+'%</small><div class="progress"><span style="width:'+p+'%;background:'+d.color+'"></span></div></div>';
   }).join('');
-  $('#lineMini .lineChip').forEach(el=>el.onclick=()=>{const line=el.dataset.line||'';setLineFocus(selectedLineLayer===line?'':line);});
+  $$('#lineMini .lineChip').forEach(el=>el.onclick=()=>setLineFocus(el.dataset.line||''));
 }
 function updateStationLabelVisibility(){if(!map)return;document.querySelector('#subwayMap').classList.toggle('labels-hidden',map.getZoom()<12)}
 function setLineFocus(line){
