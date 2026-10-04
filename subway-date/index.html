@@ -918,7 +918,7 @@ function applyLineLayerFilter(){
     }
     if(layer?._journeyLines&&typeof layer.setOpacity==='function'){
       const focused=!selectedLineLayer||layer._journeyLines.includes(selectedLineLayer);
-      layer.setOpacity(focused?1:0.04);
+      layer.setOpacity(focused?1:0);
       const tip=typeof layer.getTooltip==='function'?layer.getTooltip():null;
       const el=tip?.getElement?.();
       if(el)el.style.display=focused?'':'none';
@@ -927,7 +927,7 @@ function applyLineLayerFilter(){
 }
 function ensureMap(){if(map)return;map=L.map('subwayMap',{zoomControl:true,minZoom:8,maxZoom:16,preferCanvas:true});map.zoomControl.setPosition('bottomright');L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxNativeZoom:19,maxZoom:20,detectRetina:true,attribution:'© OpenStreetMap contributors'}).addTo(map);const pts=allStations().map(x=>stationCoord(x.line,x.station)).filter(validCoord);map.fitBounds(pts,{padding:[40,40]});map.on('zoomend',updateStationLabelVisibility);renderMap();setTimeout(updateStationLabelVisibility,0);}
 function clearMapLayers(){mapLayers.forEach(x=>map.removeLayer(x));mapLayers=[];stationMarkers.clear();if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}}
-function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(records.map(r=>r.station));
+function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(records.map(r=>r.station));const visitedKeys=new Set(records.map(r=>key(r.line,r.station)));
   Object.entries(LINE_DATA).forEach(([line,d])=>{
     const segments=[];let seg=[];
     for(const s of d.stations){
@@ -943,8 +943,9 @@ function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(
       }
     }
   });
-  uniqueStations().forEach(station=>{if(mode==='record'&&!visitedNames.has(station))return;
+  uniqueStations().forEach(station=>{
     const lines=stationLines(station);
+    if(mode==='record'&&!lines.some(line=>visitedKeys.has(key(line,station))))return;
     const coord=stationCoord(lines[0],station);
     if(!validCoord(coord))return;
     const lc=LINE_DATA[lines[0]]?.color||'#777';
@@ -957,7 +958,7 @@ function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(
     mk.on('click',()=>stationClicked(station,lines));
     mapLayers.push(mk);stationMarkers.set(station,mk);
   });
-  const yp=LINE_COORD_OVERRIDES['경의중앙선']['양평'];if(mode==='record'&&!visitedNames.has('양평')){if(routeStart&&routeEnd)drawRoute();applyLineLayerFilter();return;}
+  const yp=LINE_COORD_OVERRIDES['경의중앙선']['양평'];if(mode==='record'&&!visitedKeys.has(key('경의중앙선','양평'))){if(routeStart&&routeEnd)drawRoute();applyLineLayerFilter();return;}
   if(validCoord(yp)){
     const icon=L.divIcon({className:'',html:'<div class="station-pin" style="--lc:'+LINE_DATA['경의중앙선'].color+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
     const mk=L.marker(yp,{icon,riseOnHover:true}).addTo(map).bindTooltip('양평',{permanent:true,direction:'top',className:'stationLabel',offset:[0,-7],opacity:1});mk._journeyLines=['경의중앙선'];
