@@ -943,7 +943,7 @@ function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(
       }
     }
   });
-  uniqueStations().forEach(station=>{
+  uniqueStations().forEach(station=>{if(mode==='record'&&!visitedNames.has(station))return;
     const lines=stationLines(station);
     const coord=stationCoord(lines[0],station);
     if(!validCoord(coord))return;
@@ -957,7 +957,7 @@ function renderMap(){if(!map)return;clearMapLayers();const visitedNames=new Set(
     mk.on('click',()=>stationClicked(station,lines));
     mapLayers.push(mk);stationMarkers.set(station,mk);
   });
-  const yp=LINE_COORD_OVERRIDES['경의중앙선']['양평'];
+  const yp=LINE_COORD_OVERRIDES['경의중앙선']['양평'];if(mode==='record'&&!visitedNames.has('양평')){if(routeStart&&routeEnd)drawRoute();applyLineLayerFilter();return;}
   if(validCoord(yp)){
     const icon=L.divIcon({className:'',html:'<div class="station-pin" style="--lc:'+LINE_DATA['경의중앙선'].color+'"></div>',iconSize:[13,13],iconAnchor:[6.5,6.5]});
     const mk=L.marker(yp,{icon,riseOnHover:true}).addTo(map).bindTooltip('양평',{permanent:true,direction:'top',className:'stationLabel',offset:[0,-7],opacity:1});mk._journeyLines=['경의중앙선'];
@@ -970,7 +970,17 @@ function stationClicked(station,lines){if(mode==='route'){if(!routeStart){routeS
   if(lines.length===1){openRecord(lines[0],station)}else{openLinePicker(station,lines)}
 }
 function openLinePicker(station,lines){$('#linePickTitle').textContent=station;$('#linePickButtons').innerHTML=lines.map(l=>'<button class="btn ghost" data-line="'+l+'"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:'+LINE_DATA[l].color+';margin-right:6px"></span>'+l+'</button>').join('');$$('#linePickButtons button').forEach(b=>b.onclick=()=>{$('#linePickModal').classList.add('hidden');openRecord(b.dataset.line,station)});$('#linePickModal').classList.remove('hidden')}
-function setMode(next){mode=next;$('#recordModeBtn').classList.toggle('active',mode==='record');$('#routeModeBtn').classList.toggle('active',mode==='route');$('#routePanel').classList.toggle('hidden',mode!=='route');if(mode==='record'){routeStart=routeEnd=null;if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}renderMap();}}
+function setMode(next){
+  mode=next;
+  $('#recordModeBtn').classList.toggle('active',mode==='record');
+  $('#routeModeBtn').classList.toggle('active',mode==='route');
+  $('#routePanel').classList.toggle('hidden',mode!=='route');
+  if(mode==='record'){
+    routeStart=routeEnd=null;
+    if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}
+  }
+  renderMap();
+}
 $('#recordModeBtn').onclick=()=>setMode('record');$('#routeModeBtn').onclick=()=>setMode('route');$('#clearRoute').onclick=()=>{routeStart=routeEnd=null;$('#routeTitle').textContent='출발역을 선택하세요';$('#routeResult').classList.add('hidden');renderMap();}
 function buildGraph(){const g=new Map(),add=(a,b,w,meta)=>{if(!g.has(a))g.set(a,[]);g.get(a).push({to:b,w,meta})};Object.entries(LINE_DATA).forEach(([line,d])=>{for(let i=0;i<d.stations.length-1;i++){const a=key(line,d.stations[i]),b=key(line,d.stations[i+1]);add(a,b,2.25,{line});add(b,a,2.25,{line});}if(line==='2호선'&&d.stations.length>1){const a=key(line,d.stations[d.stations.length-1]),b=key(line,d.stations[0]);add(a,b,2.25,{line});add(b,a,2.25,{line});}});const byStation={};allStations().forEach(x=>(byStation[x.station]??=[]).push(x.line));Object.entries(byStation).forEach(([s,ls])=>{for(let i=0;i<ls.length;i++)for(let j=i+1;j<ls.length;j++){add(key(ls[i],s),key(ls[j],s),4,{transfer:true,station:s});add(key(ls[j],s),key(ls[i],s),4,{transfer:true,station:s});}});return g}
 function shortestPath(startStation,endStation){const g=buildGraph(),starts=stationLines(startStation),ends=new Set(stationLines(endStation).map(l=>key(l,endStation))),dist=new Map(),prev=new Map(),q=[];starts.forEach(l=>{const n=key(l,startStation);dist.set(n,0);q.push(n)});while(q.length){q.sort((a,b)=>(dist.get(a)??1e9)-(dist.get(b)??1e9));const u=q.shift();if(ends.has(u)){const path=[];let x=u;while(x){path.unshift(x);x=prev.get(x)?.node}return {minutes:dist.get(u),nodes:path,prev}}for(const e of g.get(u)||[]){const nd=dist.get(u)+e.w;if(nd<(dist.get(e.to)??1e9)){dist.set(e.to,nd);prev.set(e.to,{node:u,meta:e.meta});if(!q.includes(e.to))q.push(e.to)}}}return null}
