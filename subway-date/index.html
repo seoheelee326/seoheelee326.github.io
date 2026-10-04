@@ -887,13 +887,13 @@ supabase.auth.onAuthStateChange(async(_,session)=>{user=session?.user||null;show
 $('#loginBtn').onclick=async()=>{msg('#authStatus','로그인 중…');const {error}=await supabase.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});msg('#authStatus',error?error.message:'로그인했어요.',!!error)};
 $('#signupBtn').onclick=async()=>{msg('#authStatus','가입 처리 중…');const {data,error}=await supabase.auth.signUp({email:$('#email').value.trim(),password:$('#password').value,options:{emailRedirectTo:'https://seoheelee326.github.io/subway-date/'}});msg('#authStatus',error?error.message:(data.session?'가입 완료!':'확인 메일을 보냈어요. 메일에서 확인 후 로그인해 주세요.'),!!error)};
 $('#logoutBtn').onclick=()=>supabase.auth.signOut();
-async function loadJourney(){const {data,error}=await supabase.rpc('my_journeys');if(error){console.error(error);return}journey=data?.[0]||null;$('#journeySetup').classList.toggle('hidden',!!journey);$('#journeyView').classList.toggle('hidden',!journey);if(journey){$('#journeyName').textContent=journey.name;$('#inviteCode').textContent=journey.invite_code;await loadRecords();requestAnimationFrame(()=>requestAnimationFrame(()=>ensureMap()));subscribe();}}
+async function loadJourney(){const {data,error}=await supabase.rpc('my_journeys');if(error){console.error(error);return}journey=data?.[0]||null;$('#journeySetup').classList.toggle('hidden',!!journey);$('#journeyView').classList.toggle('hidden',!journey);if(journey){$('#journeyName').textContent=journey.name;$('#inviteCode').textContent=journey.invite_code;await loadRecords();setTimeout(()=>ensureMap(),50);subscribe();}}
 $('#createJourneyBtn').onclick=async()=>{msg('#journeyStatus','만드는 중…');const {error}=await supabase.rpc('create_journey',{p_name:'Our Subway Journey'});msg('#journeyStatus',error?error.message:'완료!',!!error);if(!error)await loadJourney();};
 $('#joinJourneyBtn').onclick=async()=>{msg('#journeyStatus','연결 중…');const {error}=await supabase.rpc('join_journey',{p_invite_code:$('#inviteInput').value.trim()});msg('#journeyStatus',error?('연결 실패: '+error.message):'연결됐어요!',!!error);if(!error)await loadJourney();};
 $('#copyInvite').onclick=async()=>{await navigator.clipboard.writeText(journey.invite_code);$('#copyInvite').textContent='복사됨 ✓';setTimeout(()=>$('#copyInvite').textContent='코드 복사',1200)};
 async function loadRecords(){const {data,error}=await supabase.from('station_records').select('*').eq('journey_id',journey.id).order('visited_date',{ascending:false});if(error){console.error(error);return}records=data||[];render();}
 function subscribe(){if(subscription)supabase.removeChannel(subscription);subscription=supabase.channel('journey-'+journey.id).on('postgres_changes',{event:'*',schema:'public',table:'station_records',filter:'journey_id=eq.'+journey.id},()=>loadRecords()).subscribe();}
-function render(){renderSummary();renderLineMini();renderMemories();if(map)renderMap();}
+function render(){renderSummary();renderLineMini();renderMemories();if(map){renderMap()}else if(journey){setTimeout(()=>ensureMap(),0)}}
 function renderSummary(){const total=uniqueStations().length;const visited=new Set(records.map(r=>r.station)).size;const p=total?Math.round(visited/total*100):0;$('#visitedCount').textContent=visited;$('#visitedMini').textContent=visited;$('#totalCount').textContent=total;$('#allPct').textContent=p+'%';$('#allBar').style.width=p+'%'}
 function renderLineMini(){
   $('#lineMini').innerHTML='<div class="lineChip lineFilterReset'+(!selectedLine?' active':'')+'" data-line="">전체</div>'+Object.entries(LINE_DATA).map(([l,d])=>{
@@ -991,5 +991,7 @@ $('#deleteBtn').onclick=async()=>{const id=$('#recordId').value;if(!id||!confirm
 function pickRandom(){const visited=new Set(records.map(r=>r.station));const pool=uniqueStations().filter(s=>!visited.has(s));if(!pool.length)return alert('모든 역을 방문했어요! 🎉');const station=pool[Math.floor(Math.random()*pool.length)],line=stationLines(station)[0];currentRandom={station,line};$('#randomStation').textContent=station;$('#randomLine').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+LINE_DATA[line].color+';margin-right:6px"></span>'+line;$('#randomModal').classList.remove('hidden')}
 $('#randomBtn').onclick=pickRandom;$('#rerollBtn').onclick=pickRandom;$('#recordRandomBtn').onclick=()=>{$('#randomModal').classList.add('hidden');openRecord(currentRandom.line,currentRandom.station)};$$('[data-close]').forEach(b=>b.onclick=()=>$('#'+b.dataset.close).classList.add('hidden'));
 boot();
+setTimeout(()=>{if(user&&journey&&!map)ensureMap()},500);
+window.addEventListener('pageshow',()=>setTimeout(()=>{if(user&&journey&&!map)ensureMap();else if(map)map.invalidateSize(true)},120));
 </script>
 </body></html>
