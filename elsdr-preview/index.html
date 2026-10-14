@@ -213,7 +213,7 @@ body.home-view .footer{display:none}
     if(!['home','about','research','people','life','contact'].includes(root)){root='home';slug=''}
     const mapping={'research/projects':'projects','research/publications':'publications'};
     const key=root+'/'+slug;
-    if(slug&&!details[key]&&!mapping[key])slug='';
+    if(slug&&!details[key]&&!mapping[key]&&!(root==='about'&&['vision','identity','themes','approach'].includes(slug)))slug='';
     const activeKey=root+'/'+slug,target=mapping[activeKey]||root;
     document.body.classList.toggle('home-view',root==='home');
     pages.forEach(el=>{
@@ -331,7 +331,7 @@ body.home-view .footer{display:none}
       active===link.dataset.nav?close():open(link.dataset.nav);
     });
   });
-  panel.querySelectorAll('a').forEach(link=>link.addEventListener('click',close));
+  panel.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{close();const id=link.getAttribute('href');if(id===location.hash&&id.startsWith('#/about/'))requestAnimationFrame(()=>document.getElementById('about-'+id.split('/').pop())?.scrollIntoView({block:'start',behavior:'smooth'}));}));
   document.addEventListener('pointerdown',event=>{
     if(active&&!header.contains(event.target))close();
   });
