@@ -152,3 +152,7 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
  .home-background{background-position:center 40%!important}
  .home-shade{background:linear-gradient(90deg,rgba(244,243,238,.07),rgba(244,243,238,.45) 40%,rgba(244,243,238,.89) 82%,rgba(244,243,238,.94))!important}
 }
+
+/* No top color strip: keep the landing image fitted to the viewport. */
+.home-scene{height:calc(100vh - 82px);height:calc(100dvh - 82px)}
+@media(max-width:640px){.home-scene{height:calc(100vh - 71px);height:calc(100dvh - 71px)}}
