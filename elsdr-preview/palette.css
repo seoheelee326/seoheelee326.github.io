@@ -139,3 +139,16 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
 .home-headline{font-style:normal!important;font-weight:500!important;font-size:clamp(40px,5.15vw,75px)!important;line-height:1.1!important;letter-spacing:-2px!important}
 .home-headline em{font-style:normal!important;font-weight:500!important}
 @media(max-width:640px){.brand.brand-with-logo{height:56px!important;width:150px!important;max-width:150px!important}.brand-original-mark{width:48px!important;max-width:48px!important;min-width:48px!important;height:39px!important;max-height:39px!important}.brand-original-caption{font-size:8px!important;max-width:91px!important}.home-headline{font-size:clamp(34px,9vw,54px)!important;letter-spacing:-1.1px!important}}
+
+/* Original user-submitted courtyard/tree photo — local GitHub asset */
+.home-background{
+  background-image:url('./hero-bg.webp')!important;
+  background-position:center 30%!important;
+  background-size:cover!important;
+  filter:brightness(.99) saturate(.94)!important;
+  animation:none!important;
+}
+@media(max-width:640px){
+ .home-background{background-position:center 40%!important}
+ .home-shade{background:linear-gradient(90deg,rgba(244,243,238,.07),rgba(244,243,238,.45) 40%,rgba(244,243,238,.89) 82%,rgba(244,243,238,.94))!important}
+}
