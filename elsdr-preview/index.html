@@ -419,7 +419,7 @@ body.home-view .footer{display:none}
   <div class="rs-item-body">
     <div class="rs-item-eyebrow"><span class="rs-item-year">2025</span><span class="rs-dot">·</span><span>Publication</span><span class="rs-dot">·</span><span>Ecosystem Services</span></div>
     <h3>Evaluation Criteria Importance Analysis for the Selection of Riparian Buffer Zones in Dam Flood Control Areas</h3>
-    <p class="rs-meta">Hojun Choi · Gihwan Song · Jinhyung Chon · Journal of the Korea Society of Environmental Restoration Technology</p>
+    <p class="rs-meta">최호준 · 송기환 · 전진형 · Journal of the Korea Society of Environmental Restoration Technology</p>
     <p class="rs-desc">AHP를 활용해 수변완충지대 적지 선정 지표의 중요도를 평가하고 환경·물리·법률·사회 요인을 비교.</p>
     <div class="rs-row-bottom">
       <a href="https://doi.org/10.13087/koesrt.2025.28.34.13" target="_blank" rel="noopener noreferrer">View Publication <span aria-hidden="true">↗</span></a>
@@ -433,7 +433,7 @@ body.home-view .footer{display:none}
   <div class="rs-item-body">
     <div class="rs-item-eyebrow"><span class="rs-item-year">2025</span><span class="rs-dot">·</span><span>Publication</span><span class="rs-dot">·</span><span>Ecosystem Services</span></div>
     <h3>International Trends and Applications for Advancing System Dynamics in Environmental Ecology</h3>
-    <p class="rs-meta">Hojun Choi · Mikyeong Tae · Jiwoo Kim · Jinhyung Chon · Korean System Dynamics Review</p>
+    <p class="rs-meta">최호준 · 태미경 · 김지우 · 전진형 · Korean System Dynamics Review</p>
     <p class="rs-desc">환경생태 분야의 시스템다이내믹스 연구를 검토해 수치 검증, 변수 관계 검토, 이해관계자 참여를 통한 모델 고도화 방향을 제시.</p>
     <div class="rs-row-bottom">
       <a href="https://doi.org/10.32588/ksds.26.2.1" target="_blank" rel="noopener noreferrer">View Publication <span aria-hidden="true">↗</span></a>
@@ -486,7 +486,7 @@ body.home-view .footer{display:none}
 </article></div>
     <div class="rs-empty" id="rs-empty" hidden>해당 조건에 맞는 연구 자료가 없습니다. 필터를 바꿔보세요.</div>
     <div class="rs-source-note"><span>SOURCE / RESEARCH RECORDS</span>
-      <p>기존 ELDR 홈페이지의 <a href="https://edesign.korea.ac.kr/21" target="_blank" rel="noopener noreferrer">Projects</a> 및 <a href="https://edesign.korea.ac.kr/22" target="_blank" rel="noopener noreferrer">Research</a> 목록과 학술지·DOI 정보를 바탕으로 구성했습니다. 프로젝트의 연도는 연구 시작연도, 논문은 출판연도를 기준으로 표기했습니다. 연구영역 태그는 사이트 개편을 위한 임시 분류이며, 사진은 해당 연구의 실제 성과 이미지가 아닌 주제별 참고 경관 이미지입니다.</p>
+      <p>기존 ELDR 홈페이지의 <a href="https://edesign.korea.ac.kr/21" target="_blank" rel="noopener noreferrer">Projects</a> 및 <a href="https://edesign.korea.ac.kr/22" target="_blank" rel="noopener noreferrer">Research</a> 목록과 학술지·DOI 정보를 바탕으로 구성했습니다. 프로젝트의 연도는 확인 가능한 경우 연구 시작연도, 연구기간을 확인하지 못한 경우 기존 게시물의 등록연도로 표기했습니다. 논문은 출판연도를 기준으로 표기했습니다. 연구영역 태그는 사이트 개편을 위한 임시 분류이며, 사진은 해당 연구의 실제 성과 이미지가 아닌 주제별 참고 경관 이미지입니다.</p>
     </div>
   </div>
 </section>
@@ -714,8 +714,9 @@ body.home-view .footer{display:none}
     const selected=button.dataset.rsKind;
     const path=selected==='project'?'#/research/projects':
       selected==='publication'?'#/research/publications':'#/research';
-    if(location.hash!==path)location.hash=path;
-    else {kind=selected;theme='all';query='';search.value='';update();}
+    // Keep the viewer at the archive list when switching tabs.
+    if(location.hash!==path)history.replaceState(null,'',path);
+    kind=selected;theme='all';query='';search.value='';update();
   }));
   themeButtons.forEach(button=>button.addEventListener('click',()=>{
     theme=button.dataset.rsTheme;
