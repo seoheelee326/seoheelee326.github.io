@@ -92,3 +92,41 @@ body{background:#F4F3EE;color:#252D2A}
 @media(prefers-reduced-motion:reduce){
  .home-background,.home-message{animation:none}
 }
+
+/* Logo and visual typography, October 2026 */
+/* The supplied symbol uses its own lettering; supporting typography
+   follows the logo's clean, contemporary sans-serif voice. */
+body,h1,h2,h3,h4,h5,h6,p,a,button,input,.serif,.home-headline,.section-title,.subhero h1,
+.section-title,.land-head h2,.intro h2,.project-title,.pillar h3,.theme-info h3,
+.td-title,.archive-top h2,.mini-section-title,.statement h2,.footer-logo,
+.step b{
+ font-family:"DM Sans","Noto Sans KR",Arial,sans-serif;
+}
+.serif{font-weight:500}
+.home-headline{font-size:clamp(43px,5.15vw,79px);font-weight:500;line-height:1.07;letter-spacing:-2.7px}
+.home-headline em{font-style:normal;font-weight:500}
+.section-title{font-weight:500;line-height:1.08;letter-spacing:-2.4px}
+.subhero h1{font-weight:500;line-height:1.01;letter-spacing:-3px}
+.intro h2,.land-head h2,.statement h2,.mini-section-title{font-weight:500;letter-spacing:-2.4px;line-height:1.03}
+.pillar h3,.theme-info h3,.project-title,.td-title,.archive-top h2{font-weight:500;letter-spacing:-1.35px;line-height:1.1}
+.footer-logo{letter-spacing:-4px;font-weight:700}
+.brand.brand-with-logo{display:flex;align-items:center;gap:10px;min-width:226px;flex-shrink:0}
+.brand-original-mark{width:73px;height:51px;object-fit:contain;display:block;flex-shrink:0}
+.brand-original-caption{display:block;color:#536D5E;font-size:11px;line-height:1.32;letter-spacing:-.25px;font-weight:600}
+@media(max-width:1180px){
+ .brand.brand-with-logo{min-width:203px}
+ .brand-original-mark{width:64px;height:47px}
+ .brand-original-caption{font-size:10px}
+}
+@media(max-width:640px){
+ .brand.brand-with-logo{min-width:0;gap:6px}
+ .brand-original-mark{width:60px;height:42px}
+ .brand-original-caption{font-size:9px;line-height:1.24}
+ .home-headline{font-size:clamp(40px,10.1vw,67px);line-height:1.07;letter-spacing:-1.9px}
+ .subhero h1{letter-spacing:-1.5px}
+}
+@media(max-width:390px),(max-height:700px){
+ .home-headline{font-size:clamp(33px,6.7vh,55px)}
+ .brand-original-mark{width:53px;height:39px}
+ .brand-original-caption{font-size:8px}
+}
