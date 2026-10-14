@@ -53,6 +53,7 @@ body.home-view .footer{display:none}
 @media(prefers-reduced-motion:reduce){.home-background,.home-message{animation:none}}
 
 </style>
+<link rel="stylesheet" href="palette.css">
 </head>
 <body class="ko">
 <div class="topline"></div>
@@ -103,4 +104,5 @@ function applyFilter(){var count=0;items.forEach(function(el){var ok=(filter==='
 filters.forEach(function(el){el.addEventListener('click',function(){filter=el.dataset.filter;filters.forEach(function(x){x.classList.toggle('selected',x===el)});applyFilter()})});search.addEventListener('input',function(){q=search.value.toLowerCase().trim();applyFilter()});applyFilter();
 })();
 </script>
+<script src="home-contact.js"></script>
 </body></html>
