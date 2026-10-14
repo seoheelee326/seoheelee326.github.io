@@ -45,3 +45,50 @@ body{background:#F4F3EE;color:#252D2A}
 @media(max-width:640px){.home-layout{padding-bottom:121px}.home-contact{padding:12px 0}.home-contact-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:9px 13px}.home-contact-item:first-child{grid-column:1/-1}.home-contact-label{font-size:8px;letter-spacing:1.1px;margin-bottom:3px}.home-contact-value{font-size:10px;line-height:1.4}.home-contact-detail{font-size:9px;line-height:1.5}.home-headline{font-size:clamp(43px,10.8vw,70px)}}
 @media(max-width:390px),(max-height:700px){.home-layout{padding-bottom:110px}.home-contact{padding:8px 0}.home-contact-grid{gap:5px 9px}.home-contact-label{font-size:7px;margin-bottom:2px}.home-contact-value{font-size:9px}.home-contact-detail{font-size:8px}.home-headline{font-size:clamp(35px,7vh,59px)}}
 @media(max-height:520px){.home-layout{padding-bottom:75px}.home-contact-detail{display:none}.home-contact{padding:5px 0}}
+
+/* Home hero — brighter photographic treatment / 2026-10-14 */
+.home-scene{background:#F4F3EE;color:#252D2A}
+.home-background{filter:brightness(1.16) saturate(.91)}
+.home-shade{
+ background:linear-gradient(90deg,
+ rgba(244,243,238,0) 0%,
+ rgba(244,243,238,.12) 23%,
+ rgba(244,243,238,.48) 44%,
+ rgba(244,243,238,.84) 63%,
+ rgba(244,243,238,.95) 82%,
+ rgba(244,243,238,.97) 100%);
+}
+.home-headline{color:#252D2A}
+.home-headline em{color:#536D5E}
+.home-kicker{color:#536D5E}
+.home-lead{color:#252D2A}
+.home-desc{color:#4A6458}
+.home-link{color:#252D2A;border-top-color:rgba(83,109,94,.65)}
+.home-arrow{border-color:#536D5E}
+.home-link:hover{color:#536D5E;opacity:1}
+.home-link:hover .home-arrow{background:#536D5E;color:#F4F3EE}
+.home-watermark{color:#F4F3EE;text-shadow:0 1px 8px rgba(37,45,42,.36)}
+.home-footnote{display:none}
+.home-contact{
+ background:rgba(244,243,238,.97);
+ border-top:1px solid rgba(83,109,94,.3);
+ color:#252D2A;
+ box-shadow:0 -2px 18px rgba(37,45,42,.03)
+}
+.home-contact-label{color:#536D5E}
+.home-contact-value{color:#252D2A}
+.home-contact-detail,.home-contact-detail a{color:#536D5E}
+.home-contact-value:hover,.home-contact-detail a:hover{color:#536D5E}
+@media(max-width:640px){
+ .home-shade{
+  background:linear-gradient(90deg,
+  rgba(244,243,238,.11) 0%,
+  rgba(244,243,238,.43) 30%,
+  rgba(244,243,238,.83) 60%,
+  rgba(244,243,238,.96) 100%);
+ }
+ .home-background{background-position:42% center}
+}
+@media(prefers-reduced-motion:reduce){
+ .home-background,.home-message{animation:none}
+}
