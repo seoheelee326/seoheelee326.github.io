@@ -314,3 +314,52 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
 @media(max-width:1220px){
  .mega-panel{display:none!important}
 }
+
+/* Unified About page layout and in-page anchors, 2026 */
+.about-navigation{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid rgba(83,109,94,.28);border-bottom:1px solid rgba(83,109,94,.28);margin-top:60px;margin-bottom:0}
+.about-navigation a{display:flex;justify-content:space-between;align-items:center;min-width:0;gap:8px;padding:24px 22px;border-right:1px solid rgba(83,109,94,.24);font-size:13px;font-weight:600;color:#252D2A;transition:background .2s ease}
+.about-navigation a:first-child{padding-left:0}
+.about-navigation a:last-child{border-right:0;padding-right:0}
+.about-navigation a span{color:#536D5E;font-size:17px}
+.about-navigation a:hover{background:rgba(140,170,177,.12);opacity:1}
+.about-section{scroll-margin-top:104px;padding-top:116px;padding-bottom:122px}
+.about-section-head{margin-bottom:62px}
+.about-section-head>span{display:block;font-size:11px;color:#536D5E;font-weight:700;letter-spacing:1.8px;margin-bottom:24px}
+.about-section-head h2{font-family:"DM Sans","Noto Sans KR",sans-serif!important;font-size:clamp(38px,5.2vw,72px);line-height:1.08;letter-spacing:-2.5px;font-weight:500;margin:0}
+.about-section-head .about-section-intro{font-size:15px;line-height:1.85;color:#536D5E;max-width:620px;margin-top:25px}
+.about-section .two-columns{gap:50px}
+.about-section .body-big{font-weight:500}
+.about-section .pillar-grid{margin-top:20px!important}
+.about-section .pillar{min-height:265px}
+.about-identity{background:#e8ede7}
+.about-ses{margin-top:95px;padding-top:65px;border-top:1px solid rgba(83,109,94,.24)}
+.about-themes-list{border-top:1px solid rgba(83,109,94,.24)}
+.about-themes-list .theme-detail{padding:42px 0}
+.about-approach{background:#ecece4}
+.about-approach .steps{margin-top:72px}
+.page[data-page="about"] .statement{background:#252D2A}
+.page[data-page="about"] .statement h2{font-family:"DM Sans","Noto Sans KR",sans-serif!important;font-style:normal;font-weight:500;letter-spacing:-2px;line-height:1.05}
+@media(max-width:920px){
+ .about-navigation{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:35px}
+ .about-navigation a{padding:20px 15px;border-bottom:1px solid rgba(83,109,94,.18)}
+ .about-navigation a:nth-child(2){border-right:0}
+ .about-navigation a:nth-child(n+3){border-bottom:0}
+ .about-navigation a:first-child{padding-left:15px}
+ .about-navigation a:last-child{padding-right:15px}
+ .about-section{padding-top:83px;padding-bottom:89px;scroll-margin-top:82px}
+ .about-section-head{margin-bottom:43px}
+ .about-ses{margin-top:50px;padding-top:55px}
+}
+@media(max-width:640px){
+ .about-navigation a{font-size:12px;padding:18px 12px}
+ .about-section{padding-top:66px;padding-bottom:75px;scroll-margin-top:80px}
+ .about-section-head>span{font-size:10px;margin-bottom:17px}
+ .about-section-head h2{font-size:clamp(33px,9vw,50px);letter-spacing:-1.3px}
+ .about-section-head .about-section-intro{font-size:13px}
+ .about-section .two-columns{display:block}
+ .about-identity .pillar{min-height:unset;padding-bottom:25px}
+ .about-themes-list .theme-detail{padding:30px 0}
+ .about-ses{margin-top:43px;padding-top:45px}
+ .about-approach .steps{margin-top:43px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
