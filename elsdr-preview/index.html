@@ -325,11 +325,19 @@ body.home-view .footer{display:none}
   links.forEach(link=>{
     link.setAttribute('aria-controls','mega-menu');
     link.setAttribute('aria-expanded','false');
-    link.addEventListener('click',event=>{
-      if(!breakpoint.matches)return; // Retain the mobile navigation behavior.
-      event.preventDefault();
-      active===link.dataset.nav?close():open(link.dataset.nav);
+    const group=link.closest('.nav-group');
+    // Desktop: reveal the entire submenu row as soon as the pointer enters a main menu.
+    group.addEventListener('pointerenter',event=>{
+      if(breakpoint.matches&&event.pointerType!=='touch')open(link.dataset.nav);
     });
+    // Keyboard navigation shows the same submenu when a menu link receives focus.
+    link.addEventListener('focus',()=>{
+      if(breakpoint.matches)open(link.dataset.nav);
+    });
+    // A click still follows the main link. No click is required to reveal submenus.
+  });
+  header.addEventListener('pointerleave',event=>{
+    if(breakpoint.matches&&event.pointerType!=='touch')close();
   });
   panel.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{close();const id=link.getAttribute('href');if(id===location.hash&&id.startsWith('#/about/'))requestAnimationFrame(()=>document.getElementById('about-'+id.split('/').pop())?.scrollIntoView({block:'start',behavior:'smooth'}));}));
   document.addEventListener('pointerdown',event=>{
