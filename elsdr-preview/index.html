@@ -65,7 +65,38 @@ body.home-view .footer{display:none}
 <div class="nav-group" data-group="life"><div class="nav-group-head"><a class="nav-a" href="#/life" data-nav="life">Life at ELSDR</a><button type="button" class="nav-expand" aria-label="Life at ELSDR 하위 메뉴 펼치기" aria-expanded="false" aria-controls="submenu-life"><span aria-hidden="true">⌄</span></button></div><div class="nav-submenu" id="submenu-life"><a href="#/life/news" data-subnav="life/news">News</a><a href="#/life/fieldwork" data-subnav="life/fieldwork">Fieldwork</a><a href="#/life/seminars" data-subnav="life/seminars">Seminars</a><a href="#/life/gallery" data-subnav="life/gallery">Gallery</a></div></div>
 <div class="nav-group" data-group="contact"><div class="nav-group-head"><a class="nav-a" href="#/contact" data-nav="contact">Contact</a><button type="button" class="nav-expand" aria-label="Contact 하위 메뉴 펼치기" aria-expanded="false" aria-controls="submenu-contact"><span aria-hidden="true">⌄</span></button></div><div class="nav-submenu" id="submenu-contact"><a href="#/contact/location" data-subnav="contact/location">Location</a><a href="#/contact/join" data-subnav="contact/join">Join Us</a><a href="#/contact/email" data-subnav="contact/email">Email</a></div></div>
 </nav>
-<div class="header-actions"><span class="demo-mark">Concept Preview / 2026</span><button class="lang-toggle" id="lang-toggle" aria-label="Toggle Korean English language">KR / EN</button><button class="mobile-btn" id="mobile-btn" aria-label="Open navigation" aria-expanded="false">☰</button></div></div></header>
+<div class="header-actions"><span class="demo-mark">Concept Preview / 2026</span><button class="lang-toggle" id="lang-toggle" aria-label="Toggle Korean English language">KR / EN</button><button class="mobile-btn" id="mobile-btn" aria-label="Open navigation" aria-expanded="false">☰</button></div></div>
+<div class="mega-panel" id="mega-menu" aria-label="전체 하위 메뉴" hidden>
+  <div class="wrap mega-inner">
+    <div class="mega-column" data-mega="about">
+      <a href="#/about/vision">Vision</a>
+      <a href="#/about/identity">Identity</a>
+      <a href="#/about/themes">Research Themes</a>
+      <a href="#/about/approach">Research Approach</a>
+    </div>
+    <div class="mega-column" data-mega="research">
+      <a href="#/research/projects">Projects</a>
+      <a href="#/research/publications">Publications</a>
+    </div>
+    <div class="mega-column" data-mega="people">
+      <a href="#/people/professor">Professor</a>
+      <a href="#/people/researchers">Researchers</a>
+      <a href="#/people/alumni">Alumni</a>
+    </div>
+    <div class="mega-column" data-mega="life">
+      <a href="#/life/news">News</a>
+      <a href="#/life/fieldwork">Fieldwork</a>
+      <a href="#/life/seminars">Seminars</a>
+      <a href="#/life/gallery">Gallery</a>
+    </div>
+    <div class="mega-column" data-mega="contact">
+      <a href="#/contact/location">Location</a>
+      <a href="#/contact/join">Join Us</a>
+      <a href="#/contact/email">Email</a>
+    </div>
+  </div>
+</div>
+</header>
 <main>
 <section class="page active" data-page="home" aria-label="ELSDR Homepage">
 <div class="home-scene">
@@ -225,6 +256,53 @@ body.home-view .footer{display:none}
   }));
   if(search)search.addEventListener('input',()=>{q=search.value.toLowerCase().trim();applyFilter()});
   applyFilter();
+})();
+</script>
+<script>
+/* Desktop full-width dropdown matching the original ELDR homepage navigation.
+   Mobile keeps the existing collapsible list. */
+(function(){
+  const header=document.querySelector('.site-head');
+  const panel=document.getElementById('mega-menu');
+  const links=[...document.querySelectorAll('#main-nav [data-nav]')];
+  const columns=[...panel.querySelectorAll('.mega-column')];
+  const breakpoint=window.matchMedia('(min-width: 1221px)');
+  let active=null;
+  const close=()=>{
+    active=null;
+    panel.hidden=true;
+    header.classList.remove('mega-open');
+    columns.forEach(x=>x.classList.remove('mega-current'));
+    links.forEach(x=>x.setAttribute('aria-expanded','false'));
+  };
+  const open=(key)=>{
+    active=key;
+    panel.hidden=false;
+    header.classList.add('mega-open');
+    columns.forEach(x=>x.classList.toggle('mega-current',x.dataset.mega===key));
+    links.forEach(x=>x.setAttribute('aria-expanded',String(x.dataset.nav===key)));
+  };
+  links.forEach(link=>{
+    link.setAttribute('aria-controls','mega-menu');
+    link.setAttribute('aria-expanded','false');
+    link.addEventListener('click',event=>{
+      if(!breakpoint.matches)return; // Retain the mobile navigation behavior.
+      event.preventDefault();
+      active===link.dataset.nav?close():open(link.dataset.nav);
+    });
+  });
+  panel.querySelectorAll('a').forEach(link=>link.addEventListener('click',close));
+  document.addEventListener('pointerdown',event=>{
+    if(active&&!header.contains(event.target))close();
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&active){
+      const current=links.find(x=>x.dataset.nav===active);
+      close(); if(current)current.focus();
+    }
+  });
+  window.addEventListener('hashchange',close);
+  breakpoint.addEventListener('change',close);
 })();
 </script>
 <script src="home-contact.js"></script>
