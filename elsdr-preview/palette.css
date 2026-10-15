@@ -1592,3 +1592,53 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
   .ab-themes .ab-theme-card h3{font-size:clamp(25px,6.3vw,30px);line-height:1.2}
   .ab-themes .ab-theme-card p{margin-bottom:17px}
 }
+
+
+/* Events: in-site detail pages (previously external-only conference links) */
+#lf-events-list[hidden],#lf-event-stories[hidden],.lf-event-article[hidden]{display:none!important}
+.lf-event-article{max-width:1100px;margin:0 auto}
+.lf-event-back{display:inline-flex;align-items:center;gap:13px;border-bottom:1px solid #536D5E;padding-bottom:9px;color:#536D5E;font-size:12px;font-weight:700;margin-bottom:62px}
+.lf-event-back:hover{color:#252D2A;opacity:1}
+.lf-event-detail-head{padding-bottom:42px}
+.lf-event-detail-eyebrow{display:block;color:#536D5E;font-size:10px;font-weight:700;letter-spacing:1.75px;margin-bottom:19px}
+.lf-event-detail-sep{padding:0 10px;color:#9cb0a1}
+.lf-event-detail-head h2{font-size:clamp(39px,5.2vw,70px);font-weight:500;letter-spacing:-2.1px;line-height:1.23;word-break:keep-all;margin:0 0 26px;max-width:1000px}
+.lf-event-detail-head>p{font-size:17px;line-height:1.75;color:#647c6e;word-break:keep-all;margin:0;max-width:850px}
+.lf-event-detail-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:0;margin-top:19px;background:#e5ebe6}
+.lf-event-detail-graphic{display:flex;flex-direction:column;justify-content:space-between;min-height:455px;padding:35px;background:radial-gradient(circle at 70% 46%,rgba(244,243,238,.17) 0 19%,transparent 19% 100%),linear-gradient(142deg,#718b7b,#536D5E 57%,#344d40);color:#F4F3EE;position:relative;overflow:hidden;isolation:isolate}
+.lf-event-detail-graphic:after{content:"";position:absolute;z-index:-1;right:-140px;bottom:-210px;width:500px;height:500px;border-radius:50%;border:1px solid rgba(244,243,238,.3);box-shadow:0 0 0 77px rgba(244,243,238,.05),0 0 0 135px rgba(244,243,238,.03)}
+.lf-event-detail-graphic>span{font-size:10px;letter-spacing:1.65px;font-weight:700}
+.lf-event-detail-graphic>strong{font-size:clamp(125px,18vw,245px);letter-spacing:-13px;font-weight:400;line-height:.9;align-self:center;opacity:.8}
+.lf-event-detail-content{display:flex;flex-direction:column;align-items:flex-start;padding:43px clamp(27px,4vw,57px)}
+.lf-event-detail-content>h3{font-size:clamp(28px,3.25vw,43px);font-weight:500;letter-spacing:-1.15px;margin:0 0 31px}
+.lf-event-detail-content dl{width:100%;margin:0 0 30px}
+.lf-event-detail-content dl>div{display:grid;grid-template-columns:107px minmax(0,1fr);gap:14px;padding:16px 0;border-top:1px solid rgba(83,109,94,.24)}
+.lf-event-detail-content dt{font-size:10px;font-weight:700;letter-spacing:1px;color:#83978b;padding-top:4px}
+.lf-event-detail-content dd{font-size:13px;font-weight:600;line-height:1.65;color:#344d40;margin:0;word-break:keep-all}
+.lf-event-detail-content>p{font-size:12px;line-height:1.9;color:#74867a;word-break:keep-all;margin:0 0 30px}
+.lf-event-original{display:inline-flex;justify-content:space-between;gap:25px;align-items:center;width:100%;padding:16px 19px;background:#536D5E;color:#F4F3EE;font-size:12px;font-weight:700;margin-top:auto}
+.lf-event-original>span{font-size:20px;font-weight:400}
+.lf-event-original:hover{background:#252D2A;color:#F4F3EE;opacity:1}
+.lf-event-detail-foot{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:25px 0;margin-top:47px;border-top:1px solid rgba(83,109,94,.28);color:#71887a}
+.lf-event-detail-foot a{font-size:13px;color:#536D5E;font-weight:700}
+.lf-event-detail-foot>span{font-size:10px;letter-spacing:1.5px;font-weight:600}
+@media(max-width:850px){
+ .lf-event-detail-grid{grid-template-columns:1fr}
+ .lf-event-detail-graphic{min-height:260px}
+ .lf-event-detail-graphic>strong{font-size:136px}
+ .lf-event-detail-content{padding:33px}
+}
+@media(max-width:640px){
+ .lf-event-back{margin-bottom:38px}
+ .lf-event-detail-head{padding-bottom:24px}
+ .lf-event-detail-head h2{font-size:clamp(32px,8vw,44px);letter-spacing:-1px}
+ .lf-event-detail-head>p{font-size:14px}
+ .lf-event-detail-eyebrow{font-size:9px}
+ .lf-event-detail-graphic{min-height:220px;padding:24px}
+ .lf-event-detail-graphic>strong{font-size:112px;letter-spacing:-7px}
+ .lf-event-detail-graphic>span{font-size:9px}
+ .lf-event-detail-content{padding:27px 23px}
+ .lf-event-detail-content>h3{font-size:29px;margin-bottom:24px}
+ .lf-event-detail-content dl>div{grid-template-columns:85px minmax(0,1fr);gap:10px}
+ .lf-event-detail-content dd{font-size:12px}
+}
