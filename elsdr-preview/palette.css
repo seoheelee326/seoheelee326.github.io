@@ -142,7 +142,7 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
 
 /* Original user-submitted courtyard/tree photo — local GitHub asset */
 .home-background{
-  background-image:url('./hero-bg.webp')!important;
+  background-image:url('./hero-bg.jpg')!important;
   background-position:center 40%!important;
   background-size:cover!important;
   filter:brightness(.99) saturate(.94)!important;
