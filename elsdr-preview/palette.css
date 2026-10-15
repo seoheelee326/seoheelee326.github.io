@@ -1279,3 +1279,47 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
  .st-conference-row h3{font-size:19px;line-height:1.45}
  .st-conference-row p{font-size:11px}
 }
+
+
+/* Unified Seminars archive: hashtag filters, search and two-item Study menu */
+.st-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lf-seminar-tools{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px 28px;margin:0 0 31px}
+.lf-seminar-filters{display:flex;flex-wrap:wrap;gap:8px}
+.lf-seminar-filter{display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+  padding:11px 16px;border-radius:26px;border:1px solid rgba(83,109,94,.22);
+  background:#eef1eb;color:#536D5E;
+  font:600 12px/1.4 "DM Sans","Noto Sans KR",sans-serif;
+  transition:background .2s,color .2s,border-color .2s}
+.lf-seminar-filter>span{color:#90a397;font-size:10px;font-weight:700}
+.lf-seminar-filter:hover{background:#dfe9df;opacity:1}
+.lf-seminar-filter.is-selected{background:#536D5E;border-color:#536D5E;color:#F4F3EE}
+.lf-seminar-filter.is-selected>span{color:#d2e0d2}
+.lf-seminar-filter:focus-visible{outline:2px solid #536D5E;outline-offset:3px}
+.lf-seminar-search-label{display:flex;flex-direction:column;gap:9px;color:#799184;font-size:10px;letter-spacing:1.3px;font-weight:700}
+#lf-seminar-search{box-sizing:border-box;width:280px;max-width:100%;border:1px solid rgba(83,109,94,.32);
+  border-radius:5px;background:#fff;padding:12px 14px;outline:none;color:#252D2A;
+  font:400 13px "DM Sans","Noto Sans KR",sans-serif;letter-spacing:0}
+#lf-seminar-search:focus{border-color:#536D5E;box-shadow:0 0 0 2px rgba(83,109,94,.12)}
+#lf-seminar-search::placeholder{color:#8ca093}
+.lf-seminar-count{display:flex;justify-content:space-between;gap:18px;
+ padding:18px 0 19px;border-top:1px solid rgba(83,109,94,.22);
+ color:#536D5E;font-size:11px;letter-spacing:1px;font-weight:700}
+.lf-seminar-count>span:last-child{color:#819789;font-weight:500;font-size:10px}
+.lf-seminar-list .lf-seminar[hidden],.lf-seminar-empty[hidden]{display:none!important}
+.lf-seminar-person{margin:10px 0 0;color:#70887b;font-size:12px;line-height:1.65}
+.lf-seminar-empty{background:#e9eee9;padding:45px 18px;text-align:center;color:#536D5E;font-size:13px}
+.lf-seminar:hover .lf-seminar-person{color:#536D5E}
+@media(max-width:900px){
+ .lf-seminar-tools{display:block}
+ .lf-seminar-search-label{margin:19px 0 0}
+ #lf-seminar-search{width:100%;max-width:420px}
+}
+@media(max-width:640px){
+ .lf-seminar-filters{gap:7px}
+ .lf-seminar-filter{padding:9px 12px;font-size:11px;gap:7px}
+ .lf-seminar-filter>span{font-size:9px}
+ .lf-seminar-count{font-size:10px;padding:16px 0}
+ .lf-seminar-count>span:last-child{display:none}
+ .lf-seminar-person{font-size:11px;margin-top:7px}
+ .st-nav{grid-template-columns:1fr}
+}
