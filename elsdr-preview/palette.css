@@ -1558,7 +1558,7 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
 }
 .ab-themes .ab-theme-photo{height:175px}
 .ab-themes .ab-theme-content{padding:25px 27px 27px}
-.ab-themes .ab-theme-top{margin-bottom:19px}
+.ab-themes .ab-theme-top{margin-bottom:19px;font-size:11px}
 .ab-themes .ab-theme-symbol{font-size:23px}
 .ab-themes .ab-theme-card h3{
   font-size:clamp(24px,2.25vw,33px);
@@ -1566,16 +1566,17 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
   letter-spacing:-1.15px;
   margin-bottom:10px;
 }
-.ab-themes .ab-theme-card strong{font-size:12px;margin-bottom:10px}
-.ab-themes .ab-theme-card p{font-size:12px;line-height:1.75;margin-bottom:21px}
+.ab-themes .ab-theme-card strong{font-size:13px;margin-bottom:10px}
+.ab-themes .ab-theme-card p{font-size:13px;line-height:1.75;margin-bottom:21px}
 .ab-themes .ab-theme-keywords{gap:6px}
 .ab-themes .ab-theme-keywords span{
-  font-size:10px;
+  font-size:11px;
   padding:6px 9px;
 }
 .ab-themes .ab-photo-note{
   max-width:1100px;
   margin:19px auto 0;
+  font-size:12px;
 }
 @media(max-width:780px){
   .ab-themes .ab-theme-grid{gap:13px}
