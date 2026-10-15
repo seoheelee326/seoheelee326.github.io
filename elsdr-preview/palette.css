@@ -718,3 +718,157 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
  .rs-source-note>span{display:block;margin-bottom:15px}
  .rs-source-note p{font-size:11px}
 }
+
+
+/* People page — official lab roster and professor profiles */
+.pp-page{background:#F4F3EE;color:#252D2A}
+.pp-page h1,.pp-page h2,.pp-page h3{font-family:"DM Sans","Noto Sans KR",Arial,sans-serif!important}
+.pp-main{padding-top:77px;padding-bottom:133px}
+.pp-intro{margin-bottom:54px}
+.pp-kicker{display:block;color:#536D5E;font-size:11px;font-weight:700;letter-spacing:2.1px;margin-bottom:30px}
+.pp-intro-row{display:flex;align-items:end;justify-content:space-between;gap:40px}
+.pp-intro h1{font-size:clamp(78px,9vw,148px);font-weight:500;letter-spacing:-7px;line-height:.85;margin:0}
+.pp-intro h1 span,.pp-section-heading h2 span{color:#8CAAB1}
+.pp-intro-row>p{color:#536D5E;font-size:16px;line-height:1.8;margin:0 0 9px;word-break:keep-all}
+.pp-jump{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(83,109,94,.27);border-bottom:1px solid rgba(83,109,94,.27);margin-bottom:120px}
+.pp-jump>a{display:flex;gap:12px;align-items:center;min-height:75px;padding:20px 23px;border-right:1px solid rgba(83,109,94,.24);font-size:11px;font-weight:700;color:#536D5E;transition:background .2s}
+.pp-jump>a:first-child{padding-left:0}
+.pp-jump>a:last-child{border-right:0}
+.pp-jump>a span:nth-child(1){font-size:14px;color:#252D2A;font-weight:600}
+.pp-jump>a span:nth-child(2){font-size:19px;margin-left:auto}
+.pp-jump>a:hover{background:rgba(140,170,177,.13);opacity:1}
+.pp-section{scroll-margin-top:110px}
+.pp-section-heading{margin-bottom:48px}
+.pp-section-index{color:#536D5E;font-size:11px;font-weight:700;letter-spacing:1.9px}
+.pp-section-heading h2{font-size:clamp(48px,6.8vw,90px);font-weight:500;letter-spacing:-3.5px;line-height:1.05;margin:21px 0 0}
+.pp-section-lead{max-width:850px;color:#607367;font-size:14px;line-height:1.9;margin:23px 0 0;word-break:keep-all}
+.pp-prof-profile{display:grid;grid-template-columns:minmax(270px,.85fr) minmax(0,1.4fr);gap:0;background:#e7ece7;min-height:525px}
+.pp-prof-visual{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:36px;background:radial-gradient(circle at 55% 45%,rgba(244,243,238,.17) 0 19%,transparent 19.5% 100%),linear-gradient(145deg,#748f7e,#536D5E 55%,#344d41);color:#F4F3EE;min-height:525px}
+.pp-prof-visual:after{content:"";position:absolute;inset:auto -130px -205px auto;width:490px;height:490px;border:1px solid rgba(244,243,238,.3);border-radius:50%;box-shadow:0 0 0 72px rgba(244,243,238,.04),0 0 0 145px rgba(244,243,238,.025);z-index:-1}
+.pp-prof-visual-top,.pp-prof-visual-bottom{font-size:10px;line-height:1.7;letter-spacing:1.8px;font-weight:600}
+.pp-prof-monogram{font-size:clamp(110px,15vw,220px);letter-spacing:-10px;line-height:1;text-align:center;font-weight:400;opacity:.89}
+.pp-prof-content{padding:53px 55px 42px;display:flex;flex-direction:column;align-items:start}
+.pp-prof-role{font-size:10px;letter-spacing:1.8px;font-weight:700;color:#536D5E;margin-bottom:18px}
+.pp-prof-content h3{font-size:clamp(44px,5.2vw,73px);font-weight:500;letter-spacing:-2.7px;line-height:1.1;margin:0 0 9px}
+.pp-prof-korean{font-size:20px;font-weight:600;color:#536D5E;margin-bottom:23px}
+.pp-prof-position{font-size:13px;color:#596c61;line-height:1.85;margin-bottom:25px}
+.pp-prof-desc{font-size:14px;line-height:2.05;color:#415449;max-width:730px;word-break:keep-all;margin-bottom:23px}
+.pp-prof-keywords{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:32px}
+.pp-prof-keywords>span{font-size:10px;border:1px solid rgba(83,109,94,.33);border-radius:25px;padding:9px 11px;color:#536D5E;font-weight:600}
+.pp-prof-contacts{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;border-top:1px solid rgba(83,109,94,.22);padding-top:21px;width:100%;margin-top:auto}
+.pp-prof-contacts>a,.pp-prof-contacts>span{font-size:12px;color:#252D2A;line-height:1.6;font-weight:600}
+.pp-prof-contacts a:hover{color:#536D5E;opacity:1}
+.pp-prof-contacts a span{color:#536D5E}
+.pp-prof-contacts small{display:block;font-size:9px;color:#7b9284;font-weight:500}
+.pp-source-link{font-size:11px;color:#536D5E;margin-top:23px;border-bottom:1px solid rgba(83,109,94,.36);padding-bottom:4px}
+.pp-source-link:hover{opacity:1;color:#252D2A}
+.pp-researchers{margin-top:147px}
+.pp-group-heading{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:31px}
+.pp-group-heading>div>span{color:#7d9585;font-size:10px;letter-spacing:1.7px;font-weight:700}
+.pp-group-heading h3{font-size:clamp(29px,3.7vw,49px);font-weight:500;letter-spacing:-1.8px;margin:12px 0 0}
+.pp-group-heading>small{color:#829488;font-size:10px;font-weight:600;letter-spacing:1.3px;text-align:right}
+.pp-part-heading{margin-top:105px}
+.pp-people-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:25px 18px}
+.pp-person-card{background:#fdfcf9;border:1px solid rgba(83,109,94,.18);display:flex;flex-direction:column;min-width:0;transition:transform .25s ease,box-shadow .25s ease}
+.pp-person-card:hover{transform:translateY(-4px);box-shadow:0 17px 30px rgba(37,45,42,.065)}
+.pp-person-photo{height:205px;position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:center;background:#dce8df}
+.pp-photo-1{background:#dce4e6}
+.pp-photo-2{background:#e9e3d5}
+.pp-photo-3{background:#d3dfd8}
+.pp-person-photo:after{content:"";position:absolute;border:1px solid rgba(83,109,94,.21);border-radius:50%;width:220px;height:220px;right:-65px;bottom:-142px;box-shadow:0 0 0 35px rgba(83,109,94,.035);z-index:-1}
+.pp-photo-initials{font-weight:400;font-size:89px;letter-spacing:-5px;line-height:1;color:#536D5E;opacity:.65}
+.pp-photo-caption{position:absolute;top:17px;left:19px;color:#536D5E;font-size:9px;letter-spacing:1.35px;font-weight:700;opacity:.77}
+.pp-person-info{padding:25px 22px 25px;display:flex;flex-direction:column;align-items:flex-start;flex:1}
+.pp-person-topline{display:flex;justify-content:space-between;gap:10px;width:100%;margin-bottom:15px;color:#718679;font-size:10px;font-weight:700;letter-spacing:.25px}
+.pp-person-topline>span:last-child{color:#a0aea4}
+.pp-person-info h3{font-size:clamp(19px,2vw,26px);line-height:1.22;letter-spacing:-.9px;font-weight:600;overflow-wrap:anywhere;margin:0 0 5px}
+.pp-person-korean{font-size:12px;color:#536D5E;margin-bottom:8px}
+.pp-person-interests{font-size:12px;color:#62756a;line-height:1.85;word-break:keep-all;margin:15px 0 19px;max-width:300px}
+.pp-person-unlisted{color:#9eaca2;font-size:11px}
+.pp-person-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:20px}
+.pp-person-tags span{font-size:9px;line-height:1.45;color:#536D5E;border:1px solid rgba(83,109,94,.22);padding:5px 8px;border-radius:15px}
+.pp-person-email{font-size:11px;overflow-wrap:anywhere;line-height:1.5;color:#536D5E;border-top:1px solid rgba(83,109,94,.17);padding-top:16px;width:100%;margin-top:auto}
+.pp-person-email span{margin-left:5px}
+.pp-person-email:hover{opacity:1;color:#252D2A}
+.pp-staff-note{max-width:1000px;font-size:11px;color:#7b8e81;line-height:1.9;margin:27px 0 0;word-break:keep-all}
+.pp-staff-note a{color:#536D5E;text-decoration:underline;text-underline-offset:3px}
+.pp-alumni{margin-top:140px;background:#e9eeea;padding:80px 55px 75px}
+.pp-alumni .pp-section-heading{margin-bottom:37px}
+.pp-alumni-list{border-top:1px solid rgba(83,109,94,.32)}
+.pp-alumni-row{display:grid;grid-template-columns:38px minmax(160px,1fr) minmax(185px,1fr) minmax(160px,.75fr);gap:22px;padding:22px 10px;border-bottom:1px solid rgba(83,109,94,.22);align-items:center}
+.pp-alumni-index{font-size:10px;color:#82968a;font-weight:600}
+.pp-alumni-row strong{font-size:16px;font-weight:600}
+.pp-alumni-row>span:nth-child(3){color:#617366;font-size:12px}
+.pp-alumni-row>span:nth-child(4){color:#536D5E;font-size:12px;text-align:right}
+.pp-alumni-link{display:inline-flex;align-items:center;gap:20px;border-bottom:1px solid rgba(83,109,94,.5);padding:13px 0;color:#536D5E;font-size:12px;font-weight:700;margin-top:27px}
+.pp-alumni-link:hover{opacity:1;color:#252D2A}
+@media(max-width:1200px){
+.pp-people-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pp-prof-content{padding:40px 39px}
+.pp-prof-visual{padding:27px}
+.pp-prof-content h3{font-size:53px}
+}
+@media(max-width:850px){
+.pp-main{padding-top:62px}
+.pp-intro-row{align-items:start;flex-direction:column;gap:23px}
+.pp-intro-row>p{font-size:14px}
+.pp-jump{margin-bottom:83px}
+.pp-prof-profile{grid-template-columns:1fr 1.3fr;min-height:0}
+.pp-prof-visual{min-height:440px}
+.pp-prof-content{padding:30px 28px}
+.pp-prof-content h3{font-size:42px}
+.pp-prof-desc{font-size:12px}
+.pp-prof-keywords{margin-bottom:20px}
+.pp-prof-contacts{gap:11px}
+.pp-people-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pp-researchers{margin-top:100px}
+.pp-alumni{margin-top:100px;padding:65px 32px}
+.pp-alumni-row{grid-template-columns:26px 1fr 1fr;gap:11px}
+.pp-alumni-row>span:nth-child(4){grid-column:2/4;text-align:left}
+}
+@media(max-width:560px){
+.pp-main{padding-top:49px;padding-bottom:75px}
+.pp-kicker{font-size:9px;margin-bottom:25px}
+.pp-intro h1{font-size:76px;letter-spacing:-4px}
+.pp-intro-row>p{font-size:12px}
+.pp-intro{margin-bottom:35px}
+.pp-jump{margin-bottom:70px}
+.pp-jump>a{padding:15px 8px;min-height:57px;gap:5px;font-size:9px}
+.pp-jump>a:first-child{padding-left:4px}
+.pp-jump>a span:nth-child(1){font-size:11px}
+.pp-jump>a span:nth-child(2){font-size:13px}
+.pp-section{scroll-margin-top:78px}
+.pp-section-heading{margin-bottom:32px}
+.pp-section-heading h2{font-size:49px;letter-spacing:-2px;margin-top:14px}
+.pp-section-index{font-size:9px}
+.pp-section-lead{font-size:12px}
+.pp-prof-profile{display:block}
+.pp-prof-visual{min-height:290px}
+.pp-prof-monogram{font-size:125px}
+.pp-prof-content{padding:32px 23px}
+.pp-prof-content h3{font-size:42px}
+.pp-prof-korean{font-size:16px}
+.pp-prof-desc{font-size:13px}
+.pp-prof-contacts>a,.pp-prof-contacts>span{font-size:11px}
+.pp-researchers{margin-top:87px}
+.pp-group-heading{display:block;margin-bottom:23px}
+.pp-group-heading h3{font-size:32px;letter-spacing:-1px}
+.pp-group-heading>small{display:block;text-align:left;margin-top:10px;font-size:9px}
+.pp-part-heading{margin-top:74px}
+.pp-people-grid{grid-template-columns:1fr;gap:17px}
+.pp-person-card{display:grid;grid-template-columns:124px minmax(0,1fr);min-height:205px}
+.pp-person-photo{height:100%;min-height:205px}
+.pp-photo-initials{font-size:51px;letter-spacing:-3px}
+.pp-photo-caption{font-size:7px;top:12px;left:12px}
+.pp-person-info{padding:18px 15px}
+.pp-person-topline{font-size:9px;margin-bottom:10px}
+.pp-person-info h3{font-size:18px}
+.pp-person-interests{font-size:11px;line-height:1.7;margin:10px 0}
+.pp-person-tags{margin-bottom:12px}
+.pp-person-email{font-size:9px;padding-top:11px}
+.pp-staff-note{font-size:10px}
+.pp-alumni{margin-top:85px;padding:42px 19px}
+.pp-alumni-row{grid-template-columns:22px minmax(0,1fr);gap:9px;padding:18px 0}
+.pp-alumni-row>span:nth-child(3){grid-column:2/3}
+.pp-alumni-row>span:nth-child(4){grid-column:2/3}
+}
