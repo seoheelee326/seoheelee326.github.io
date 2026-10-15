@@ -1547,3 +1547,47 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
   .ab-end h2{font-size:clamp(32px,7.4vw,48px);letter-spacing:-1.3px}
   .ct-bottom h2{font-size:clamp(33px,7.1vw,46px);letter-spacing:-1.2px}
 }
+
+
+/* Compact About research themes cards */
+.ab-themes .ab-theme-grid{
+  max-width:1100px;
+  margin-left:auto;
+  margin-right:auto;
+  gap:18px;
+}
+.ab-themes .ab-theme-photo{height:175px}
+.ab-themes .ab-theme-content{padding:25px 27px 27px}
+.ab-themes .ab-theme-top{margin-bottom:19px}
+.ab-themes .ab-theme-symbol{font-size:23px}
+.ab-themes .ab-theme-card h3{
+  font-size:clamp(24px,2.25vw,33px);
+  line-height:1.18;
+  letter-spacing:-1.15px;
+  margin-bottom:10px;
+}
+.ab-themes .ab-theme-card strong{font-size:12px;margin-bottom:10px}
+.ab-themes .ab-theme-card p{font-size:12px;line-height:1.75;margin-bottom:21px}
+.ab-themes .ab-theme-keywords{gap:6px}
+.ab-themes .ab-theme-keywords span{
+  font-size:10px;
+  padding:6px 9px;
+}
+.ab-themes .ab-photo-note{
+  max-width:1100px;
+  margin:19px auto 0;
+}
+@media(max-width:780px){
+  .ab-themes .ab-theme-grid{gap:13px}
+  .ab-themes .ab-theme-photo{height:155px}
+  .ab-themes .ab-theme-content{padding:20px}
+  .ab-themes .ab-theme-top{margin-bottom:15px}
+  .ab-themes .ab-theme-card h3{font-size:clamp(22px,3.1vw,27px);letter-spacing:-.7px}
+}
+@media(max-width:640px){
+  .ab-themes .ab-theme-grid{grid-template-columns:1fr;max-width:490px;gap:16px}
+  .ab-themes .ab-theme-photo{height:160px}
+  .ab-themes .ab-theme-content{padding:22px}
+  .ab-themes .ab-theme-card h3{font-size:clamp(25px,6.3vw,30px);line-height:1.2}
+  .ab-themes .ab-theme-card p{margin-bottom:17px}
+}
