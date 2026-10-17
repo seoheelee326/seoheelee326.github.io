@@ -61,7 +61,7 @@ body.home-view .footer{display:none}
 <nav class="primary-nav" id="main-nav" aria-label="Primary navigation">
 <div class="nav-group" data-group="about"><div class="nav-group-head"><a class="nav-a" href="#/about" data-nav="about">About</a><button type="button" class="nav-expand" aria-label="About 하위 메뉴 펼치기" aria-expanded="false" aria-controls="submenu-about"><span aria-hidden="true">⌄</span></button></div><div class="nav-submenu" id="submenu-about"><a href="#/about/vision" data-subnav="about/vision">Vision</a><a href="#/about/identity" data-subnav="about/identity">Identity</a><a href="#/about/themes" data-subnav="about/themes">Research Themes</a><a href="#/about/approach" data-subnav="about/approach">Research Approach</a></div></div>
 <div class="nav-group" data-group="research"><div class="nav-group-head"><a class="nav-a" href="#/research" data-nav="research">Research</a><button type="button" class="nav-expand" aria-label="Research 하위 메뉴 펼치기" aria-expanded="false" aria-controls="submenu-research"><span aria-hidden="true">⌄</span></button></div><div class="nav-submenu" id="submenu-research"><a href="#/research/projects" data-subnav="research/projects">Projects</a><a href="#/research/publications" data-subnav="research/publications">Publications</a></div></div>
-<div class="nav-group" data-group="people"><div class="nav-group-head"><a class="nav-a" href="#/people" data-nav="people">People</a><button type="button" class="nav-expand" aria-label="People 하위 메뉴 펼치기" aria-expanded="false" aria-controls="submenu-people"><span aria-hidden="true">⌄</span></button></div><div class="nav-submenu" id="submenu-people"><a href="#/people/professor" data-subnav="people/professor">Professor</a><a href="#/people/researchers" data-subnav="people/researchers">Researchers</a><a href="#/people/alumni" data-subnav="people/alumni">Alumni</a></div></div>
+<div class="nav-group" data-group="people"><div class="nav-group-head"><a class="nav-a" href="#/people" data-nav="people">People</a><button type="button" class="nav-expand" aria-label="People 하위 메뉴 펼치기" aria-expanded="false" aria-controls="submenu-people"><span aria-hidden="true">⌄</span></button></div><div class="nav-submenu" id="submenu-people"><a href="#/people/professor" data-subnav="people/professor">Professor</a><a href="#/people/staff" data-subnav="people/staff">Staff</a><a href="#/people/alumni" data-subnav="people/alumni">Alumni</a></div></div>
 <div class="nav-group" data-group="study"><div class="nav-group-head"><a class="nav-a" href="#/study" data-nav="study">Study</a><button type="button" class="nav-expand" aria-label="Study 하위 메뉴 펼치기" aria-expanded="false" aria-controls="submenu-study"><span aria-hidden="true">⌄</span></button></div><div class="nav-submenu" id="submenu-study"><a href="#/study/research-notes" data-subnav="study/research-notes">Research Notes</a><a href="#/study/course-guide" data-subnav="study/course-guide">Course Guide</a></div></div>
 <div class="nav-group" data-group="life"><div class="nav-group-head"><a class="nav-a" href="#/life" data-nav="life">Life at ELSDR</a><button type="button" class="nav-expand" aria-label="Life at ELSDR 하위 메뉴 펼치기" aria-expanded="false" aria-controls="submenu-life"><span aria-hidden="true">⌄</span></button></div><div class="nav-submenu" id="submenu-life"><a href="#/life/news" data-subnav="life/news">News</a><a href="#/life/events" data-subnav="life/events">Events</a><a href="#/life/fieldwork" data-subnav="life/fieldwork">Fieldwork</a><a href="#/life/gallery" data-subnav="life/gallery">Gallery</a></div></div>
 <div class="nav-group" data-group="contact"><div class="nav-group-head"><a class="nav-a" href="#/contact" data-nav="contact">Contact</a><button type="button" class="nav-expand" aria-label="Contact 하위 메뉴 펼치기" aria-expanded="false" aria-controls="submenu-contact"><span aria-hidden="true">⌄</span></button></div><div class="nav-submenu" id="submenu-contact"><a href="#/contact/location" data-subnav="contact/location">Location</a><a href="#/contact/join" data-subnav="contact/join">Join Us</a><a href="#/contact/email" data-subnav="contact/email">Email</a></div></div>
@@ -81,7 +81,7 @@ body.home-view .footer{display:none}
     </div>
     <div class="mega-column" data-mega="people">
       <a href="#/people/professor">Professor</a>
-      <a href="#/people/researchers">Researchers</a>
+      <a href="#/people/staff">Staff</a>
       <a href="#/people/alumni">Alumni</a>
     </div>
     <div class="mega-column" data-mega="study"><a href="#/study/research-notes">Research Notes</a><a href="#/study/course-guide">Course Guide</a></div>
@@ -473,11 +473,11 @@ body.home-view .footer{display:none}
 <div class="wrap pp-main">
  <div class="pp-intro"><span class="pp-kicker">ELSDR / PEOPLE</span><div class="pp-intro-row"><h1>People<span>.</span></h1><p>경관을 이해하고, 연구로 연결하며,<br>더 나은 미래를 함께 만드는 사람들.</p></div></div>
  <nav class="pp-jump" aria-label="People sections">
-  <a href="#/people/professor">01 <span>Professor</span><span aria-hidden="true">↘</span></a>
-  <a href="#/people/researchers">02 <span>Researchers</span><span aria-hidden="true">↘</span></a>
-  <a href="#/people/alumni">03 <span>Alumni</span><span aria-hidden="true">↘</span></a>
+  <a href="#/people/professor" data-people-nav="professor">01 <span>Professor</span><span aria-hidden="true">↘</span></a>
+  <a href="#/people/staff" data-people-nav="staff">02 <span>Staff</span><span aria-hidden="true">↘</span></a>
+  <a href="#/people/alumni" data-people-nav="alumni">03 <span>Alumni</span><span aria-hidden="true">↘</span></a>
  </nav>
- <section id="people-professor" class="pp-section pp-professor" aria-labelledby="pp-prof-heading">
+ <section id="people-professor" data-people-view="professor" class="pp-section pp-professor" aria-labelledby="pp-prof-heading">
   <div class="pp-section-heading"><span class="pp-section-index">01 / PRINCIPAL INVESTIGATOR</span><h2 id="pp-prof-heading">Professor<span>.</span></h2></div>
   <div class="pp-prof-profile">
    <div class="pp-prof-visual" role="img" aria-label="전진형 교수님 프로필 사진을 교체할 수 있도록 마련한 시안 영역">
@@ -496,9 +496,58 @@ body.home-view .footer{display:none}
     <a class="pp-source-link" href="https://edesign.korea.ac.kr/29" target="_blank" rel="noopener noreferrer">Original professor profile <span aria-hidden="true">↗</span></a>
    </div>
   </div>
+ <div class="pp-prof-additional">
+  <section class="pp-prof-bio" aria-labelledby="pp-prof-bio-h">
+   <div class="pp-block-eyebrow">RESEARCH PHILOSOPHY / PROFESSOR</div>
+   <div class="pp-bio-layout">
+    <h3 id="pp-prof-bio-h">Research, design<br><em>&amp; resilience.</em></h3>
+    <div class="pp-bio-text">
+     <p>전진형 교수는 사회·생태·기술 시스템(SETS)의 상호작용과 변화를 분석하고, 변화하는 환경에서도 공동체의 기능을 유지하고 회복할 수 있는 그린인프라 계획·설계에 주목합니다. 도시와 농촌, 연안, 생태적으로 민감한 공간을 대상으로 생태계서비스와 경관 성능을 연구합니다.</p>
+     <p>연구에서는 리질리언스 이론과 학제 간 협력을 연결하고, 시스템다이내믹스(System Dynamics), 지오디자인(Geodesign), 통계, 디지털 모델링을 활용합니다. 자연재해 및 개발로 인한 교란을 이해하고, 공간과 환경의 특성을 반영한 적응적 설계 대안을 모색합니다.</p>
+     <p>대표적인 관심 영역에는 도시 공공 오픈스페이스와 그린인프라, 생태민감지역의 시설물 설계, 멸종위기종 서식처, 관광·여가와 보전의 균형이 포함됩니다. 이는 원래 연구실 홈페이지의 교수 소개문을 주제별로 재구성한 요약입니다.</p>
+     <a class="pp-prof-outlink" href="https://edesign.korea.ac.kr/29" target="_blank" rel="noopener noreferrer">Read original professor introduction <span aria-hidden="true">↗</span></a>
+    </div>
+   </div>
+  </section>
+  <section class="pp-cv" id="people-cv" aria-labelledby="pp-cv-h">
+   <div class="pp-cv-head">
+    <div><span class="pp-block-eyebrow">CURRICULUM VITAE / ACADEMIC PROFILE</span><h3 id="pp-cv-h">Curriculum Vitae<span>.</span></h3><p>학력과 주요 경력을 확인할 수 있는 교수 프로필 요약입니다.</p></div>
+    <a href="https://edesign.webnode.kr/people/professor/" target="_blank" rel="noopener noreferrer" class="pp-cv-source">Historical CV source <span aria-hidden="true">↗</span></a>
+   </div>
+   <div class="pp-cv-grid">
+    <div class="pp-cv-column">
+     <div class="pp-cv-label"><span>01</span> Education / 학력</div>
+     <div class="pp-cv-entry"><time>2004</time><div><strong>Ph.D.</strong><p>Texas A&amp;M University</p></div></div>
+     <div class="pp-cv-entry"><time>1998</time><div><strong>MLA</strong><p>University of Pennsylvania</p></div></div>
+     <div class="pp-cv-entry"><time>1995</time><div><strong>BA</strong><p>Chonbuk National University</p></div></div>
+    </div>
+    <div class="pp-cv-column">
+     <div class="pp-cv-label"><span>02</span> Academic Appointments / 주요 경력</div>
+     <div class="pp-cv-entry"><time>2016—</time><div><strong>Professor</strong><p>Division of Environmental Science and Ecological Engineering, Korea University</p></div></div>
+     <div class="pp-cv-entry"><time>2006–16</time><div><strong>Associate Professor</strong><p>Korea University · 역사적 이력 표기 기준</p></div></div>
+     <div class="pp-cv-entry"><time>2004–06</time><div><strong>Assistant Professor</strong><p>Georgia Southern University, USA</p></div></div>
+     <div class="pp-cv-entry"><time>2011–12</time><div><strong>Assistant Director</strong><p>Institute of Environment and Ecology, Korea University</p></div></div>
+    </div>
+   </div>
+   <div class="pp-cv-footer">
+    <div><span>RESEARCH INTERESTS</span><p>Social–Ecological–Technological Systems · Resilience by Design · Ecological Landscape Design · System Dynamics · Geodesign · Green Infrastructure</p></div>
+    <div><span>RESEARCH &amp; PUBLICATIONS</span><a href="https://pure.korea.ac.kr/en/persons/jinhyung-chon/" target="_blank" rel="noopener noreferrer">Korea University Research Profile ↗</a><a href="#/research/publications">Research publications ↗</a></div>
+   </div>
+   <p class="pp-cv-note">* 학위와 경력 연도는 과거 연구실 소개 페이지의 CV를 바탕으로 작성했습니다. 과거 기록의 직책·기간은 해당 자료 기준이며 현재 보직이나 학회 임원을 의미하지 않습니다. 별도의 최신 공식 CV PDF는 확보되지 않아 다운로드 파일로 표시하지 않았습니다.</p>
+  </section>
+  <section class="pp-prof-highlights" aria-label="Selected research and honors">
+    <div class="pp-block-eyebrow">SELECTED HIGHLIGHTS</div>
+    <div class="pp-highlight-list">
+     <a href="https://edesign.korea.ac.kr/20/?bmode=view&amp;idx=7640243" target="_blank" rel="noopener noreferrer"><span>HONORS &amp; AWARDS</span><strong>고려대학교 석탑강의상 수상 기록 (2007–2011)</strong><b aria-hidden="true">↗</b></a>
+     <a href="https://pure.korea.ac.kr/en/persons/jinhyung-chon/" target="_blank" rel="noopener noreferrer"><span>RESEARCH OUTPUT</span><strong>고려대학교 연구자 정보 · 학술 논문 목록</strong><b aria-hidden="true">↗</b></a>
+     <a href="https://tlo.korea.ac.kr/researcher/2883" target="_blank" rel="noopener noreferrer"><span>RESEARCH FOCUS</span><strong>생태조경시스템디자인 및 회복탄력성 설계</strong><b aria-hidden="true">↗</b></a>
+    </div>
+  </section>
+ </div>
+
  </section>
- <section id="people-researchers" class="pp-section pp-researchers" aria-labelledby="pp-researchers-h">
-  <div class="pp-section-heading"><span class="pp-section-index">02 / RESEARCH COMMUNITY</span><h2 id="pp-researchers-h">Researchers<span>.</span></h2>
+ <section id="people-staff" data-people-view="staff" class="pp-section pp-researchers" hidden aria-labelledby="pp-researchers-h">
+  <div class="pp-section-heading"><span class="pp-section-index">02 / RESEARCH COMMUNITY</span><h2 id="pp-researchers-h">Staff<span>.</span></h2>
    <p class="pp-section-lead">기존 홈페이지 Staff에 게시된 명단을 기반으로 연구원들을 소개합니다. 상근·비상근 구분과 학위과정 표기는 기존 공개 페이지 기준이며, 실제 재학 상태는 최종 확인 후 업데이트해야 합니다.</p>
   </div>
   <div class="pp-group-heading"><div><span>RESEARCH TEAM / 01</span><h3>Full-time Researchers</h3></div><small>4 MEMBERS · SOURCE WEBSITE ROSTER</small></div>
@@ -642,10 +691,50 @@ body.home-view .footer{display:none}
  </div></article></div>
   <p class="pp-staff-note">* 위 정보는 기존 홈페이지 <a href="https://edesign.korea.ac.kr/16" target="_blank" rel="noopener noreferrer">Staff 페이지</a>에서 확인한 공개 프로필을 정리한 시안입니다. 이메일이나 연구 관심사가 없는 구성원은 해당 내용을 임의로 채우지 않았습니다. 기존 Staff와 Alumni에 중복 등록된 배가람 연구원은 졸업생으로 분류했습니다. 얼굴 사진은 원본 파일 확인 전까지 이니셜로 대체했습니다.</p>
  </section>
- <section id="people-alumni" class="pp-section pp-alumni" aria-labelledby="pp-alumni-h">
+ <section id="people-alumni" data-people-view="alumni" class="pp-section pp-alumni" hidden aria-labelledby="pp-alumni-h">
   <div class="pp-section-heading"><span class="pp-section-index">03 / OUR ALUMNI</span><h2 id="pp-alumni-h">Alumni<span>.</span></h2><p class="pp-section-lead">연구실에서 배움을 이어가고 다양한 분야에서 활동하는 졸업생들. 아래는 기존 사이트에 등록된 최근 졸업생의 일부입니다.</p></div>
   <div class="pp-alumni-list"><div class="pp-alumni-row"><span class="pp-alumni-index">01</span><strong>Bae, Garam</strong><span>M.S. Graduate · 2024</span><span>국립산림과학원</span></div><div class="pp-alumni-row"><span class="pp-alumni-index">02</span><strong>Kim, Jiwoo</strong><span>M.S. Graduate · 2025</span><span>한국환경연구원</span></div><div class="pp-alumni-row"><span class="pp-alumni-index">03</span><strong>Kim, Hyunjung</strong><span>M.S. Graduate · 2025</span><span>국회 사무처</span></div></div>
   <a class="pp-alumni-link" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer">View complete Alumni archive <span aria-hidden="true">↗</span></a>
+ <section class="pp-alumni-theses" aria-labelledby="pp-thesis-heading">
+  <div class="pp-archive-intro"><div><span class="pp-block-eyebrow">GRADUATE RESEARCH ARCHIVE</span><h3 id="pp-thesis-heading">Degree Theses<span>.</span></h3></div><p>연구실에서 발전시킨 연구가 학위논문으로 이어졌습니다. 연도·학위 구분·연구 주제로 살펴보세요.</p></div>
+  <div class="pp-thesis-filters" role="group" aria-label="학위논문 유형 필터">
+   <button class="pp-thesis-filter is-selected" type="button" data-thesis-filter="all" aria-pressed="true"># 전체 <span>17</span></button>
+   <button class="pp-thesis-filter" type="button" data-thesis-filter="master" aria-pressed="false"># 석사 <span>11</span></button>
+   <button class="pp-thesis-filter" type="button" data-thesis-filter="doctor" aria-pressed="false"># 박사 <span>6</span></button>
+  </div>
+  <div class="pp-thesis-searchbar"><label for="pp-thesis-search">SEARCH THESIS ARCHIVE</label><input id="pp-thesis-search" type="search" placeholder="논문 제목 · 이름 · 연도 · 연구 분야 검색" autocomplete="off"></div>
+  <div class="pp-thesis-summary"><span id="pp-thesis-counter">총 17개 논문</span><span>2017–2025 · SELECTED RECORDS</span></div>
+  <div class="pp-thesis-list"><a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2025 김현중 hyunjung kim 기후 회복력 증진을 위한 국회의사당 내 수목의 생태적 가치 평가 국회 사무처 석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">01</span><span class="pp-thesis-year">2025</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>기후 회복력 증진을 위한 국회의사당 내 수목의 생태적 가치 평가</h4><p>김현중 <span>Hyunjung Kim</span> · 국회 사무처</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2025 김지우 jiwoo kim 개발제한구역 해제 이후 녹지 파편화 대응을 위한 네트워크 조성 전략 한국환경연구원 석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">02</span><span class="pp-thesis-year">2025</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>개발제한구역 해제 이후 녹지 파편화 대응을 위한 네트워크 조성 전략</h4><p>김지우 <span>Jiwoo Kim</span> · 한국환경연구원</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2024 배가람 garam bae 농촌재생 활성화를 위한 지역쇠퇴 현황 및 인식 분석 - 전라북도 진안군을 대상으로 국립산림과학원 석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">03</span><span class="pp-thesis-year">2024</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>농촌재생 활성화를 위한 지역쇠퇴 현황 및 인식 분석 - 전라북도 진안군을 대상으로</h4><p>배가람 <span>Garam Bae</span> · 국립산림과학원</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="doctor" data-thesis-search="2024 오이천 iee-chun oh 은퇴경로결정과 자기효능감에 관한 연구: 조경기능사 자격증 취득 동기를 중심으로 (주)행복한 조경 박사" href="https://dc.korea.ac.kr/srch/popup/srchMetaViewPopup/000000280081" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">04</span><span class="pp-thesis-year">2024</span><div class="pp-thesis-copy"><small>DOCTORAL DISSERTATION · 박사</small><h4>은퇴경로결정과 자기효능감에 관한 연구: 조경기능사 자격증 취득 동기를 중심으로</h4><p>오이천 <span>Iee-Chun Oh</span> · (주)행복한 조경</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2023 김도윤 do-yun gim 민간공원조성 특례사업이 도시공원의 생태계서비스에 미치는 영향 - 경기도 광주시 중앙공원을 중심으로 경기도 광주시청 석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">05</span><span class="pp-thesis-year">2023</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>민간공원조성 특례사업이 도시공원의 생태계서비스에 미치는 영향 - 경기도 광주시 중앙공원을 중심으로</h4><p>김도윤 <span>Do-Yun Gim</span> · 경기도 광주시청</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2023 문태현 taehyeon moon 지속가능한 탄소흡수공원을 위한 적응적 녹지 관리 전략 국가녹색기술연구소 석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">06</span><span class="pp-thesis-year">2023</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>지속가능한 탄소흡수공원을 위한 적응적 녹지 관리 전략</h4><p>문태현 <span>Taehyeon Moon</span> · 국가녹색기술연구소</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2023 이지구 jiku lee 가로경관의 구조 지표를 활용한 기후적응력 강화 가로녹지 조성 전략  석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">07</span><span class="pp-thesis-year">2023</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>가로경관의 구조 지표를 활용한 기후적응력 강화 가로녹지 조성 전략</h4><p>이지구 <span>Jiku Lee</span></p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="doctor" data-thesis-search="2022 김민 min kim climate adaptive landscape planning for resilient ecological restoration in coastal area 공주대학교 조경학과 박사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">08</span><span class="pp-thesis-year">2022</span><div class="pp-thesis-copy"><small>DOCTORAL DISSERTATION · 박사</small><h4>Climate Adaptive Landscape Planning for Resilient Ecological Restoration in Coastal Area</h4><p>김민 <span>Min Kim</span> · 공주대학교 조경학과</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2022 지은혜 eun hye ji 도시 내 열쾌적성 회복을 위한 가로녹지 조성 전략 경기대명고등학교 석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">09</span><span class="pp-thesis-year">2022</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>도시 내 열쾌적성 회복을 위한 가로녹지 조성 전략</h4><p>지은혜 <span>Eun Hye Ji</span> · 경기대명고등학교</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2022 한정아 junga han 랜드스케이프 퍼포먼스 사례 연구를 바탕으로 조경 프로젝트의 유형과 생태계 서비스의 관계 분석 north carolina state university 박사과정 석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">10</span><span class="pp-thesis-year">2022</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>랜드스케이프 퍼포먼스 사례 연구를 바탕으로 조경 프로젝트의 유형과 생태계 서비스의 관계 분석</h4><p>한정아 <span>Junga Han</span> · North Carolina State University 박사과정</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2022 한효주 hyo joo han 해안 홍수 피해 저감을 위한 그린 인프라의 유출 저감 효과 분석 서울대학교 박사과정 석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">11</span><span class="pp-thesis-year">2022</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>해안 홍수 피해 저감을 위한 그린 인프라의 유출 저감 효과 분석</h4><p>한효주 <span>Hyo Joo Han</span> · 서울대학교 박사과정</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="doctor" data-thesis-search="2021 송기환 ki hwan song simulation modeling of urban flood resilience in inland and coastal area 전북대학교 생태조경디자인학과 박사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">12</span><span class="pp-thesis-year">2021</span><div class="pp-thesis-copy"><small>DOCTORAL DISSERTATION · 박사</small><h4>Simulation modeling of urban flood resilience in inland and coastal area</h4><p>송기환 <span>Ki Hwan Song</span> · 전북대학교 생태조경디자인학과</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="doctor" data-thesis-search="2021 반권수 gwonsoo bahn 생태적 유역관리를 위한 댐 홍수터 내 수변생태벨트 적지 및 효과 분석 동아대학교 조경학과 박사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">13</span><span class="pp-thesis-year">2021</span><div class="pp-thesis-copy"><small>DOCTORAL DISSERTATION · 박사</small><h4>생태적 유역관리를 위한 댐 홍수터 내 수변생태벨트 적지 및 효과 분석</h4><p>반권수 <span>Gwonsoo Bahn</span> · 동아대학교 조경학과</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2020 김여란 lilan jin 습지도시의 생태계서비스 증진을 위한 사회-생태 시스템 모델링  석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">14</span><span class="pp-thesis-year">2020</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>습지도시의 생태계서비스 증진을 위한 사회-생태 시스템 모델링</h4><p>김여란 <span>LILAN JIN</span></p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="doctor" data-thesis-search="2018 최윤의 yun eui choi ecotourism system planning based on resilience principles in nakdong estuary 강원대학교 생태조경디자인학과 박사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">15</span><span class="pp-thesis-year">2018</span><div class="pp-thesis-copy"><small>DOCTORAL DISSERTATION · 박사</small><h4>Ecotourism system planning Based on Resilience Principles in Nakdong Estuary</h4><p>최윤의 <span>Yun Eui Choi</span> · 강원대학교 생태조경디자인학과</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="master" data-thesis-search="2018 이혜민 hemin lee 도시 리질리언스 향상을 위한 홍수적응형 그린인프라 계획 국토연구원 석사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">16</span><span class="pp-thesis-year">2018</span><div class="pp-thesis-copy"><small>MASTER'S THESIS · 석사</small><h4>도시 리질리언스 향상을 위한 홍수적응형 그린인프라 계획</h4><p>이혜민 <span>Hemin Lee</span> · 국토연구원</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a>
+<a class="pp-thesis-row" data-thesis-degree="doctor" data-thesis-search="2017 구진혁 jin-hyuk gu 농업유산지역의 정밀공간자료 구축 및 서식지 가치평가에 관한 연구 - 울진 금강솔 농업유산지역을 대상으로 (주)지역계획연구소 누리넷 박사" href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer"><span class="pp-thesis-index">17</span><span class="pp-thesis-year">2017</span><div class="pp-thesis-copy"><small>DOCTORAL DISSERTATION · 박사</small><h4>농업유산지역의 정밀공간자료 구축 및 서식지 가치평가에 관한 연구 - 울진 금강솔 농업유산지역을 대상으로</h4><p>구진혁 <span>Jin-Hyuk Gu</span> · (주)지역계획연구소 누리넷</p></div><span class="pp-thesis-arrow" aria-hidden="true">↗</span></a></div>
+  <p id="pp-thesis-empty" class="pp-thesis-empty" hidden>검색 결과가 없습니다. 다른 키워드나 학위 유형을 선택해 주세요.</p>
+  <p class="pp-cv-note">* 기존 <a href="https://edesign.korea.ac.kr/30" target="_blank" rel="noopener noreferrer">Alumni 페이지</a>의 학위논문 기록 중 일부를 선택해 정리했습니다. 상세 내용을 확인하려면 각 논문을 클릭하세요. 별도의 원문 정보가 확인된 경우에는 대학 학위논문 기록으로 연결됩니다.</p>
+ </section>
+ <section class="pp-alumni-updates" aria-labelledby="pp-updates-h">
+  <div class="pp-archive-intro"><div><span class="pp-block-eyebrow">ALUMNI NETWORK / WHERE ARE THEY NOW?</span><h3 id="pp-updates-h">Alumni Updates<span>.</span></h3></div><p>졸업 이후의 연구·교육·공공 분야 진로를 소개합니다. 아래는 기존 홈페이지에 공개된 활동 및 소속 사례입니다.</p></div>
+  <div class="pp-update-grid">
+   <article class="pp-update-card"><span>ACADEMIC CAREER</span><div><h4>연구와 교육의 현장에서</h4><p>김민 · 공주대학교 조경학과 조교수<br>송기환 · 전북대학교 생태조경디자인학과 조교수</p></div><small>기존 Alumni 명단에 게시된 소속 기준</small></article>
+   <article class="pp-update-card"><span>RESEARCH INSTITUTES</span><div><h4>공공 연구기관으로</h4><p>배가람 · 국립산림과학원<br>김지우 · 한국환경연구원<br>문태현 · 국가녹색기술연구소</p></div><small>기존 Alumni 명단에 게시된 소속 기준</small></article>
+   <article class="pp-update-card"><span>PUBLIC SERVICE</span><div><h4>환경정책과 공공 영역에서</h4><p>김현중 · 국회 사무처<br>김도윤 · 경기도 광주시청</p></div><small>기존 Alumni 명단에 게시된 소속 기준</small></article>
+  </div>
+  <div class="pp-update-submit"><div><span>ALUMNI STORIES</span><h4>Share your news.</h4><p>연구실 동문 소식, 새로운 연구 성과, 수상 및 진로 정보를 공유할 수 있도록 마련한 공간이야. 검증된 소식이 모이면 여기에 계속 추가할 수 있어.</p></div><a href="mailto:chlghwns0117@korea.ac.kr?subject=ELSDR%20Alumni%20Update">Send alumni news <span aria-hidden="true">↗</span></a></div>
+  <p class="pp-cv-note">* 이 영역은 기존 공개 명단의 소속 정보를 바탕으로 구성한 진로 소개이며, 최근 임용이나 소속 변경을 새 소식으로 단정하지 않습니다. 별도 행사·수상·인터뷰 소식은 자료가 확보되는 대로 검증 후 추가할 수 있습니다.</p>
+ </section>
+
  </section>
 </div></section>
 <section class="page st-page" data-page="study"><div class="wrap st-inner">
@@ -1344,13 +1433,13 @@ body.home-view .footer{display:none}
       'research/themes':'about/themes','research/methods':'about/approach',
       'projects/featured':'research/projects','projects/all':'research/projects',
       'publications/articles':'research/publications','publications/reports':'research/publications','publications/books':'research/publications'};
-    const legacyRoutes={'study/lab-conference':'life/events','study/lab-seminar':'study/research-notes','life/seminars':'life/events'};
+    const legacyRoutes={'study/lab-conference':'life/events','study/lab-seminar':'study/research-notes','life/seminars':'life/events','people/researchers':'people/staff'};
     if(legacyRoutes[raw]){location.replace('#/'+legacyRoutes[raw]);return;}
     raw=aliases[raw]||raw;
     const parts=raw.split('/');
     let root=parts[0],slug=parts[1]||'';
     if(!['home','about','research','people','study','life','contact'].includes(root)){root='home';slug=''}
-    const mapping={'research/projects':'research','research/publications':'research','study/research-notes':'study','study/course-guide':'study','life/events':'life'};
+    const mapping={'research/projects':'research','research/publications':'research','study/research-notes':'study','study/course-guide':'study','life/events':'life','people/professor':'people','people/staff':'people','people/alumni':'people'};
     const key=root+'/'+slug;
     if(slug&&!details[key]&&!mapping[key]&&!(root==='about'&&['vision','identity','themes','approach'].includes(slug)))slug='';
     const activeKey=root+'/'+slug,target=mapping[activeKey]||root;
@@ -1394,10 +1483,7 @@ body.home-view .footer{display:none}
         const section=document.getElementById('about-'+slug);
         if(section)section.scrollIntoView({block:'start',behavior:'smooth'});
       });
-    }else if(root==='people'&&slug&&['professor','researchers','alumni'].includes(slug)){
-      requestAnimationFrame(()=>{
-        document.getElementById('people-'+slug)?.scrollIntoView({block:'start',behavior:'smooth'});
-      });
+    }else if(root==='people'){window.scrollTo(0,0);
     }else if(root==='contact'&&slug&&['location','join','email'].includes(slug)){
       requestAnimationFrame(()=>{
         document.getElementById('contact-'+slug)?.scrollIntoView({block:'start',behavior:'smooth'});
@@ -1661,6 +1747,55 @@ searchCourses();route();
    }
   });
  });
+})();
+</script>
+
+<script>
+/* People has three mutually exclusive subpages, not one continuous page. */
+(function(){
+ const page=document.querySelector('[data-page="people"]');
+ const sections=[...page.querySelectorAll('[data-people-view]')];
+ const tabs=[...page.querySelectorAll('[data-people-nav]')];
+ function display(){
+  const parts=location.hash.replace(/^#\/?/,'').split('?')[0].split('/');
+  if(parts[0]!=='people')return;
+  const selected=['professor','staff','alumni'].includes(parts[1])?parts[1]:'professor';
+  sections.forEach(section=>{section.hidden=section.dataset.peopleView!==selected;});
+  tabs.forEach(tab=>{
+   const active=tab.dataset.peopleNav===selected;
+   tab.classList.toggle('is-selected',active);
+   if(active)tab.setAttribute('aria-current','page');
+   else tab.removeAttribute('aria-current');
+  });
+  document.title=({professor:'Professor',staff:'Staff',alumni:'Alumni'})[selected]+' | ELSDR';
+ }
+ window.addEventListener('hashchange',display);display();
+ const rows=[...page.querySelectorAll('[data-thesis-degree]')];
+ const filters=[...page.querySelectorAll('[data-thesis-filter]')];
+ const search=page.querySelector('#pp-thesis-search');
+ const count=page.querySelector('#pp-thesis-counter');
+ const empty=page.querySelector('#pp-thesis-empty');
+ let category='all',keyword='';
+ function filterTheses(){
+  let shown=0;
+  rows.forEach(row=>{
+   const visible=(category==='all'||row.dataset.thesisDegree===category)&&(!keyword||row.dataset.thesisSearch.includes(keyword));
+   row.hidden=!visible;if(visible)shown++;
+  });
+  filters.forEach(btn=>{
+   const on=btn.dataset.thesisFilter===category;
+   btn.classList.toggle('is-selected',on);btn.setAttribute('aria-pressed',String(on));
+  });
+  count.textContent='총 '+shown+'개 논문';
+  empty.hidden=shown!==0;
+ }
+ filters.forEach(btn=>btn.addEventListener('click',()=>{
+  category=btn.dataset.thesisFilter;filterTheses();
+ }));
+ search.addEventListener('input',()=>{
+  keyword=search.value.trim().toLocaleLowerCase();filterTheses();
+ });
+ filterTheses();
 })();
 </script>
 <script src="home-contact.js"></script>
