@@ -1985,3 +1985,28 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
  .lf-field-list-head{display:block}
  .lf-field-list-head h3{font-size:25px;margin-top:12px}
 }
+
+
+/* ELDR Fieldwork Atlas — location filters and scrollable international archive */
+.lf-map-layout{height:min(76vh,650px);min-height:510px}
+.lf-map-side{min-height:0;overflow:hidden}
+.lf-map-filters{display:flex;gap:5px;flex-wrap:wrap;margin-top:19px}
+.lf-map-filters button{padding:9px 13px;background:transparent;border:1px solid rgba(83,109,94,.29);font-size:11px;font-weight:600;color:#567363;cursor:pointer;transition:background .2s,color .2s}
+.lf-map-filters button.is-selected,.lf-map-filters button:hover{background:#536d5e;color:#fff}
+.lf-map-places{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#a6b8aa transparent;padding-right:5px;align-content:start}
+.lf-map-visual{height:100%;min-height:0}
+.lf-map-side-foot{flex-shrink:0;padding-top:15px}
+.lf-map-place{flex-shrink:0}
+@media(max-width:640px){
+ .lf-map-layout{height:auto;min-height:0}
+ .lf-map-visual{height:370px;min-height:370px}
+ .lf-map-side{height:430px;min-height:0}
+ .lf-map-places{grid-template-columns:1fr 1fr;gap:8px}
+ .lf-map-place{padding:12px}
+ .lf-map-filters{margin-top:13px}
+ .lf-map-side>p{margin:12px 0}
+}
+@media(max-width:380px){
+ .lf-map-places{grid-template-columns:1fr}
+ .lf-map-side{height:470px}
+}
