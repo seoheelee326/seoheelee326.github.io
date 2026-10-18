@@ -1274,12 +1274,12 @@ body.home-view .footer{display:none}
       <span class="lf-map-eyebrow">FIELDWORK / KOREA · ELDR MAP</span>
       <h3 id="lf-map-title">Fieldwork Map<span>.</span></h3>
     </div>
-    <p>연구실의 현장 답사 기록을 지도에서 살펴보세요.<br>확인된 국내 답사 장소를 중심으로 표시했어.</p>
+    <p>연구실의 현장 답사 기록을 지도에서 살펴보세요.<br>확인된 국내 답사 장소를 중심으로 표시했습니다.</p>
   </div>
   <div class="lf-map-layout">
     <div class="lf-map-side">
       <div class="lf-map-side-top"><span>01 / EXPLORE LOCATIONS</span><strong>KOREA</strong></div>
-      <p>아래 장소를 선택하면 지도에서 해당 지역을 보여줘.</p>
+      <p>아래 장소를 선택하면 지도에서 해당 지역을 확인할 수 있습니다.</p>
       <div class="lf-map-places" role="group" aria-label="국내 현장 답사 장소">
         <button type="button" class="lf-map-place" data-field-location="seoulforest" aria-pressed="false">
           <span>01 <b>2024 · FIELD TRIP</b></span><strong>서울숲</strong><small>서울특별시 성동구 · 서울숲 필드트립</small><em>View on map ↗</em>
@@ -1299,7 +1299,7 @@ body.home-view .footer{display:none}
     </div>
   </div>
   <div class="lf-map-source">
-    <p>기존 홈페이지의 <strong>ELDR Map → Korea</strong> 메뉴를 Fieldwork 구성에 반영했어. 이 지도는 공개된 Field trip 게시물에 장소가 명시된 서울숲과 양양만 표시한 새 시안이며, 원본 지도의 전체 핀을 복제한 것은 아니야. 양양은 상세 방문 좌표가 공개되지 않아 <em>군 단위 중심 위치</em>로 표시했어.</p>
+    <p>기존 홈페이지의 <strong>ELDR Map → Korea</strong> 메뉴를 Fieldwork 구성에 반영했습니다. 공개된 현장 답사 기록에서 확인할 수 있는 서울숲과 양양을 새 지도에 표시했으며, 원본 지도의 모든 위치 정보를 이전한 것은 아닙니다. 양양은 세부 방문 지점이 아닌 <em>지역 중심 위치</em>를 표시했습니다.</p>
     <a href="https://edesign.korea.ac.kr/" target="_blank" rel="noopener noreferrer">Original ELDR Map (menu: Korea) <span aria-hidden="true">↗</span></a>
   </div>
 </section>
@@ -1869,7 +1869,11 @@ searchCourses();route();
   labels.textContent='2 documented locations';
   buttons.forEach(btn=>btn.setAttribute('aria-pressed','false'));
   if(map){map.flyToBounds([[37.30,126.55],[38.35,129.08]],{padding:[62,62],maxZoom:9,duration:.75});}
-  else fallback();
+  else{
+   const iframe=mapEl.querySelector('iframe');
+   if(iframe)iframe.src='https://www.openstreetmap.org/export/embed.html?bbox=125.7%2C34.0%2C130.1%2C39.0&layer=mapnik';
+   else fallback();
+  }
  }
  function initialize(){
   if(initDone||field.hidden||!location.hash.startsWith('#/life/fieldwork'))return;
