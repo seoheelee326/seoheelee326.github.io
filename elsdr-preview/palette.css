@@ -1800,3 +1800,108 @@ body,.page,.page h1,.page h2,.page h3,.page p,.serif,.home-headline,.home-headli
  .pp-update-submit>a{width:max-content;margin-top:22px}
  .pp-update-submit h4{font-size:30px}
 }
+
+
+/* Minimal professor CV — quiet two-column academic timeline */
+.pp-professor .pp-cv.pp-cv-minimal{
+  margin-top:91px;
+  padding:0;
+  border-top:1px solid rgba(83,109,94,.34);
+  background:transparent;
+}
+.pp-cv-simple-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:20px;
+  padding:28px 0 31px;
+}
+.pp-cv-simple-head .pp-block-eyebrow{
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:#789283;
+}
+.pp-cv-simple-head h3{
+  font-size:clamp(36px,3.6vw,49px);
+  font-weight:500;
+  line-height:1.1;
+  letter-spacing:-1.5px;
+  margin:10px 0 0;
+}
+.pp-cv-simple-head>a{
+  display:inline-flex;
+  align-items:center;
+  gap:14px;
+  color:#536D5E;
+  font-size:12px;
+  font-weight:600;
+  padding-bottom:4px;
+  border-bottom:1px solid rgba(83,109,94,.4);
+}
+.pp-cv-simple-head>a:hover{opacity:1;color:#252D2A}
+.pp-cv-simple-head>a span{font-size:16px;font-weight:400}
+.pp-cv-simple-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(30px,5.5vw,76px);
+}
+.pp-cv-simple-column h4{
+  margin:0;
+  padding:13px 0 15px;
+  border-bottom:1px solid rgba(83,109,94,.36);
+  font-size:18px;
+  font-weight:600;
+  letter-spacing:-.4px;
+}
+.pp-cv-simple-column h4 span{
+  color:#7c9284;
+  font-size:12px;
+  font-weight:400;
+  margin-left:9px;
+  letter-spacing:0;
+}
+.pp-cv-simple-item{
+  display:grid;
+  grid-template-columns:74px minmax(0,1fr);
+  gap:15px;
+  padding:16px 0;
+  border-bottom:1px solid rgba(83,109,94,.17);
+}
+.pp-cv-simple-item time{
+  color:#759181;
+  font-size:12px;
+  font-weight:600;
+  line-height:1.65;
+}
+.pp-cv-simple-item strong{
+  display:block;
+  font-size:14px;
+  font-weight:600;
+  line-height:1.5;
+  color:#252D2A;
+}
+.pp-cv-simple-item div>span{
+  display:block;
+  margin-top:4px;
+  color:#65796c;
+  font-size:12px;
+  line-height:1.6;
+  word-break:keep-all;
+}
+.pp-cv-simple-note{
+  margin:20px 0 0;
+  color:#85978b;
+  font-size:11px;
+  line-height:1.7;
+  word-break:keep-all;
+}
+@media(max-width:720px){
+  .pp-professor .pp-cv.pp-cv-minimal{margin-top:67px}
+  .pp-cv-simple-head{padding:23px 0 20px;gap:16px}
+  .pp-cv-simple-head h3{font-size:36px}
+  .pp-cv-simple-grid{grid-template-columns:1fr;gap:26px}
+  .pp-cv-simple-column h4{font-size:16px}
+  .pp-cv-simple-item{grid-template-columns:70px minmax(0,1fr);padding:15px 0;gap:12px}
+  .pp-cv-simple-item div>span{font-size:12px}
+}
