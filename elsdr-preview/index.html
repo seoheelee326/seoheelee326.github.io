@@ -1271,16 +1271,17 @@ body.home-view .footer{display:none}
 <section class="lf-map-section" aria-labelledby="lf-map-title">
   <div class="lf-map-section-head">
     <div>
-      <span class="lf-map-eyebrow">FIELDWORK / KOREA · ELDR MAP</span>
-      <h3 id="lf-map-title">Fieldwork Map<span>.</span></h3>
+      <span class="lf-map-eyebrow">FIELDWORK / ORIGINAL ELDR MAP ARCHIVE</span>
+      <h3 id="lf-map-title">ELDR Fieldwork Map<span>.</span></h3>
     </div>
-    <p>연구실의 현장 답사 기록을 지도에서 살펴보세요.<br>확인된 국내 답사 장소를 중심으로 표시했습니다.</p>
+    <p>기존 ELDR 홈페이지에 공개된 국내·해외 현장 답사 기록을<br>한눈에 살펴보세요. 지점을 누르면 기록으로 이동합니다.</p>
   </div>
   <div class="lf-map-layout">
     <div class="lf-map-side">
-      <div class="lf-map-side-top"><span>01 / EXPLORE LOCATIONS</span><strong>KOREA</strong></div>
-      <p>아래 장소를 선택하면 지도에서 해당 지역을 확인할 수 있습니다.</p>
-      <div class="lf-map-places" role="group" aria-label="국내 현장 답사 장소">
+      <div class="lf-map-side-top"><span>01 / EXPLORE LOCATIONS</span><strong>GLOBAL</strong></div>
+      <div class="lf-map-filters" id="lf-map-filters" role="group" aria-label="지도 지역 필터"><button type="button" data-map-filter="all" class="is-selected" aria-pressed="true">All</button><button type="button" data-map-filter="korea" aria-pressed="false">Korea</button><button type="button" data-map-filter="overseas" aria-pressed="false">Overseas</button></div>
+      <p>지역을 선택하거나 장소를 누르면 지도에서 해당 답사 지역으로 이동합니다.</p>
+      <div class="lf-map-places" role="group" aria-label="국내외 현장 답사 장소">
         <button type="button" class="lf-map-place" data-field-location="seoulforest" aria-pressed="false">
           <span>01 <b>2024 · FIELD TRIP</b></span><strong>서울숲</strong><small>서울특별시 성동구 · 서울숲 필드트립</small><em>View on map ↗</em>
         </button>
@@ -1291,16 +1292,16 @@ body.home-view .footer{display:none}
       <div class="lf-map-side-foot"><button type="button" id="lf-map-reset">View all locations <span aria-hidden="true">↗</span></button></div>
     </div>
     <div class="lf-map-visual">
-      <div class="lf-map-overlay-top"><span>KOREA / RESEARCH &amp; FIELD NOTES</span><strong>37°N / 127°E</strong></div>
-      <div id="lf-korea-map" role="region" aria-label="서울숲 및 양양 현장 답사 위치 인터랙티브 지도">
+      <div class="lf-map-overlay-top"><span>ELDR / RESEARCH &amp; FIELD NOTES</span><strong>GLOBAL FIELDWORK</strong></div>
+      <div id="lf-korea-map" role="region" aria-label="국내외 연구실 현장 답사 위치 인터랙티브 지도">
         <div class="lf-map-pending">Loading fieldwork map...</div>
       </div>
-      <div class="lf-map-overlay-bottom"><span>ELSDR FIELD ARCHIVE</span><span id="lf-map-active-location">2 documented locations</span></div>
+      <div class="lf-map-overlay-bottom"><span>ELSDR FIELD ARCHIVE</span><span id="lf-map-active-location">10 documented locations</span></div>
     </div>
   </div>
   <div class="lf-map-source">
-    <p>기존 홈페이지의 <strong>ELDR Map → Korea</strong> 메뉴를 Fieldwork 구성에 반영했습니다. 공개된 현장 답사 기록에서 확인할 수 있는 서울숲과 양양을 새 지도에 표시했으며, 원본 지도의 모든 위치 정보를 이전한 것은 아닙니다. 양양은 세부 방문 지점이 아닌 <em>지역 중심 위치</em>를 표시했습니다.</p>
-    <a href="https://edesign.korea.ac.kr/" target="_blank" rel="noopener noreferrer">Original ELDR Map (menu: Korea) <span aria-hidden="true">↗</span></a>
+    <p>기존 홈페이지의 <strong>ELDR Map 및 Field trip 아카이브</strong>에 있는 공개 기록을 토대로 국내 2곳과 해외 8곳을 재구성했습니다. 원본 지도를 직접 복사한 것은 아니며, <em>정확한 방문 지점이 확인되지 않은 표시는 도시·지역 중심 좌표</em>입니다. 원본 ELDR Map의 전체 위치 데이터는 아직 옮겨오지 않았습니다.</p>
+    <a href="https://edesign.korea.ac.kr/" target="_blank" rel="noopener noreferrer">Open original ELDR Map (Korea menu) <span aria-hidden="true">↗</span></a>
   </div>
 </section>
 <div class="lf-field-list-head"><span>FIELD NOTES / ARCHIVE</span><h3>Field Trips &amp; Workshops</h3></div>
@@ -1834,84 +1835,136 @@ searchCourses();route();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script>
-/* Fieldwork map: real documented trip locations only, not a copy of original ELDR Map pins. */
+/* Fieldwork atlas: documented places from the original ELDR website; city-center positions are approximate. */
 (function(){
  const field=document.querySelector('[data-life-view="fieldwork"]');
  if(!field)return;
  const mapEl=field.querySelector('#lf-korea-map');
  const labels=field.querySelector('#lf-map-active-location');
- const buttons=[...field.querySelectorAll('[data-field-location]')];
+ const places=field.querySelector('.lf-map-places');
  const reset=field.querySelector('#lf-map-reset');
+ const filterBar=field.querySelector('#lf-map-filters');
+ const modeLabel=field.querySelector('.lf-map-side-top strong');
+ const coordsLabel=field.querySelector('.lf-map-overlay-top strong');
  const destinations={
-   seoulforest:{coords:[37.5446,127.0374],name:'서울숲 · 서울',note:'2024 서울숲 필드트립',zoom:12,url:'https://edesign.korea.ac.kr/124'},
-   yangyang:{coords:[38.0755,128.6187],name:'양양군 · 강원',note:'2024 연구실 워크숍 · 양양',zoom:10,url:'https://edesign.korea.ac.kr/126'}
+  seoulforest:{coords:[37.5446,127.0374],name:'서울숲',region:'서울 · 대한민국',group:'korea',year:'2024',type:'FIELD TRIP',note:'서울숲 필드트립',url:'https://edesign.korea.ac.kr/124',zoom:12,precise:true},
+  yangyang:{coords:[38.0755,128.6187],name:'양양',region:'강원 · 대한민국',group:'korea',year:'2024',type:'WORKSHOP',note:'연구실 워크숍 · 지역 중심 위치',url:'https://edesign.korea.ac.kr/126',zoom:10},
+  portland:{coords:[45.5152,-122.6784],name:'Portland',region:'Oregon · USA',group:'overseas',year:'2025',type:'FIELD TRIP',note:'Portland & Seattle 2025 · 도시 중심 위치',url:'https://edesign.korea.ac.kr/131',zoom:10},
+  seattle:{coords:[47.6062,-122.3321],name:'Seattle',region:'Washington · USA',group:'overseas',year:'2025',type:'FIELD TRIP',note:'Portland & Seattle 2025 · 도시 중심 위치',url:'https://edesign.korea.ac.kr/131',zoom:10},
+  sausalito:{coords:[37.8591,-122.4853],name:'Sausalito',region:'California · USA',group:'overseas',year:'2022',type:'FIELD TRIP',note:'2022.11.14 Sausalito · 도시 중심 위치',url:'https://edesign.korea.ac.kr/',zoom:11},
+  montreal:{coords:[45.5017,-73.5673],name:'Montréal',region:'Québec · Canada',group:'overseas',year:'2017',type:'FIELD TRIP',note:'2017.10.16–22 Montreal · 도시 중심 위치',url:'https://edesign.korea.ac.kr/',zoom:10},
+  beijing:{coords:[39.9042,116.4074],name:'Beijing',region:'China',group:'overseas',year:'2017',type:'FIELD TRIP',note:'2017.07.05–08 Beijing · 도시 중심 위치',url:'https://edesign.korea.ac.kr/',zoom:10},
+  torino:{coords:[45.0703,7.6869],name:'Torino',region:'Italy',group:'overseas',year:'2016',type:'IFLA / FIELD TRIP',note:'2016.04.18–27 Italy · 도시 중심 위치',url:'https://edesign.korea.ac.kr/',zoom:10},
+  milano:{coords:[45.4642,9.1900],name:'Milano',region:'Italy',group:'overseas',year:'2016',type:'IFLA / FIELD TRIP',note:'2016.04.18–27 Italy · 도시 중심 위치',url:'https://edesign.korea.ac.kr/',zoom:10},
+  venice:{coords:[45.4408,12.3155],name:'Venice',region:'Italy',group:'overseas',year:'2016',type:'IFLA / FIELD TRIP',note:'2016.04.18–27 Italy · 도시 중심 위치',url:'https://edesign.korea.ac.kr/',zoom:10}
  };
- let map=null, markers={},active=null,initDone=false;
+ let map=null,markers={},active=null,initDone=false,mode='all';
+ const visible=()=>Object.entries(destinations).filter(([id,d])=>mode==='all'||d.group===mode);
+ function setFallback(bounds,point){
+  const bbox=bounds||[-137,21,135,62];
+  const src='https://www.openstreetmap.org/export/embed.html?bbox='+encodeURIComponent(bbox.join(','))+'&layer=mapnik'+(point?'&marker='+point[0]+'%2C'+point[1]:'');
+  const iframe=mapEl.querySelector('iframe');
+  if(iframe)iframe.src=src;
+  else mapEl.innerHTML='<iframe title="Fieldwork map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="'+src+'"></iframe>';
+ }
  function fallback(){
   if(initDone)return;
   initDone=true;
-  mapEl.innerHTML='<iframe title="대한민국 위치 지도" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=125.7%2C34.0%2C130.1%2C39.0&amp;layer=mapnik" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+  setFallback(mode==='korea'?[125.7,34,130.1,39]:[-140,15,140,65]);
+ }
+ function renderPlaces(){
+  places.innerHTML='';
+  visible().forEach(([id,d],i)=>{
+   const btn=document.createElement('button');
+   btn.type='button';btn.className='lf-map-place';btn.dataset.fieldLocation=id;
+   btn.setAttribute('aria-pressed',String(active===id));
+   const meta=document.createElement('span');meta.textContent=String(i+1).padStart(2,'0')+'  ';
+   const type=document.createElement('b');type.textContent=d.year+' · '+d.type;meta.append(type);
+   const title=document.createElement('strong');title.textContent=d.name;
+   const small=document.createElement('small');small.textContent=d.region;
+   const action=document.createElement('em');action.textContent='View on map ↗';
+   btn.append(meta,title,small,action);
+   btn.addEventListener('click',()=>select(id));
+   places.append(btn);
+  });
+  filterBar.querySelectorAll('[data-map-filter]').forEach(b=>{
+   const selected=b.dataset.mapFilter===mode;
+   b.classList.toggle('is-selected',selected);
+   b.setAttribute('aria-pressed',String(selected));
+  });
+  modeLabel.textContent=mode==='all'?'GLOBAL':mode==='korea'?'KOREA':'OVERSEAS';
+ }
+ function updatePins(){
+  Object.entries(markers).forEach(([id,m])=>{
+   const shown=mode==='all'||destinations[id].group===mode;
+   if(shown&&!map.hasLayer(m))m.addTo(map);
+   if(!shown&&map.hasLayer(m))m.remove();
+  });
+ }
+ function setMode(next){
+  if(!['all','korea','overseas'].includes(next))return;
+  mode=next;active=null;renderPlaces();updatePins();resetView();
  }
  function select(id){
-  const info=destinations[id];if(!info)return;
-  active=id;labels.textContent=info.name;
-  buttons.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.fieldLocation===id)));
-  if(map&&markers[id]){map.flyTo(info.coords,info.zoom,{duration:.75});markers[id].openPopup();}
-  else{
-   const [lat,lon]=info.coords,delta=.12;
-   const bbox=[lon-delta,lat-delta*.65,lon+delta,lat+delta*.65].join(',');
-   const iframe=mapEl.querySelector('iframe');
-   if(iframe)iframe.src='https://www.openstreetmap.org/export/embed.html?bbox='+encodeURIComponent(bbox)+'&layer=mapnik&marker='+lat+'%2C'+lon;
+  const d=destinations[id];if(!d)return;
+  if(mode!=='all'&&mode!==d.group)setMode(d.group);
+  active=id;labels.textContent=d.name+' · '+d.year;
+  places.querySelectorAll('[data-field-location]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.fieldLocation===id)));
+  if(map&&markers[id]){
+   map.flyTo(d.coords,d.zoom,{duration:.75});
+   markers[id].openPopup();
+  }else{
+   const [lat,lon]=d.coords,delta=d.group==='korea'?.16:.30;
+   setFallback([lon-delta,lat-delta*.7,lon+delta,lat+delta*.7],d.coords);
   }
  }
  function resetView(){
   active=null;
-  labels.textContent='2 documented locations';
-  buttons.forEach(btn=>btn.setAttribute('aria-pressed','false'));
-  if(map){map.flyToBounds([[37.30,126.55],[38.35,129.08]],{padding:[62,62],maxZoom:9,duration:.75});}
-  else{
-   const iframe=mapEl.querySelector('iframe');
-   if(iframe)iframe.src='https://www.openstreetmap.org/export/embed.html?bbox=125.7%2C34.0%2C130.1%2C39.0&layer=mapnik';
-   else fallback();
-  }
+  const entries=visible();
+  labels.textContent=entries.length+' documented locations';
+  places.querySelectorAll('[data-field-location]').forEach(btn=>btn.setAttribute('aria-pressed','false'));
+  if(map){
+   map.closePopup();
+   if(mode==='all'){map.setView([35,20],2,{animate:true});}
+   else {map.flyToBounds(entries.map(([,d])=>d.coords),{padding:[48,48],maxZoom:mode==='korea'?9:3,duration:.75});}
+  }else if(initDone)setFallback(mode==='korea'?[125.7,34,130.1,39]:[-140,15,140,65]);
+  else if(mode==='korea')coordsLabel.textContent='37°N / 127°E';
+  coordsLabel.textContent=mode==='all'?'GLOBAL FIELDWORK':mode==='korea'?'37°N / 127°E':'INTERNATIONAL ARCHIVE';
  }
  function initialize(){
   if(initDone||field.hidden||!location.hash.startsWith('#/life/fieldwork'))return;
   if(typeof window.L==='undefined'){fallback();return;}
-  initDone=true;
-  mapEl.innerHTML='';
-  map=L.map(mapEl,{scrollWheelZoom:false,zoomControl:false,preferCanvas:true});
+  initDone=true;mapEl.innerHTML='';
+  map=L.map(mapEl,{scrollWheelZoom:false,zoomControl:false,preferCanvas:true,worldCopyJump:true});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-   minZoom:5,maxZoom:17,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors'
+   minZoom:2,maxZoom:17,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors'
   }).addTo(map);
   L.control.zoom({position:'bottomright'}).addTo(map);
-  for(const [id,info] of Object.entries(destinations)){
-    const icon=L.divIcon({className:'lf-map-pin',html:'<span class="lf-map-pin-dot"></span>',iconSize:[26,26],iconAnchor:[13,13]});
-    markers[id]=L.marker(info.coords,{icon,title:info.name}).addTo(map);
-    const popup=document.createElement('div');
-    popup.className='lf-map-popup';
-    const heading=document.createElement('strong');heading.textContent=info.name;
-    const note=document.createElement('p');note.textContent=info.note;
-    const link=document.createElement('a');link.textContent='Original field record ↗';link.href=info.url;link.target='_blank';link.rel='noopener noreferrer';
-    popup.append(heading,note,link);
-    markers[id].bindPopup(popup);
-    markers[id].on('click',()=>{active=id;labels.textContent=info.name;buttons.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.fieldLocation===id)));});
+  for(const [id,d] of Object.entries(destinations)){
+   const icon=L.divIcon({className:'lf-map-pin',html:'<span class="lf-map-pin-dot"></span>',iconSize:[26,26],iconAnchor:[13,13]});
+   markers[id]=L.marker(d.coords,{icon,title:d.name}).addTo(map);
+   const popup=document.createElement('div');popup.className='lf-map-popup';
+   const heading=document.createElement('strong');heading.textContent=d.name;
+   const note=document.createElement('p');note.textContent=d.year+' · '+d.note;
+   const link=document.createElement('a');link.textContent='Original fieldwork record ↗';link.href=d.url;link.target='_blank';link.rel='noopener noreferrer';
+   popup.append(heading,note,link);markers[id].bindPopup(popup);
+   markers[id].on('click',()=>{active=id;labels.textContent=d.name+' · '+d.year;places.querySelectorAll('[data-field-location]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.fieldLocation===id)));});
   }
-  map.fitBounds([[37.30,126.55],[38.35,129.08]],{padding:[70,70],maxZoom:9});
-  window.requestAnimationFrame(()=>map.invalidateSize());
+  updatePins();resetView();window.requestAnimationFrame(()=>map.invalidateSize());
  }
  function checkRoute(){
   if(!location.hash.startsWith('#/life/fieldwork'))return;
   window.requestAnimationFrame(()=>{
-    if(!initDone){
-      if(window.L)initialize();
-      else window.setTimeout(()=>{if(!initDone)initialize();},1200);
-    }
-    if(map)map.invalidateSize();
+   if(!initDone){
+    if(window.L)initialize();
+    else window.setTimeout(()=>{if(!initDone)initialize();},1200);
+   }
+   if(map)map.invalidateSize();
   });
  }
- buttons.forEach(btn=>btn.addEventListener('click',()=>select(btn.dataset.fieldLocation)));
+ filterBar.querySelectorAll('[data-map-filter]').forEach(btn=>btn.addEventListener('click',()=>setMode(btn.dataset.mapFilter)));
  reset.addEventListener('click',resetView);
+ renderPlaces();
  window.addEventListener('hashchange',checkRoute);
  window.addEventListener('load',checkRoute);
  checkRoute();
