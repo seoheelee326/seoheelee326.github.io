@@ -54,6 +54,7 @@ body.home-view .footer{display:none}
 
 </style>
 <link rel="stylesheet" href="palette.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body class="ko">
 <header class="site-head"><div class="wrap header-inner">
@@ -1266,6 +1267,43 @@ body.home-view .footer{display:none}
 </div>
 </div>
 <div class="lf-panel" data-life-view="fieldwork" hidden><div class="lf-intro"><div><span>03 / FIELDWORK</span><h2>Out in the field<span>.</span></h2></div><p>경관을 직접 만나고,<br>현장에서 남긴 기록.</p></div>
+
+<section class="lf-map-section" aria-labelledby="lf-map-title">
+  <div class="lf-map-section-head">
+    <div>
+      <span class="lf-map-eyebrow">FIELDWORK / KOREA · ELDR MAP</span>
+      <h3 id="lf-map-title">Fieldwork Map<span>.</span></h3>
+    </div>
+    <p>연구실의 현장 답사 기록을 지도에서 살펴보세요.<br>확인된 국내 답사 장소를 중심으로 표시했어.</p>
+  </div>
+  <div class="lf-map-layout">
+    <div class="lf-map-side">
+      <div class="lf-map-side-top"><span>01 / EXPLORE LOCATIONS</span><strong>KOREA</strong></div>
+      <p>아래 장소를 선택하면 지도에서 해당 지역을 보여줘.</p>
+      <div class="lf-map-places" role="group" aria-label="국내 현장 답사 장소">
+        <button type="button" class="lf-map-place" data-field-location="seoulforest" aria-pressed="false">
+          <span>01 <b>2024 · FIELD TRIP</b></span><strong>서울숲</strong><small>서울특별시 성동구 · 서울숲 필드트립</small><em>View on map ↗</em>
+        </button>
+        <button type="button" class="lf-map-place" data-field-location="yangyang" aria-pressed="false">
+          <span>02 <b>2024 · LAB WORKSHOP</b></span><strong>양양</strong><small>강원특별자치도 양양군 · 연구실 워크숍</small><em>View on map ↗</em>
+        </button>
+      </div>
+      <div class="lf-map-side-foot"><button type="button" id="lf-map-reset">View all locations <span aria-hidden="true">↗</span></button></div>
+    </div>
+    <div class="lf-map-visual">
+      <div class="lf-map-overlay-top"><span>KOREA / RESEARCH &amp; FIELD NOTES</span><strong>37°N / 127°E</strong></div>
+      <div id="lf-korea-map" role="region" aria-label="서울숲 및 양양 현장 답사 위치 인터랙티브 지도">
+        <div class="lf-map-pending">Loading fieldwork map...</div>
+      </div>
+      <div class="lf-map-overlay-bottom"><span>ELSDR FIELD ARCHIVE</span><span id="lf-map-active-location">2 documented locations</span></div>
+    </div>
+  </div>
+  <div class="lf-map-source">
+    <p>기존 홈페이지의 <strong>ELDR Map → Korea</strong> 메뉴를 Fieldwork 구성에 반영했어. 이 지도는 공개된 Field trip 게시물에 장소가 명시된 서울숲과 양양만 표시한 새 시안이며, 원본 지도의 전체 핀을 복제한 것은 아니야. 양양은 상세 방문 좌표가 공개되지 않아 <em>군 단위 중심 위치</em>로 표시했어.</p>
+    <a href="https://edesign.korea.ac.kr/" target="_blank" rel="noopener noreferrer">Original ELDR Map (menu: Korea) <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
+<div class="lf-field-list-head"><span>FIELD NOTES / ARCHIVE</span><h3>Field Trips &amp; Workshops</h3></div>
 <div class="lf-field-grid"><a href="https://edesign.korea.ac.kr/131" class="lf-field" target="_blank" rel="noopener noreferrer"><div class="lf-field-img"><img loading="lazy" src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1100&q=85" alt="실제 현장 사진이 아닌 주제 참고 이미지"><span>01 / FIELD TRIP</span></div><div class="lf-field-text"><small>2025 · FIELD ARCHIVE</small><h3>Portland &amp; Seattle 2025</h3><span>Original post ↗</span></div></a>
 <a href="https://edesign.korea.ac.kr/128" class="lf-field" target="_blank" rel="noopener noreferrer"><div class="lf-field-img"><img loading="lazy" src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1100&q=85" alt="실제 현장 사진이 아닌 주제 참고 이미지"><span>02 / FIELD TRIP</span></div><div class="lf-field-text"><small>2025 · FIELD ARCHIVE</small><h3>2025 그린보트</h3><span>Original post ↗</span></div></a>
 <a href="https://edesign.korea.ac.kr/126" class="lf-field" target="_blank" rel="noopener noreferrer"><div class="lf-field-img"><img loading="lazy" src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1100&q=85" alt="실제 현장 사진이 아닌 주제 참고 이미지"><span>03 / LAB WORKSHOP</span></div><div class="lf-field-text"><small>2024 · FIELD ARCHIVE</small><h3>2024 연구실 워크숍 · 양양</h3><span>Original post ↗</span></div></a>
@@ -1792,6 +1830,87 @@ searchCourses();route();
   keyword=search.value.trim().toLocaleLowerCase();filterTheses();
  });
  filterTheses();
+})();
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<script>
+/* Fieldwork map: real documented trip locations only, not a copy of original ELDR Map pins. */
+(function(){
+ const field=document.querySelector('[data-life-view="fieldwork"]');
+ if(!field)return;
+ const mapEl=field.querySelector('#lf-korea-map');
+ const labels=field.querySelector('#lf-map-active-location');
+ const buttons=[...field.querySelectorAll('[data-field-location]')];
+ const reset=field.querySelector('#lf-map-reset');
+ const destinations={
+   seoulforest:{coords:[37.5446,127.0374],name:'서울숲 · 서울',note:'2024 서울숲 필드트립',zoom:12,url:'https://edesign.korea.ac.kr/124'},
+   yangyang:{coords:[38.0755,128.6187],name:'양양군 · 강원',note:'2024 연구실 워크숍 · 양양',zoom:10,url:'https://edesign.korea.ac.kr/126'}
+ };
+ let map=null, markers={},active=null,initDone=false;
+ function fallback(){
+  if(initDone)return;
+  initDone=true;
+  mapEl.innerHTML='<iframe title="대한민국 위치 지도" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=125.7%2C34.0%2C130.1%2C39.0&amp;layer=mapnik" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+ }
+ function select(id){
+  const info=destinations[id];if(!info)return;
+  active=id;labels.textContent=info.name;
+  buttons.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.fieldLocation===id)));
+  if(map&&markers[id]){map.flyTo(info.coords,info.zoom,{duration:.75});markers[id].openPopup();}
+  else{
+   const [lat,lon]=info.coords,delta=.12;
+   const bbox=[lon-delta,lat-delta*.65,lon+delta,lat+delta*.65].join(',');
+   const iframe=mapEl.querySelector('iframe');
+   if(iframe)iframe.src='https://www.openstreetmap.org/export/embed.html?bbox='+encodeURIComponent(bbox)+'&layer=mapnik&marker='+lat+'%2C'+lon;
+  }
+ }
+ function resetView(){
+  active=null;
+  labels.textContent='2 documented locations';
+  buttons.forEach(btn=>btn.setAttribute('aria-pressed','false'));
+  if(map){map.flyToBounds([[37.30,126.55],[38.35,129.08]],{padding:[62,62],maxZoom:9,duration:.75});}
+  else fallback();
+ }
+ function initialize(){
+  if(initDone||field.hidden||!location.hash.startsWith('#/life/fieldwork'))return;
+  if(typeof window.L==='undefined'){fallback();return;}
+  initDone=true;
+  mapEl.innerHTML='';
+  map=L.map(mapEl,{scrollWheelZoom:false,zoomControl:false,preferCanvas:true});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+   minZoom:5,maxZoom:17,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  L.control.zoom({position:'bottomright'}).addTo(map);
+  for(const [id,info] of Object.entries(destinations)){
+    const icon=L.divIcon({className:'lf-map-pin',html:'<span class="lf-map-pin-dot"></span>',iconSize:[26,26],iconAnchor:[13,13]});
+    markers[id]=L.marker(info.coords,{icon,title:info.name}).addTo(map);
+    const popup=document.createElement('div');
+    popup.className='lf-map-popup';
+    const heading=document.createElement('strong');heading.textContent=info.name;
+    const note=document.createElement('p');note.textContent=info.note;
+    const link=document.createElement('a');link.textContent='Original field record ↗';link.href=info.url;link.target='_blank';link.rel='noopener noreferrer';
+    popup.append(heading,note,link);
+    markers[id].bindPopup(popup);
+    markers[id].on('click',()=>{active=id;labels.textContent=info.name;buttons.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.fieldLocation===id)));});
+  }
+  map.fitBounds([[37.30,126.55],[38.35,129.08]],{padding:[70,70],maxZoom:9});
+  window.requestAnimationFrame(()=>map.invalidateSize());
+ }
+ function checkRoute(){
+  if(!location.hash.startsWith('#/life/fieldwork'))return;
+  window.requestAnimationFrame(()=>{
+    if(!initDone){
+      if(window.L)initialize();
+      else window.setTimeout(()=>{if(!initDone)initialize();},1200);
+    }
+    if(map)map.invalidateSize();
+  });
+ }
+ buttons.forEach(btn=>btn.addEventListener('click',()=>select(btn.dataset.fieldLocation)));
+ reset.addEventListener('click',resetView);
+ window.addEventListener('hashchange',checkRoute);
+ window.addEventListener('load',checkRoute);
+ checkRoute();
 })();
 </script>
 <script src="home-contact.js"></script>
