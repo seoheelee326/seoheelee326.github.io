@@ -220,6 +220,7 @@ function initializeActivityMap(){
   return;
  }
  mapReady=true;
+ $('#arch-map').innerHTML='';
  mapInstance=L.map('arch-map',{scrollWheelZoom:false,worldCopyJump:true}).setView([32,20],2);
  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{minZoom:2,maxZoom:17,attribution:'&copy; OpenStreetMap contributors'}).addTo(mapInstance);
  activityLocations().forEach(p=>{
