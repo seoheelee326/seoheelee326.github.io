@@ -296,7 +296,13 @@ function contactHTML(){
  ].map(([n,t,desc])=>'<div class="arch-join-list"><div><span class="arch-kicker">'+n+' / JOIN ELSDR</span><h3>'+E(t)+'</h3></div><p>'+desc+'</p></div>').join('')+
  '<div id="arch-open-positions">'+empty('등록된 모집 공고가 없습니다','모집 상태·일정은 실제 공고가 확인되면 입력합니다.')+'</div></section>');
 }
-function setupContact(){root('contact').innerHTML=contactHTML();}
+function renderOpenPositions(){
+ const positions=registry.positions.slice().sort((a,b)=>(a.deadline||'').localeCompare(b.deadline||''));
+ $('#arch-open-positions').innerHTML=positions.length?'<div class="arch-list">'+positions.map(d=>
+ '<div class="arch-resource-row"><span class="arch-pill">'+E(d.status||'OPEN')+'</span><div><strong>'+E(d.title)+'</strong><p>'+E(d.type)+' · Deadline: '+E(d.deadline||'To be announced')+'</p></div><span>'+(d.url?'<a class="arch-anchor" href="'+E(d.url)+'" target="_blank" rel="noopener noreferrer">지원 안내 ↗</a>':'문의 후 안내')+'</span></div>'
+ ).join('')+'</div>':empty('등록된 모집 공고가 없습니다','모집 현황·지원 기간·상태를 확인한 후 직접 입력할 수 있도록 준비했습니다.');
+}
+function setupContact(){root('contact').innerHTML=contactHTML();renderOpenPositions();}
 function refreshCurrentRoute(){
  const path=location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
  const [page,section='',detail='']=path.split('/');
