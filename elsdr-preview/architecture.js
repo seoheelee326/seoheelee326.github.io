@@ -98,7 +98,8 @@ function peopleHTML(professorProfileHTML){
  '<section class="arch-group"><h3>Newspaper Columns</h3><div id="arch-columns-list">'+empty('신문 칼럼 등록 예정','제목 · 매체명 · 발행일 · 원문 링크')+'</div></section>'+
  '<section class="arch-group"><h3>Essays & Other Writings</h3><div id="arch-essays-list">'+empty('기고글 등록 예정','제목 · 매체명 · 발행일 · 원문 링크')+'</div></section></section>';
  const researchers='<section data-arch-people="researchers" hidden>'+intro('PEOPLE / RESEARCH TEAM','Researchers','Ph.D. / M.S. / Research Interns — 구성원은 신분 및 졸업에 따라 한 번만 등록하고 이동합니다.')+
- '<div class="arch-people-categories">'+[['phd','Ph.D. Researchers'],['ms','M.S. Researchers'],['intern','Research Interns']].map(([key,label])=>'<section class="arch-people-row" data-researcher-group="'+key+'"><div><h3>'+label+'</h3><p>구성원 분류 · '+key.toUpperCase()+'</p></div><div id="arch-researcher-'+key+'">'+empty('프로필 등록 예정','사진 · 국문/영문 이름 · 학위/신분 · 연구관심 · 이메일을 동일한 형태로 표시합니다.')+'</div></section>').join('')+'</div></section>';
+ '<div id="arch-researchers-empty">'+empty('연구원 프로필 등록 예정','Ph.D. Researchers · M.S. Researchers · Research Interns 유형을 관리하며, 등록 인원이 없는 분류는 공개 페이지에서 표시하지 않습니다.')+'</div>'+
+ '<div class="arch-people-categories">'+[['phd','Ph.D. Researchers'],['ms','M.S. Researchers'],['intern','Research Interns']].map(([key,label])=>'<section class="arch-people-row" data-researcher-group="'+key+'" hidden><div><h3>'+label+'</h3><p>구성원 분류 · '+key.toUpperCase()+'</p></div><div id="arch-researcher-'+key+'"></div></section>').join('')+'</div></section>';
  const alumni='<section data-arch-people="alumni" hidden>'+intro('PEOPLE / ALUMNI','Alumni Directory','이름·학위·졸업연도·현재 소속·활동 분야 중심의 디렉터리입니다.')+
  '<div class="arch-searchbar"><input id="arch-alumni-query" class="arch-input" type="search" placeholder="이름 · 소속 · 분야 검색" aria-label="졸업생 검색"></div><div class="arch-count"><span id="arch-alumni-count">0 alumni</span><a class="arch-anchor" href="#/people/alumni/theses">Thesis Archive ↗</a></div><div id="arch-alumni-list">'+empty('졸업생 명단 입력 예정','기존 기록은 검수 후 이전하며 Researcher에서 Alumni로 이동 관리합니다.')+'</div></section>';
  const thesis='<section data-arch-people="alumni/theses" hidden>'+intro('ALUMNI / DEGREE THESES','Thesis Archive','학위논문은 Alumni Directory와 연결하면서 별도의 목록으로 관리합니다.')+
@@ -139,9 +140,10 @@ function renderPeopleCollections(){
   if(data.length)$('#arch-'+key+'-list').innerHTML='<div class="arch-list">'+data.map(d=>'<div class="arch-resource-row"><span>'+E(d.date)+'</span><div><strong>'+E(d.title)+'</strong><p>'+E(d.publication)+'</p></div><span>'+(d.url?'<a class="arch-anchor" href="'+E(d.url)+'" target="_blank" rel="noopener noreferrer">원문 ↗</a>':'원문 확인 중')+'</span></div>').join('')+'</div>';
  });
  const populated=registry.researchers.length>0;
+ $('#arch-researchers-empty').hidden=populated;
  ['phd','ms','intern'].forEach(group=>{
   const list=registry.researchers.filter(d=>d.group===group);
-  $('[data-researcher-group="'+group+'"]').hidden=populated&&!list.length;
+  $('[data-researcher-group="'+group+'"]').hidden=!list.length;
   $('#arch-researcher-'+group).innerHTML=list.length?'<div class="arch-info-grid">'+list.map(d=>'<article class="arch-info-card"><div class="arch-photo" style="max-width:160px">'+(d.photo?'<img src="'+E(d.photo)+'" alt="'+E(d.name)+' 프로필 사진" style="width:100%;height:100%;object-fit:cover">':'PHOTO')+'</div><h3>'+E(d.name)+' <small>'+E(d.nameEn)+'</small></h3><p>'+E(d.role||d.group)+' · '+E(d.interests)+'</p>'+(d.email?'<a class="arch-anchor" href="mailto:'+E(d.email)+'">'+E(d.email)+'</a>':'')+'</article>').join('')+'</div>':empty('프로필 등록 예정','사진 · 국문/영문 이름 · 신분 · 연구관심 · 이메일 형식을 준비했습니다.');
  });
 }
