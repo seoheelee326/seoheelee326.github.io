@@ -104,7 +104,10 @@ function peopleHTML(){
  const thesis='<section data-arch-people="alumni/theses" hidden>'+intro('ALUMNI / DEGREE THESES','Thesis Archive','학위논문은 Alumni Directory와 연결하면서 별도의 목록으로 관리합니다.')+
  '<div class="arch-searchbar"><input id="arch-thesis-query" class="arch-input" type="search" placeholder="논문 제목 · 저자 검색" aria-label="학위논문 검색"><select class="arch-select" id="arch-thesis-degree" aria-label="학위 구분"><option value="all">All Degrees</option><option value="phd">Ph.D.</option><option value="ms">M.S.</option></select></div>'+
  '<div class="arch-count"><span id="arch-thesis-count">0 theses</span><span>NEWEST FIRST</span></div><div id="arch-thesis-list">'+empty('학위논문 이전 예정','이전 시안의 17편을 확정 수치로 표시하지 않습니다. 논문 제목·저자·학위·연도·원문 링크를 입력할 수 있습니다.')+'</div></section>';
- return shell('people',subnav('people',[['professor','Professor'],['researchers','Researchers'],['alumni','Alumni']])+prof+career+books+researchers+alumni+thesis);
+ return shell('people',subnav('people',[['professor','Professor'],['researchers','Researchers'],['alumni','Alumni']])+
+ '<nav class="arch-subnav arch-subnav-secondary" id="arch-professor-subnav" aria-label="Professor subsections"><a href="#/people/professor">Profile</a><a href="#/people/professor/career">Career & Activities</a><a href="#/people/professor/books">Books & Writings</a></nav>'+
+ '<nav class="arch-subnav arch-subnav-secondary" id="arch-alumni-subnav" hidden aria-label="Alumni subsections"><a href="#/people/alumni">Alumni Directory</a><a href="#/people/alumni/theses">Thesis Archive</a></nav>'+
+ prof+career+books+researchers+alumni+thesis);
 }
 function setupPeople(){
  root('people').innerHTML=peopleHTML();
@@ -286,7 +289,10 @@ function refreshCurrentRoute(){
   else if(section==='professor'&&detail==='books')key='professor/books';
   else if(section==='alumni'&&detail==='theses')key='alumni/theses';
   if(!sections.people.includes(key))key='professor';
-  $$('[data-arch-people]').forEach(el=>el.hidden=el.dataset.archPeople!==key);
+  $('[data-arch-people]').forEach(el=>el.hidden=el.dataset.archPeople!==key);
+  $('#arch-professor-subnav').hidden=!key.startsWith('professor');
+  $('#arch-alumni-subnav').hidden=!key.startsWith('alumni');
+  $('#arch-professor-subnav a, #arch-alumni-subnav a').forEach(a=>{const active=a.getAttribute('href')==='#/'+path;a.classList.toggle('is-active',active);});
  }
  if(page==='life'){
   const view=sections.life.includes(section)?section:'news';
