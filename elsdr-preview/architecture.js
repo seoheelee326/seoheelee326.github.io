@@ -92,13 +92,13 @@ function peopleHTML(){
  const prof='<section data-arch-people="professor">'+intro('PROFESSOR / PROFILE','Principal Investigator','연구 책임자의 기본 프로필. 논문과 연구과제는 Research Archive에서 관리합니다.')+
  '<div class="arch-profile">'+placeholder('PROFESSOR PHOTO')+'<div><span class="arch-kicker">PRINCIPAL INVESTIGATOR</span><h2>전진형</h2><p>Junhyung Chon · Korea University<br>Division of Environmental Science and Ecological Engineering</p><p>연구자로서의 전문성과 연구 방향을 소개하는 짧은 문단이 배치됩니다.</p>'+fields([['Position','Professor / Principal Investigator'],['Email','확인 후 입력'],['Phone','확인 후 입력']])+'<div class="arch-links">'+link('professor/career','Career & Activities')+link('professor/books','Books & Writings')+'<a href="#/research">Research Archive ↗</a></div></div></div></section>';
  const career='<section data-arch-people="professor/career" hidden>'+intro('PROFESSOR / CAREER','Career & Activities','주요 경력과 대외 활동을 유형별로 관리합니다.')+
- [['career','Major Career & Appointments'],['societies','Academic Societies & Professional Associations'],['advisory','Public Committees & Policy Advisory'],['awards','Honors & Academic Achievements']].map(([k,t])=>'<section class="arch-group"><h3>'+t+'</h3>'+empty('경력 및 활동 입력 예정','항목별로 연도·기관·직책·설명을 추가할 수 있도록 구성했습니다.')+'</section>').join('')+'</section>';
+ [['career','Major Career & Appointments'],['societies','Academic Societies & Professional Associations'],['advisory','Public Committees & Policy Advisory'],['awards','Honors & Academic Achievements']].map(([k,t])=>'<section class="arch-group"><h3>'+t+'</h3>'+'<div id="arch-career-'+k+'">'+empty('경력 및 활동 입력 예정','항목별로 연도·기관·직책·설명을 추가할 수 있도록 구성했습니다.')+'</div>'+'</section>').join('')+'</section>';
  const books='<section data-arch-people="professor/books" hidden>'+intro('PROFESSOR / PUBLIC WRITINGS','Books & Writings','저서·신문 칼럼·잡지 및 기타 기고글을 분리하여 관리합니다.')+
- '<section class="arch-group"><h3>Books</h3><div class="arch-covers"><div class="arch-cover-card"><div class="arch-cover-img">BOOK COVER</div><h3>도서 등록 예정</h3><p class="arch-muted">제목 · 출판사 · 발행연도 · 소개 · 판매처</p></div></div></section>'+
- '<section class="arch-group"><h3>Newspaper Columns</h3>'+empty('신문 칼럼 등록 예정','제목 · 매체명 · 발행일 · 원문 링크')+'</section>'+
- '<section class="arch-group"><h3>Essays & Other Writings</h3>'+empty('기고글 등록 예정','제목 · 매체명 · 발행일 · 원문 링크')+'</section></section>';
+ '<section class="arch-group"><h3>Books</h3><div id="arch-books-list" class="arch-covers"><div class="arch-cover-card"><div class="arch-cover-img">BOOK COVER</div><h3>도서 등록 예정</h3><p class="arch-muted">제목 · 출판사 · 발행연도 · 소개 · 판매처</p></div></div></section>'+
+ '<section class="arch-group"><h3>Newspaper Columns</h3><div id="arch-columns-list">'+empty('신문 칼럼 등록 예정','제목 · 매체명 · 발행일 · 원문 링크')+'</div></section>'+
+ '<section class="arch-group"><h3>Essays & Other Writings</h3><div id="arch-essays-list">'+empty('기고글 등록 예정','제목 · 매체명 · 발행일 · 원문 링크')+'</div></section></section>';
  const researchers='<section data-arch-people="researchers" hidden>'+intro('PEOPLE / RESEARCH TEAM','Researchers','Ph.D. / M.S. / Research Interns — 구성원은 신분 및 졸업에 따라 한 번만 등록하고 이동합니다.')+
- '<div class="arch-people-categories">'+[['phd','Ph.D. Researchers'],['ms','M.S. Researchers'],['intern','Research Interns']].map(([key,label])=>'<section class="arch-people-row"><div><h3>'+label+'</h3><p>구성원 분류 · '+key.toUpperCase()+'</p></div><div>'+empty('프로필 등록 예정','사진 · 국문/영문 이름 · 학위/신분 · 연구관심 · 이메일을 동일한 형태로 표시합니다.')+'</div></section>').join('')+'</div></section>';
+ '<div class="arch-people-categories">'+[['phd','Ph.D. Researchers'],['ms','M.S. Researchers'],['intern','Research Interns']].map(([key,label])=>'<section class="arch-people-row" data-researcher-group="'+key+'"><div><h3>'+label+'</h3><p>구성원 분류 · '+key.toUpperCase()+'</p></div><div id="arch-researcher-'+key+'">'+empty('프로필 등록 예정','사진 · 국문/영문 이름 · 학위/신분 · 연구관심 · 이메일을 동일한 형태로 표시합니다.')+'</div></section>').join('')+'</div></section>';
  const alumni='<section data-arch-people="alumni" hidden>'+intro('PEOPLE / ALUMNI','Alumni Directory','이름·학위·졸업연도·현재 소속·활동 분야 중심의 디렉터리입니다.')+
  '<div class="arch-searchbar"><input id="arch-alumni-query" class="arch-input" type="search" placeholder="이름 · 소속 · 분야 검색" aria-label="졸업생 검색"></div><div class="arch-count"><span id="arch-alumni-count">0 alumni</span><a class="arch-anchor" href="#/people/alumni/theses">Thesis Archive ↗</a></div><div id="arch-alumni-list">'+empty('졸업생 명단 입력 예정','기존 기록은 검수 후 이전하며 Researcher에서 Alumni로 이동 관리합니다.')+'</div></section>';
  const thesis='<section data-arch-people="alumni/theses" hidden>'+intro('ALUMNI / DEGREE THESES','Thesis Archive','학위논문은 Alumni Directory와 연결하면서 별도의 목록으로 관리합니다.')+
@@ -111,10 +111,32 @@ function peopleHTML(){
 }
 function setupPeople(){
  root('people').innerHTML=peopleHTML();
+ renderPeopleCollections();
  $('#arch-alumni-query').addEventListener('input',updateAlumni);
  $('#arch-thesis-query').addEventListener('input',updateTheses);
  $('#arch-thesis-degree').addEventListener('change',updateTheses);
 }
+
+function renderPeopleCollections(){
+ const careers=[['career','Major Career & Appointments'],['societies','Academic Societies & Professional Associations'],['advisory','Public Committees & Policy Advisory'],['awards','Honors & Academic Achievements']];
+ careers.forEach(([key])=>{
+  const subset=registry.careers.filter(c=>c.category===key).sort((a,b)=>Number(b.year)-Number(a.year));
+  $('#arch-career-'+key).innerHTML=subset.length?'<div class="arch-list">'+subset.map(d=>'<div class="arch-resource-row"><span>'+E(d.year)+'</span><div><strong>'+E(d.title)+'</strong><p>'+E(d.organization)+' · '+E(d.description)+'</p></div><span></span></div>').join('')+'</div>':empty('경력 및 활동 입력 예정','연도 · 기관 · 직책 · 활동을 등록할 수 있습니다.');
+ });
+ const books=registry.books;
+ if(books.length)$('#arch-books-list').innerHTML=books.map(d=>'<article class="arch-cover-card"><div class="arch-cover-img">'+(d.cover?'<img src="'+E(d.cover)+'" alt="'+E(d.title)+' 도서 표지" loading="lazy" style="width:100%;height:100%;object-fit:cover">':'BOOK COVER')+'</div><h3>'+E(d.title)+'</h3><p class="arch-muted">'+E(d.publisher)+' · '+E(d.year)+'<br>'+E(d.summary)+'</p>'+(d.url?'<a class="arch-anchor" href="'+E(d.url)+'" target="_blank" rel="noopener noreferrer">판매처 ↗</a>':'')+'</article>').join('');
+ [['columns','Newspaper Columns'],['essays','Essays & Other Writings']].forEach(([key,label])=>{
+  const data=registry[key].slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  if(data.length)$('#arch-'+key+'-list').innerHTML='<div class="arch-list">'+data.map(d=>'<div class="arch-resource-row"><span>'+E(d.date)+'</span><div><strong>'+E(d.title)+'</strong><p>'+E(d.publication)+'</p></div><span>'+(d.url?'<a class="arch-anchor" href="'+E(d.url)+'" target="_blank" rel="noopener noreferrer">원문 ↗</a>':'원문 확인 중')+'</span></div>').join('')+'</div>';
+ });
+ const populated=registry.researchers.length>0;
+ ['phd','ms','intern'].forEach(group=>{
+  const list=registry.researchers.filter(d=>d.group===group);
+  $('[data-researcher-group="'+group+'"]').hidden=populated&&!list.length;
+  $('#arch-researcher-'+group).innerHTML=list.length?'<div class="arch-info-grid">'+list.map(d=>'<article class="arch-info-card"><div class="arch-photo" style="max-width:160px">'+(d.photo?'<img src="'+E(d.photo)+'" alt="'+E(d.name)+' 프로필 사진" style="width:100%;height:100%;object-fit:cover">':'PHOTO')+'</div><h3>'+E(d.name)+' <small>'+E(d.nameEn)+'</small></h3><p>'+E(d.role||d.group)+' · '+E(d.interests)+'</p>'+(d.email?'<a class="arch-anchor" href="mailto:'+E(d.email)+'">'+E(d.email)+'</a>':'')+'</article>').join('')+'</div>':empty('프로필 등록 예정','사진 · 국문/영문 이름 · 신분 · 연구관심 · 이메일 형식을 준비했습니다.');
+ });
+}
+
 function updateAlumni(){
  const q=$('#arch-alumni-query').value.toLowerCase().trim();
  const data=registry.alumni.filter(d=>[d.name,d.nameEn,d.affiliation,d.field,d.year].join(' ').toLowerCase().includes(q)).sort((a,b)=>Number(b.year)-Number(a.year));
