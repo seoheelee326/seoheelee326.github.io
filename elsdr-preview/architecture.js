@@ -71,7 +71,7 @@ function renderResearch(){
   const detail=d.kind==='project'?
    fields([['Research Period',d.period],['Funding Organization',d.funder],['Participation / Role',d.role],['Research Theme',themes.find(x=>x[0]===d.theme)?.[1]]]):
    fields([['Authors',d.authors],['Journal / Citation',d.journal],['Publication Type',d.publicationType],['DOI',d.doi]]);
-  const more=d.link?'<p><a class="arch-anchor" href="'+E(d.link)+'" target="_blank" rel="noopener noreferrer">Read original ↗</a></p>':'';
+  const more=(d.doi&&d.kind==='publication'?'<p><a class="arch-anchor" href="https://doi.org/'+encodeURI(String(d.doi).replace(/^https?:\/\/doi\.org\//i,''))+'" target="_blank" rel="noopener noreferrer">Open DOI ↗</a></p>':'')+(d.link?'<p><a class="arch-anchor" href="'+E(d.link)+'" target="_blank" rel="noopener noreferrer">Read original ↗</a></p>':'');
   return '<details class="arch-record"><summary><span class="arch-record-year">'+E(d.year)+'</span><span class="arch-record-kind">'+(d.kind==='project'?'PROJECT':'PUBLICATION')+'</span><span class="arch-record-title">'+E(d.title)+(d.sample?'<small>DESIGN SAMPLE — 실제 연구성과가 아닙니다</small>':'<small>'+E(d.funder||d.journal||'')+'</small>')+'</span><span class="arch-record-open">＋</span></summary><div class="arch-detail"><p>'+E(d.summary||d.abstract||'연구 개요·초록 입력 예정')+'</p>'+detail+more+'</div></details>';
  }).join('');
  $('#arch-r-list').innerHTML=html||empty('일치하는 연구 자료가 없습니다','선택한 유형·연구영역·연도 또는 검색어를 변경해 보세요.');
@@ -178,9 +178,13 @@ function renderEvents(){
  $('#arch-events-more').hidden=items.length<=eState.limit;
  $$('[data-event-kind]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.eventKind===eState.type)));
 }
+function resolvedActivity(a){
+ const evt=a.eventId?registry.events.find(e=>e.id===a.eventId):null;
+ return evt?{...a,title:evt.title,date:evt.date,placeLabel:evt.place,linkedEvent:evt}:a;
+}
 function activityLocations(){
  const places=new Map();
- registry.activities.forEach(a=>a.places?.forEach(p=>{
+ registry.activities.map(resolvedActivity).forEach(a=>a.places?.forEach(p=>{
   if(!places.has(p.id))places.set(p.id,{...p,activities:[]});
   places.get(p.id).activities.push(a);
  }));
@@ -195,7 +199,7 @@ function activitiesHTML(){
 }
 let aFilter='all',mapInstance=null,mapMarkers={},mapReady=false;
 function activityCards(){
- const data=registry.activities.filter(d=>aFilter==='all'||d.category===aFilter).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+ const data=registry.activities.map(resolvedActivity).filter(d=>aFilter==='all'||d.category===aFilter).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
  $('#arch-activities-list').innerHTML=data.length?data.map(d=>
  '<a class="arch-activity-card" id="arch-activity-'+E(d.id)+'" href="#/life/activities/'+E(d.id)+'"><div class="arch-activity-photo">PHOTO PENDING</div><div><span class="arch-kicker">'+E(d.date||'DATE TBC')+' / '+E(d.category)+'</span><h3>'+E(d.title)+'</h3><p>'+E(d.placeLabel||'Location unspecified')+' · '+E(d.summary||'활동 소개 입력 예정')+'</p></div><span>↗</span></a>'
  ).join(''):empty('활동 기록 입력 예정','장소가 없는 활동도 지도와 별개로 등록할 수 있습니다.');
@@ -245,13 +249,13 @@ function setupLife(){
  renderEvents();renderNews();activityCards();activitiesLocList();
 }
 function renderLifeDetail(view,id){
- let record=view==='events'?registry.events.find(x=>x.id===id):registry.activities.find(x=>x.id===id);
+ let record=view==='events'?registry.events.find(x=>x.id===id):registry.activities.map(resolvedActivity).find(x=>x.id===id);
  const back='#/life/'+view,head=view==='events'?'EVENT DETAILS':'ACTIVITY DETAILS';
  $('#arch-life-detail').innerHTML=record?'<div class="arch-event-detail"><a class="arch-anchor" href="'+back+'">← Back to '+E(view)+'</a>'+
  intro('ELSDR / '+head,'Details','게시물별 상세 화면 골조입니다. 사진·자료·본문은 추후 입력됩니다.')+
  '<span class="arch-kicker">'+E(record.date||record.year)+' · '+E(record.category)+'</span><h2>'+E(record.title)+'</h2>'+
  fields([['Date / Period',record.date],['Location',record.place||record.placeLabel],['Speaker / Organizer',record.host],['Related Research / Materials','입력 예정']])+
- '<section class="arch-group"><h3>Overview</h3><p class="arch-muted">'+E(record.summary)+'</p></section><section class="arch-group"><h3>Photos & Related Materials</h3>'+empty('사진 및 자료 등록 예정','게시물의 관련 이미지와 다운로드 자료가 표시됩니다.')+'</section></div>':
+ '<section class="arch-group"><h3>Overview</h3><p class="arch-muted">'+E(record.summary)+'</p>'+(record.linkedEvent?'<p><a class="arch-anchor" href="#/life/events/'+E(record.linkedEvent.id)+'">Connected Event ↗</a></p>':'')+(view==='events'&&registry.activities.some(a=>a.eventId===record.id)?'<p><a class="arch-anchor" href="#/life/activities/'+E(registry.activities.find(a=>a.eventId===record.id).id)+'">Connected Activity ↗</a></p>':'')+'</section><section class="arch-group"><h3>Photos & Related Materials</h3>'+empty('사진 및 자료 등록 예정','게시물의 관련 이미지와 다운로드 자료가 표시됩니다.')+'</section></div>':
  '<div class="arch-event-detail"><a class="arch-anchor" href="'+back+'">← Back</a>'+empty('기록을 찾을 수 없습니다','목록으로 돌아가 자료를 확인해 주세요.')+'</div>';
 }
 function contactHTML(){
