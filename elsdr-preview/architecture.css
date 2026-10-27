@@ -108,3 +108,7 @@
 .ab-methods-tags{display:flex;flex-wrap:wrap;gap:9px;align-content:start}
 .ab-methods-tags span{font-size:11px;color:#5e7664;padding:11px 13px;border:1px solid #c5d4c5;line-height:1.4}
 @media(max-width:640px){.ab-methods-2026{display:block}.ab-methods-tags{margin-top:20px}.ab-methods-heading h3{font-size:33px}}
+
+.arch-shell [hidden]{display:none!important}
+.arch-subnav-secondary{margin-top:-25px;margin-bottom:46px;padding:10px 0;background:#ecf1e9}
+.arch-subnav-secondary a{font-size:11px;padding:11px 17px}
