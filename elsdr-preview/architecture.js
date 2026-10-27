@@ -17,7 +17,7 @@ const headings={
 const navItems={
  about:[['vision','Vision'],['identity','Identity'],['themes','Research Themes'],['approach','Research Approach']],
  research:[['projects','Projects'],['publications','Publications']],
- people:[['professor','Professor — Profile'],['professor/career','Career & Activities'],['professor/books','Books & Writings'],['researchers','Researchers'],['alumni','Alumni Directory'],['alumni/theses','Thesis Archive']],
+ people:[['professor','Professor'],['researchers','Researchers'],['alumni','Alumni']],
  study:[['learning','Learning & Training'],['resources','Research Resources']],
  life:[['news','News'],['events','Events'],['activities','Activities']],
  contact:[['location','Location'],['join','Join Us']]
@@ -87,10 +87,10 @@ function setupResearch(){
  $$('[data-r-kind]').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.rKind==='all'?'#/research':'#/research/'+(b.dataset.rKind==='project'?'projects':'publications');}));
  $('#arch-r-more').addEventListener('click',()=>{rState.limit+=8;renderResearch();});
 }
-function peopleHTML(){
+function peopleHTML(professorProfileHTML){
  const link=(path,title)=>'<a href="#/people/'+path+'">'+E(title)+' ↗</a>';
- const prof='<section data-arch-people="professor">'+intro('PROFESSOR / PROFILE','Principal Investigator','연구 책임자의 기본 프로필. 논문과 연구과제는 Research Archive에서 관리합니다.')+
- '<div class="arch-profile">'+placeholder('PROFESSOR PHOTO')+'<div><span class="arch-kicker">PRINCIPAL INVESTIGATOR</span><h2>전진형</h2><p>Junhyung Chon · Korea University<br>Division of Environmental Science and Ecological Engineering</p><p>연구자로서의 전문성과 연구 방향을 소개하는 짧은 문단이 배치됩니다.</p>'+fields([['Position','Professor / Principal Investigator'],['Email','확인 후 입력'],['Phone','확인 후 입력']])+'<div class="arch-links">'+link('professor/career','Career & Activities')+link('professor/books','Books & Writings')+'<a href="#/research">Research Archive ↗</a></div></div></div></section>';
+ const prof='<section data-arch-people="professor">'+intro('PROFESSOR / PROFILE','Principal Investigator','연구 책임자 소개와 기본 연락처. 저서와 기고글은 Books & Writings, 연구성과는 Research에서 확인합니다.')+
+ professorProfileHTML+'<div class="arch-links"><a href="#/people/professor/career">Career & Activities ↗</a><a href="#/people/professor/books">Books & Writings ↗</a><a href="#/research">Research Archive ↗</a></div></section>';
  const career='<section data-arch-people="professor/career" hidden>'+intro('PROFESSOR / CAREER','Career & Activities','주요 경력과 대외 활동을 유형별로 관리합니다.')+
  [['career','Major Career & Appointments'],['societies','Academic Societies & Professional Associations'],['advisory','Public Committees & Policy Advisory'],['awards','Honors & Academic Achievements']].map(([k,t])=>'<section class="arch-group"><h3>'+t+'</h3>'+'<div id="arch-career-'+k+'">'+empty('경력 및 활동 입력 예정','항목별로 연도·기관·직책·설명을 추가할 수 있도록 구성했습니다.')+'</div>'+'</section>').join('')+'</section>';
  const books='<section data-arch-people="professor/books" hidden>'+intro('PROFESSOR / PUBLIC WRITINGS','Books & Writings','저서·신문 칼럼·잡지 및 기타 기고글을 분리하여 관리합니다.')+
@@ -110,7 +110,16 @@ function peopleHTML(){
  prof+career+books+researchers+alumni+thesis);
 }
 function setupPeople(){
- root('people').innerHTML=peopleHTML();
+ const oldProfessor=root('people').querySelector('.pp-prof-profile');
+ const profile=oldProfessor?.cloneNode(true);
+ if(profile){
+  // Keep the existing professor profile design rather than creating a new generic card.
+  profile.querySelector('.pp-prof-keywords')?.remove();
+  const intro=profile.querySelector('.pp-prof-desc');
+  if(intro)intro.textContent='사회·생태 시스템의 변화와 상호작용을 연구하며, 과학적 분석을 공간 계획과 설계 전략으로 연결합니다.';
+ }
+ const professorProfileHTML=profile?.outerHTML||'<div class="arch-profile"><div class="arch-photo">PROFESSOR PHOTO</div><div><h2>Professor Profile</h2><p>사진·성명·소속·직책·연락처를 입력할 수 있습니다.</p></div></div>';
+ root('people').innerHTML=peopleHTML(professorProfileHTML);
  renderPeopleCollections();
  $('#arch-alumni-query').addEventListener('input',updateAlumni);
  $('#arch-thesis-query').addEventListener('input',updateTheses);
