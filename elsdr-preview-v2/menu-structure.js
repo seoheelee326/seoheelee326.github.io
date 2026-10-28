@@ -49,24 +49,6 @@
      if(submenu)submenu.replaceChildren(...links.map(([slug,title])=>link(page,slug,title)));
      if(mega)mega.replaceChildren(...links.map(([slug,title])=>link(page,slug,title)));
    });
-   const study=$('[data-page="study"]');
-   const studyNav=$('.st-nav',study);
-   if(studyNav){
-     studyNav.innerHTML='<a href="#/study/learning" data-v2-study-nav="learning"><small>01</small>Learning &amp; Training<b>↗</b></a>'+
-       '<a href="#/study/resources" data-v2-study-nav="resources"><small>02</small>Research Resources<b>↗</b></a>';
-     const panel=document.createElement('div');
-     panel.id='v2-study-shell';
-     panel.className='v2-study-shell';
-     panel.innerHTML='<section data-v2-study-panel="learning"><div class="v2-shell-eyebrow">01 / LEARNING &amp; TRAINING</div>'+
-       '<h2>Learning &amp; Training<span>.</span></h2><p>Systems Thinking &amp; Modeling / Spatial Analysis &amp; Simulation / Ecological &amp; Environmental Assessment / Research Practice &amp; Communication</p>'+
-       '<div class="v2-outline-note">메뉴와 페이지 골조만 준비했습니다. 상세 내용은 다음 단계에서 적용합니다.</div></section>'+
-       '<section data-v2-study-panel="resources" hidden><div class="v2-shell-eyebrow">02 / RESEARCH RESOURCES</div>'+
-       '<h2>Research Resources<span>.</span></h2><p>Research Notes / Learning Materials / Seminar Materials</p>'+
-       '<div class="v2-outline-note">자료 목록과 열람·다운로드 구조는 다음 단계에서 적용합니다.</div></section>';
-     studyNav.after(panel);
-     const intro=$('.st-head-row p',study);
-     if(intro)intro.textContent='연구실의 학습과 연구자료를 소개합니다.';
-   }
    const life=$('[data-page="life"]');
    const lifeNav=$('.lf-tabs',life);
    if(lifeNav)lifeNav.innerHTML=[
@@ -104,16 +86,23 @@
 
  }
  function renderStudy(route){
-   if(!route.startsWith('study'))return;
-   const selected=route.split('/')[1]==='resources'?'resources':'learning';
+   if(!(route==='study'||route.startsWith('study/')))return;
+   const selected=route.split('/')[1]||'learning';
    const root=$('[data-page="study"]');
-   $$('[data-study-tab]',root).forEach(x=>x.hidden=true);
-   $$('[data-v2-study-panel]',root).forEach(x=>x.hidden=x.dataset.v2StudyPanel!==selected);
-   $$('[data-v2-study-nav]',root).forEach(a=>{
-     const active=a.dataset.v2StudyNav===selected;
-     a.classList.toggle('selected',active);
-     if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+   if(!root)return;
+   $$('[data-v2-study-nav]',root).forEach(anchor=>{
+     const active=anchor.dataset.v2StudyNav===selected;
+     anchor.classList.toggle('selected',active);
+     if(active)anchor.setAttribute('aria-current','page');
+     else anchor.removeAttribute('aria-current');
    });
+   // Both content areas stay on the same page; hash routes scroll to their section.
+   if(['learning','resources'].includes(selected)&&route.includes('/')){
+     requestAnimationFrame(()=>{
+       const destination=$('#v2-study-'+selected,root);
+       destination?.scrollIntoView({block:'start',behavior:'smooth'});
+     });
+   }
  }
  function renderLife(route){
    if(!route.startsWith('life'))return;
