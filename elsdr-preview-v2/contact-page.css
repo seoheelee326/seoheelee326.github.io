@@ -34,10 +34,10 @@
 .ct-v2-page .ct-v2-join-hero{margin:0 0 58px}
 .ct-v2-page .ct-v2-join-hero .ct-join-statement,.ct-v2-page .ct-v2-join-hero .ct-join-details{min-height:510px}
 .ct-v2-page .ct-v2-join-quicklinks{width:100%;border-top:1px solid #c2d1c4;margin:3px 0 26px}
-.ct-v2-page .ct-v2-join-quicklinks a{display:flex;align-items:center;gap:13px;border-bottom:1px solid #c2d1c4;padding:14px 0;color:#496653;font-size:13px;font-weight:600}
-.ct-v2-page .ct-v2-join-quicklinks a small{font-size:10px;font-weight:700;color:#859d89}
-.ct-v2-page .ct-v2-join-quicklinks a span{margin-left:auto}
-.ct-v2-page .ct-v2-join-quicklinks a:hover{color:#203c29}
+.ct-v2-page .ct-v2-join-quicklinks button{display:flex;align-items:center;gap:13px;width:100%;text-align:left;cursor:pointer;background:transparent;border:0;border-bottom:1px solid #c2d1c4;padding:14px 0;color:#496653;font-family:inherit;font-size:13px;font-weight:600}
+.ct-v2-page .ct-v2-join-quicklinks button small{font-size:10px;font-weight:700;color:#859d89}
+.ct-v2-page .ct-v2-join-quicklinks button span{margin-left:auto}
+.ct-v2-page .ct-v2-join-quicklinks button:hover{color:#203c29}
 .ct-v2-page .ct-v2-join-sections{border-top:1px solid #b7cbb8}
 .ct-v2-page .ct-v2-join-item{scroll-margin-top:98px;display:grid;grid-template-columns:minmax(235px,.7fr) minmax(0,1.3fr);gap:35px;padding:49px 7px 61px;border-bottom:1px solid #c1d1c3}
 .ct-v2-page .ct-v2-join-head span{font-size:10px;letter-spacing:1.5px;color:#688371;font-weight:700}
