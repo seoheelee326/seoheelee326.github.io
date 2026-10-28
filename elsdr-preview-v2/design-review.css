@@ -63,6 +63,8 @@ html{scroll-padding-top:100px}
 #research-archive-v2 .ra-title{line-height:1.42}
 .lf-v2-page .lf-seminar-list .lf-seminar{padding-top:14px;padding-bottom:14px}
 .lf-v2-page .lf-seminar-list .lf-seminar h3{line-height:1.38}
+/* Active homepage uses the existing project's image, never a generic stock background. */
+.home-background{background-image:url("hero-bg.webp");background-position:center 53%;}
 /* 04. ABOUT theme cards: text-led, no stock landscape photography or ornamental arrows. */
 #about-page .ab-theme-grid{gap:16px}
 #about-page .ab-theme-card{
