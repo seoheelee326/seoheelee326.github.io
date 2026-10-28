@@ -55,6 +55,7 @@ body.home-view .footer{display:none}
 </style>
 <link rel="stylesheet" href="palette.css">
 <link rel="stylesheet" href="menu-structure.css">
+<link rel="stylesheet" href="research-archive.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body class="ko">
@@ -328,169 +329,55 @@ body.home-view .footer{display:none}
     </div>
   </section>
 </section>
-<section class="page rs-page" data-page="research">
+<section class="page rs-page" data-page="research" id="research-archive-v2" aria-labelledby="research-title">
   <div class="wrap rs-main">
-    <div class="rs-heading-row"><div><div class="rs-kicker">SELECTED RESEARCH</div><h2>Our research archive<span class="rs-heading-period">.</span></h2></div><p>실제 연구실 홈페이지에 등록된 자료 중<br>대표적인 10개 항목을 선정했습니다.</p></div>
-    <div class="rs-toolbar" aria-label="Research archive filters">
-      <div class="rs-tabs" role="group" aria-label="자료 구분">
-        <button type="button" class="rs-type-btn is-selected" data-rs-kind="all" aria-pressed="true">All Research <span>10</span></button>
-        <button type="button" class="rs-type-btn" data-rs-kind="project" aria-pressed="false">Projects <span>5</span></button>
-        <button type="button" class="rs-type-btn" data-rs-kind="publication" aria-pressed="false">Publications <span>5</span></button>
+    <header class="ra-header">
+      <div>
+        <span class="ra-eyebrow">ELSDR / RESEARCH</span>
+        <h1 id="research-title">Research Archive<span>.</span></h1>
       </div>
-      <div class="rs-theme-row" role="group" aria-label="연구영역 필터">
-        <button type="button" class="rs-theme-btn is-selected" data-rs-theme="all" aria-pressed="true">All Themes</button>
-        <button type="button" class="rs-theme-btn" data-rs-theme="climate" aria-pressed="false">Climate</button>
-        <button type="button" class="rs-theme-btn" data-rs-theme="ecosystem" aria-pressed="false">Ecosystem</button>
-        <button type="button" class="rs-theme-btn" data-rs-theme="coastal" aria-pressed="false">Coastal</button>
-        <button type="button" class="rs-theme-btn" data-rs-theme="regional" aria-pressed="false">Regional</button>
+      <p>Projects와 Publications를 한곳에서 살펴보세요.<br>연구영역, 연도, 검색어를 조합해 탐색할 수 있습니다.</p>
+    </header>
+    <div class="ra-filter-toolbar" aria-label="Research Archive filters">
+      <div class="ra-filter-block" role="group" aria-label="자료 유형">
+        <span class="ra-label">Type</span>
+        <button type="button" class="ra-filter-btn is-selected" data-research-kind="all" aria-pressed="true">All</button>
+        <button type="button" class="ra-filter-btn" data-research-kind="project" aria-pressed="false">Projects</button>
+        <button type="button" class="ra-filter-btn" data-research-kind="publication" aria-pressed="false">Publications</button>
       </div>
-      <div class="rs-search-row"><label for="rs-search">SEARCH THE ARCHIVE</label><input type="search" id="rs-search" placeholder="Search by title, theme, or keyword…" autocomplete="off"></div>
+      <div class="ra-filter-block" role="group" aria-label="연구영역">
+        <span class="ra-label">Research Theme</span>
+        <button type="button" class="ra-filter-btn is-selected" data-research-theme="all" aria-pressed="true">All Themes</button>
+        <button type="button" class="ra-filter-btn" data-research-theme="climate" aria-pressed="false">Climate</button>
+        <button type="button" class="ra-filter-btn" data-research-theme="ecosystem" aria-pressed="false">Ecosystem</button>
+        <button type="button" class="ra-filter-btn" data-research-theme="coastal" aria-pressed="false">Coastal</button>
+        <button type="button" class="ra-filter-btn" data-research-theme="regional" aria-pressed="false">Regional</button>
+      </div>
+      <div class="ra-filter-block">
+        <label class="ra-label" for="research-year">Year</label>
+        <select class="ra-filter-year" id="research-year" aria-label="연도 선택">
+          <option value="all">All Years</option>
+        </select>
+      </div>
     </div>
-    <div class="rs-count-line"><span id="rs-result-count">10 research records</span><span>YEAR · TITLE · RESEARCH FOCUS</span></div>
-    <div class="rs-items" id="rs-items"><article class="rs-item" data-kind="project" data-category="coastal" data-year="2025" data-search="새만금 간척사업에 따른 블루카본 손실 평가 연구과제 · 새만금 갯벌 · 기존 사이트 등록 2025 갯벌의 면적 변화와 블루카본 손실을 정량적으로 평가하고, 지속가능한 연안 관리 전략을 제시하는 연구. coastal landscape">
-  <div class="rs-image rs-image-coastal"><img loading="lazy" src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=440&q=85" alt="Coastal Landscape 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2025</span><span class="rs-dot">·</span><span>Project</span><span class="rs-dot">·</span><span>Coastal Landscape</span></div>
-    <h3>새만금 간척사업에 따른 블루카본 손실 평가</h3>
-    <p class="rs-meta">연구과제 · 새만금 갯벌 · 기존 사이트 등록 2025</p>
-    <p class="rs-desc">갯벌의 면적 변화와 블루카본 손실을 정량적으로 평가하고, 지속가능한 연안 관리 전략을 제시하는 연구.</p>
-    <div class="rs-row-bottom">
-      <a href="https://edesign.korea.ac.kr/21" target="_blank" rel="noopener noreferrer">View Project <span aria-hidden="true">↗</span></a>
-      
+    <div class="ra-search-line">
+      <label class="ra-search-box" for="research-search">
+        <input id="research-search" class="ra-search-input" type="search" autocomplete="off" placeholder="Search title, researcher, or keywords…" aria-label="제목, 연구자, 키워드 검색">
+        <svg class="ra-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
+      </label>
+      <span id="research-counter" class="ra-count" aria-live="polite">0 records</span>
     </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>원문에는 연구 목적과 주요 내용이 소개되어 있으며, 정확한 연구기간 및 지원기관은 현재 확인된 목록에서 기재하지 않았습니다.</p></details>
-  </div>
-</article>
-<article class="rs-item" data-kind="project" data-category="ecosystem" data-year="2025" data-search="댐 홍수조절지의 지속가능한 수변완충지대 조성 전략 제시 2025.03–2026.02 · 고려대학교 홍수조절지 수변완충지대의 적지 선정 기준을 정립하고 사회·생태적 요소를 통합한 조성 및 관리 전략을 제안. ecosystem services">
-  <div class="rs-image rs-image-ecosystem"><img loading="lazy" src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?auto=format&fit=crop&w=440&q=85" alt="Ecosystem Services 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2025</span><span class="rs-dot">·</span><span>Project</span><span class="rs-dot">·</span><span>Ecosystem Services</span></div>
-    <h3>댐 홍수조절지의 지속가능한 수변완충지대 조성 전략 제시</h3>
-    <p class="rs-meta">2025.03–2026.02 · 고려대학교</p>
-    <p class="rs-desc">홍수조절지 수변완충지대의 적지 선정 기준을 정립하고 사회·생태적 요소를 통합한 조성 및 관리 전략을 제안.</p>
-    <div class="rs-row-bottom">
-      <a href="https://edesign.korea.ac.kr/21" target="_blank" rel="noopener noreferrer">View Project <span aria-hidden="true">↗</span></a>
-      
-    </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>연구기간: 2025.03.24–2026.02.28 · 지원기관: 고려대학교 · 참여 형태: 책임.</p></details>
-  </div>
-</article>
-<article class="rs-item" data-kind="project" data-category="coastal" data-year="2024" data-search="제주도 연안 지역 리질리언스 향상을 위한 생태조경 시스템 디자인 전략 제시 2024.07–2025.02 · 한국연구재단 기후변화와 인위적 교란에 취약한 제주 연안 생태계를 대상으로 지속가능한 사회·생태시스템과 생태조경 설계 전략을 모색. coastal landscape">
-  <div class="rs-image rs-image-coastal"><img loading="lazy" src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=440&q=85" alt="Coastal Landscape 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2024</span><span class="rs-dot">·</span><span>Project</span><span class="rs-dot">·</span><span>Coastal Landscape</span></div>
-    <h3>제주도 연안 지역 리질리언스 향상을 위한 생태조경 시스템 디자인 전략 제시</h3>
-    <p class="rs-meta">2024.07–2025.02 · 한국연구재단</p>
-    <p class="rs-desc">기후변화와 인위적 교란에 취약한 제주 연안 생태계를 대상으로 지속가능한 사회·생태시스템과 생태조경 설계 전략을 모색.</p>
-    <div class="rs-row-bottom">
-      <a href="https://edesign.korea.ac.kr/21" target="_blank" rel="noopener noreferrer">View Project <span aria-hidden="true">↗</span></a>
-      
-    </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>연구기간: 2024.07.15–2025.02.28 · 지원기관: 한국연구재단 · 참여 형태: 책임.</p></details>
-  </div>
-</article>
-<article class="rs-item" data-kind="project" data-category="regional" data-year="2022" data-search="생활권 진단지표를 활용한 농촌재생 지수 개발 2022.04–2026.12 · 농촌진흥청 농촌 생활권 진단지표를 활용한 농촌재생지수를 개발하고 지역을 지속적으로 살펴보기 위한 공간 모니터링 체계를 구축. regional landscape">
-  <div class="rs-image rs-image-regional"><img loading="lazy" src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=440&q=85" alt="Regional Landscape 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2022</span><span class="rs-dot">·</span><span>Project</span><span class="rs-dot">·</span><span>Regional Landscape</span></div>
-    <h3>생활권 진단지표를 활용한 농촌재생 지수 개발</h3>
-    <p class="rs-meta">2022.04–2026.12 · 농촌진흥청</p>
-    <p class="rs-desc">농촌 생활권 진단지표를 활용한 농촌재생지수를 개발하고 지역을 지속적으로 살펴보기 위한 공간 모니터링 체계를 구축.</p>
-    <div class="rs-row-bottom">
-      <a href="https://edesign.korea.ac.kr/21" target="_blank" rel="noopener noreferrer">View Project <span aria-hidden="true">↗</span></a>
-      
-    </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>연구기간: 2022.04.01–2026.12.31 · 지원기관: 농촌진흥청 · 참여 형태: 공동.</p></details>
-  </div>
-</article>
-<article class="rs-item" data-kind="project" data-category="ecosystem" data-year="2022" data-search="국가 중요생물다양성지역(kba) 평가 시범사업 2022.08–2023.12 · 국립생태원 국내외 중요생물다양성지역 지정 기준을 분석하고 국내 기준 적용을 위한 가이드라인과 시범 평가를 수행. ecosystem services">
-  <div class="rs-image rs-image-ecosystem"><img loading="lazy" src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=440&q=85" alt="Ecosystem Services 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2022</span><span class="rs-dot">·</span><span>Project</span><span class="rs-dot">·</span><span>Ecosystem Services</span></div>
-    <h3>국가 중요생물다양성지역(KBA) 평가 시범사업</h3>
-    <p class="rs-meta">2022.08–2023.12 · 국립생태원</p>
-    <p class="rs-desc">국내외 중요생물다양성지역 지정 기준을 분석하고 국내 기준 적용을 위한 가이드라인과 시범 평가를 수행.</p>
-    <div class="rs-row-bottom">
-      <a href="https://edesign.korea.ac.kr/21" target="_blank" rel="noopener noreferrer">View Project <span aria-hidden="true">↗</span></a>
-      
-    </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>연구기간: 2022.08.18–2023.12.10 · 지원기관: 국립생태원 · 참여 형태: 공동.</p></details>
-  </div>
-</article>
-<article class="rs-item" data-kind="publication" data-category="ecosystem" data-year="2025" data-search="evaluation criteria importance analysis for the selection of riparian buffer zones in dam flood control areas hojun choi · gihwan song · jinhyung chon · journal of the korea society of environmental restoration technology ahp를 활용해 수변완충지대 적지 선정 지표의 중요도를 평가하고 환경·물리·법률·사회 요인을 비교. ecosystem services">
-  <div class="rs-image rs-image-ecosystem"><img loading="lazy" src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?auto=format&fit=crop&w=440&q=85" alt="Ecosystem Services 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2025</span><span class="rs-dot">·</span><span>Publication</span><span class="rs-dot">·</span><span>Ecosystem Services</span></div>
-    <h3>Evaluation Criteria Importance Analysis for the Selection of Riparian Buffer Zones in Dam Flood Control Areas</h3>
-    <p class="rs-meta">최호준 · 송기환 · 전진형 · Journal of the Korea Society of Environmental Restoration Technology</p>
-    <p class="rs-desc">AHP를 활용해 수변완충지대 적지 선정 지표의 중요도를 평가하고 환경·물리·법률·사회 요인을 비교.</p>
-    <div class="rs-row-bottom">
-      <a href="https://doi.org/10.13087/koesrt.2025.28.34.13" target="_blank" rel="noopener noreferrer">View Publication <span aria-hidden="true">↗</span></a>
-      <span class="rs-doi">DOI: 10.13087/koesrt.2025.28.34.13</span>
-    </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>AHP 분석을 통해 환경적 요인(40%)이 가장 높은 중요도를 보였으며 물리적(29%), 법률적(18%), 사회적(12%) 요인이 뒤따랐습니다. 수질·생물다양성·자연성이 주요 평가 요소로 제시되었습니다.</p></details>
-  </div>
-</article>
-<article class="rs-item" data-kind="publication" data-category="ecosystem" data-year="2025" data-search="international trends and applications for advancing system dynamics in environmental ecology hojun choi · mikyeong tae · jiwoo kim · jinhyung chon · korean system dynamics review 환경생태 분야의 시스템다이내믹스 연구를 검토해 수치 검증, 변수 관계 검토, 이해관계자 참여를 통한 모델 고도화 방향을 제시. ecosystem services">
-  <div class="rs-image rs-image-ecosystem"><img loading="lazy" src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=440&q=85" alt="Ecosystem Services 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2025</span><span class="rs-dot">·</span><span>Publication</span><span class="rs-dot">·</span><span>Ecosystem Services</span></div>
-    <h3>International Trends and Applications for Advancing System Dynamics in Environmental Ecology</h3>
-    <p class="rs-meta">최호준 · 태미경 · 김지우 · 전진형 · Korean System Dynamics Review</p>
-    <p class="rs-desc">환경생태 분야의 시스템다이내믹스 연구를 검토해 수치 검증, 변수 관계 검토, 이해관계자 참여를 통한 모델 고도화 방향을 제시.</p>
-    <div class="rs-row-bottom">
-      <a href="https://doi.org/10.32588/ksds.26.2.1" target="_blank" rel="noopener noreferrer">View Publication <span aria-hidden="true">↗</span></a>
-      <span class="rs-doi">DOI: 10.32588/ksds.26.2.1</span>
-    </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>국제 연구논문 분석을 바탕으로 모델의 수치적 검증, 변수 선정과 관계의 타당성, 참여적·정성적 연구를 결합하는 개선 방향을 제안합니다.</p></details>
-  </div>
-</article>
-<article class="rs-item" data-kind="publication" data-category="coastal" data-year="2025" data-search="assessment of light environmental impacts from offshore wind farms in south korea min kim · hojun choi · jinhyung chon · marine pollution bulletin qgis와 windpro를 이용해 해상풍력 발전시설의 그림자 깜빡임과 야간 빛공해를 분석하고 입지별 저감 전략을 제시. coastal landscape">
-  <div class="rs-image rs-image-coastal"><img loading="lazy" src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=440&q=85" alt="Coastal Landscape 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2025</span><span class="rs-dot">·</span><span>Publication</span><span class="rs-dot">·</span><span>Coastal Landscape</span></div>
-    <h3>Assessment of light environmental impacts from offshore wind farms in South Korea</h3>
-    <p class="rs-meta">Min Kim · Hojun Choi · Jinhyung Chon · Marine Pollution Bulletin</p>
-    <p class="rs-desc">QGIS와 WindPRO를 이용해 해상풍력 발전시설의 그림자 깜빡임과 야간 빛공해를 분석하고 입지별 저감 전략을 제시.</p>
-    <div class="rs-row-bottom">
-      <a href="https://doi.org/10.1016/j.marpolbul.2025.117718" target="_blank" rel="noopener noreferrer">View Publication <span aria-hidden="true">↗</span></a>
-      <span class="rs-doi">DOI: 10.1016/j.marpolbul.2025.117718</span>
-    </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>농촌·섬·도시의 대표 대상지에서 그림자 깜빡임과 항공장애등 빛공해의 공간적 차이를 비교하여 입지 조정, 녹지 완충, 용도지역 관리 등 지역 특성에 따른 대안을 논의합니다.</p></details>
-  </div>
-</article>
-<article class="rs-item" data-kind="publication" data-category="climate" data-year="2024" data-search="how to manage urban disturbances: focused on social-ecological vulnerability to fine dust pollution youngsun seok · eunju ji · junga lee · environmental impact assessment review 미세먼지 노출·민감도·적응역량을 고려해 지역별 사회·생태적 취약성을 분석하고 그린인프라 계획 방향을 제시. climate adaptation">
-  <div class="rs-image rs-image-climate"><img loading="lazy" src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=440&q=85" alt="Climate Adaptation 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2024</span><span class="rs-dot">·</span><span>Publication</span><span class="rs-dot">·</span><span>Climate Adaptation</span></div>
-    <h3>How to manage urban disturbances: Focused on social-ecological vulnerability to fine dust pollution</h3>
-    <p class="rs-meta">Youngsun Seok · Eunju Ji · Junga Lee · Environmental Impact Assessment Review</p>
-    <p class="rs-desc">미세먼지 노출·민감도·적응역량을 고려해 지역별 사회·생태적 취약성을 분석하고 그린인프라 계획 방향을 제시.</p>
-    <div class="rs-row-bottom">
-      <a href="https://doi.org/10.1016/j.eiar.2023.107317" target="_blank" rel="noopener noreferrer">View Publication <span aria-hidden="true">↗</span></a>
-      <span class="rs-doi">DOI: 10.1016/j.eiar.2023.107317</span>
-    </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>수원 지역을 대상으로 대기오염 노출, 사회적 민감도, 적응역량을 분석해 도시의 미세먼지 회복탄력성과 녹지 연결성의 공간적 차이를 검토합니다.</p></details>
-  </div>
-</article>
-<article class="rs-item" data-kind="publication" data-category="ecosystem" data-year="2024" data-search="analyzing the socio-ecological system of bees to suggest strategies for green space planning to promote urban beekeeping hojun choi · min kim · jinhyung chon · journal of the korean institute of landscape architecture 도시 꿀벌과 양봉의 사회·생태 시스템을 인과순환구조로 분석하고 시민참여와 유휴지 녹지 조성 방안을 제시. ecosystem services">
-  <div class="rs-image rs-image-ecosystem"><img loading="lazy" src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=440&q=85" alt="Ecosystem Services 연구영역 참고 경관 사진"></div>
-  <div class="rs-item-body">
-    <div class="rs-item-eyebrow"><span class="rs-item-year">2024</span><span class="rs-dot">·</span><span>Publication</span><span class="rs-dot">·</span><span>Ecosystem Services</span></div>
-    <h3>Analyzing the Socio-Ecological System of Bees to Suggest Strategies for Green Space Planning to Promote Urban Beekeeping</h3>
-    <p class="rs-meta">Hojun Choi · Min Kim · Jinhyung Chon · Journal of the Korean Institute of Landscape Architecture</p>
-    <p class="rs-desc">도시 꿀벌과 양봉의 사회·생태 시스템을 인과순환구조로 분석하고 시민참여와 유휴지 녹지 조성 방안을 제시.</p>
-    <div class="rs-row-bottom">
-      <a href="https://doi.org/10.9715/KILA.2024.52.1.046" target="_blank" rel="noopener noreferrer">View Publication <span aria-hidden="true">↗</span></a>
-      <span class="rs-doi">DOI: 10.9715/KILA.2024.52.1.046</span>
-    </div>
-    <details class="rs-detail"><summary>Research details <span aria-hidden="true">+</span></summary><p>꿀벌의 수분·먹이활동과 도시 양봉의 사회적 구조를 시스템 사고로 분석하고, 시민참여 프로그램과 유휴지의 도시공원·녹지 활용 등을 제안합니다.</p></details>
-  </div>
-</article></div>
-    <div class="rs-empty" id="rs-empty" hidden>해당 조건에 맞는 연구 자료가 없습니다. 필터를 바꿔보세요.</div>
-    <div class="rs-source-note"><span>SOURCE / RESEARCH RECORDS</span>
-      <p>기존 ELDR 홈페이지의 <a href="https://edesign.korea.ac.kr/21" target="_blank" rel="noopener noreferrer">Projects</a> 및 <a href="https://edesign.korea.ac.kr/22" target="_blank" rel="noopener noreferrer">Research</a> 목록과 학술지·DOI 정보를 바탕으로 구성했습니다. 프로젝트의 연도는 확인 가능한 경우 연구 시작연도, 연구기간을 확인하지 못한 경우 기존 게시물의 등록연도로 표기했습니다. 논문은 출판연도를 기준으로 표기했습니다. 연구영역 태그는 사이트 개편을 위한 임시 분류이며, 사진은 해당 연구의 실제 성과 이미지가 아닌 주제별 참고 경관 이미지입니다.</p>
-    </div>
+    <div class="ra-records" id="research-list" aria-label="연구성과 목록"></div>
+    <div id="research-empty" class="ra-empty" hidden>해당 조건의 연구자료가 없습니다. 필터나 검색어를 변경해 주세요.</div>
+    <button id="research-more" class="ra-load-more" type="button" hidden>Load more +</button>
+    <footer class="ra-notes">
+      <strong>SOURCE / ARCHIVE DATA</strong>
+      <p>현재 V2에 등록된 프로젝트 5건과 논문 5건을 기존 미리보기에서 이어받아 구성했습니다.
+      프로젝트의 연도는 확인 가능한 경우 연구 시작연도, 그 외에는 기존 게시연도이며 논문은 출판연도입니다.
+      일부 연구기간·지원기관 및 정식 초록·키워드는 검수 후 입력합니다.
+      <a href="https://edesign.korea.ac.kr/21" target="_blank" rel="noopener noreferrer">기존 Projects 목록</a> /
+      <a href="https://edesign.korea.ac.kr/22" target="_blank" rel="noopener noreferrer">기존 Research 목록</a></p>
+    </footer>
   </div>
 </section>
 <section class="page pp-page" data-page="people">
@@ -1625,70 +1512,7 @@ body.home-view .footer{display:none}
   breakpoint.addEventListener('change',close);
 })();
 </script>
-<script>
-/* Research archive: filter 10 verified records in-place, preserve nested Research URLs. */
-(function(){
-  const root=document.querySelector('[data-page="research"]');
-  const rows=[...root.querySelectorAll('.rs-item')];
-  const typeButtons=[...root.querySelectorAll('.rs-type-btn')];
-  const themeButtons=[...root.querySelectorAll('.rs-theme-btn')];
-  const search=root.querySelector('#rs-search');
-  const count=root.querySelector('#rs-result-count');
-  const empty=root.querySelector('#rs-empty');
-  let kind='all',theme='all',query='';
-  function update(){
-    let visible=0;
-    rows.forEach(row=>{
-      const include=(kind==='all'||row.dataset.kind===kind)&&
-        (theme==='all'||row.dataset.category===theme)&&
-        (!query||row.dataset.search.includes(query));
-      row.hidden=!include;
-      if(include)visible++;
-    });
-    typeButtons.forEach(btn=>{
-      const selected=btn.dataset.rsKind===kind;
-      btn.classList.toggle('is-selected',selected);
-      btn.setAttribute('aria-pressed',String(selected));
-    });
-    themeButtons.forEach(btn=>{
-      const selected=btn.dataset.rsTheme===theme;
-      btn.classList.toggle('is-selected',selected);
-      btn.setAttribute('aria-pressed',String(selected));
-    });
-    count.textContent=visible+' research record'+(visible===1?'':'s');
-    empty.hidden=visible!==0;
-  }
-  function typeFromRoute(){
-    const hash=location.hash.replace(/^#\/?/,'').split('?')[0].toLowerCase();
-    if(hash==='research/projects'||hash==='projects')return 'project';
-    if(hash==='research/publications'||hash==='publications')return 'publication';
-    return 'all';
-  }
-  function syncRoute(){
-    kind=typeFromRoute();
-    theme='all';query='';search.value='';
-    update();
-  }
-  typeButtons.forEach(button=>button.addEventListener('click',()=>{
-    const selected=button.dataset.rsKind;
-    const path=selected==='project'?'#/research/projects':
-      selected==='publication'?'#/research/publications':'#/research';
-    // Keep the viewer at the archive list when switching tabs.
-    if(location.hash!==path)history.replaceState(null,'',path);
-    kind=selected;theme='all';query='';search.value='';update();
-  }));
-  themeButtons.forEach(button=>button.addEventListener('click',()=>{
-    theme=button.dataset.rsTheme;
-    update();
-  }));
-  search.addEventListener('input',()=>{
-    query=search.value.toLocaleLowerCase().trim();
-    update();
-  });
-  window.addEventListener('hashchange',syncRoute);
-  syncRoute();
-})();
-</script>
+
 <script>
 (function(){
  const section=document.querySelector('[data-page="life"]');
@@ -1995,4 +1819,6 @@ searchCourses();route();
 </script>
 <script src="home-contact.js"></script>
 <script src="menu-structure.js"></script>
+<script src="research-records.js"></script>
+<script src="research-archive.js"></script>
 </body></html>
