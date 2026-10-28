@@ -54,6 +54,7 @@ body.home-view .footer{display:none}
 
 </style>
 <link rel="stylesheet" href="palette.css">
+<link rel="stylesheet" href="menu-structure.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body class="ko">
@@ -1468,7 +1469,7 @@ body.home-view .footer{display:none}
       'research/themes':'about/themes','research/methods':'about/approach',
       'projects/featured':'research/projects','projects/all':'research/projects',
       'publications/articles':'research/publications','publications/reports':'research/publications','publications/books':'research/publications'};
-    const legacyRoutes={'study/lab-conference':'life/events','study/lab-seminar':'study/research-notes','life/seminars':'life/events','people/researchers':'people/staff'};
+    const legacyRoutes={'study/lab-conference':'life/events','study/lab-seminar':'study/research-notes','life/seminars':'life/events','people/staff':'people/researchers'};
     if(legacyRoutes[raw]){location.replace('#/'+legacyRoutes[raw]);return;}
     raw=aliases[raw]||raw;
     const parts=raw.split('/');
@@ -1680,10 +1681,10 @@ body.home-view .footer{display:none}
  function render(){
   const path=location.hash.replace(/^#\/?/,'').split('?')[0].split('/');
   if(path[0]!=='life')return;
-  const view=['news','events','fieldwork','gallery'].includes(path[1])?path[1]:'news';
+  const view=['news','events','fieldwork','gallery','activities'].includes(path[1])?path[1]:'news';
   const active=view==='news'&&path[2]?articles.find(x=>x.dataset.lifeStory===path[2]):null;
   const eventArticle=view==='events'&&path[2]?eventsArticles.find(x=>x.dataset.eventDetail===path[2]):null;
-  panels.forEach(x=>x.hidden=x.dataset.lifeView!==view);
+  panels.forEach(x=>x.hidden=view==='activities'?!['fieldwork','gallery'].includes(x.dataset.lifeView):x.dataset.lifeView!==view);
   tabs.forEach(x=>{const yes=x.dataset.lifeNav===view;x.classList.toggle('is-active',yes);if(yes)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current')});
   list.hidden=!!active;detail.hidden=!active;
   articles.forEach(x=>x.hidden=x!==active);
@@ -1794,7 +1795,7 @@ searchCourses();route();
  function display(){
   const parts=location.hash.replace(/^#\/?/,'').split('?')[0].split('/');
   if(parts[0]!=='people')return;
-  const selected=['professor','staff','alumni'].includes(parts[1])?parts[1]:'professor';
+  const selected=['professor','researchers','alumni'].includes(parts[1])?parts[1]:'professor';
   sections.forEach(section=>{section.hidden=section.dataset.peopleView!==selected;});
   tabs.forEach(tab=>{
    const active=tab.dataset.peopleNav===selected;
@@ -1802,7 +1803,7 @@ searchCourses();route();
    if(active)tab.setAttribute('aria-current','page');
    else tab.removeAttribute('aria-current');
   });
-  document.title=({professor:'Professor',staff:'Staff',alumni:'Alumni'})[selected]+' | ELSDR';
+  document.title=({professor:'Professor',researchers:'Researchers',alumni:'Alumni'})[selected]+' | ELSDR';
  }
  window.addEventListener('hashchange',display);display();
  const rows=[...page.querySelectorAll('[data-thesis-degree]')];
@@ -1932,7 +1933,7 @@ searchCourses();route();
   coordsLabel.textContent=mode==='all'?'GLOBAL FIELDWORK':mode==='korea'?'37°N / 127°E':'INTERNATIONAL ARCHIVE';
  }
  function initialize(){
-  if(initDone||field.hidden||!location.hash.startsWith('#/life/fieldwork'))return;
+  if(initDone||field.hidden||!location.hash.startsWith('#/life/activities'))return;
   if(typeof window.L==='undefined'){fallback();return;}
   initDone=true;mapEl.innerHTML='';
   map=L.map(mapEl,{scrollWheelZoom:false,zoomControl:false,preferCanvas:true,worldCopyJump:true});
@@ -1953,7 +1954,7 @@ searchCourses();route();
   updatePins();resetView();window.requestAnimationFrame(()=>map.invalidateSize());
  }
  function checkRoute(){
-  if(!location.hash.startsWith('#/life/fieldwork'))return;
+  if(!location.hash.startsWith('#/life/activities'))return;
   window.requestAnimationFrame(()=>{
    if(!initDone){
     if(window.L)initialize();
@@ -1971,4 +1972,5 @@ searchCourses();route();
 })();
 </script>
 <script src="home-contact.js"></script>
+<script src="menu-structure.js"></script>
 </body></html>
