@@ -95,6 +95,11 @@
  renderOpportunities();
  renderPositions();
  renderHistory();
+ $("[data-ct-scroll]").forEach(button=>button.addEventListener("click",()=>{
+   const id=button.dataset.ctScroll;
+   const target=page.querySelector("#"+id);
+   target?.scrollIntoView({block:"start",behavior:"smooth"});
+ }));
  window.addEventListener("hashchange",syncNav);
  syncNav();
 })();
