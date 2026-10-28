@@ -49,28 +49,6 @@
      if(submenu)submenu.replaceChildren(...links.map(([slug,title])=>link(page,slug,title)));
      if(mega)mega.replaceChildren(...links.map(([slug,title])=>link(page,slug,title)));
    });
-   // Local third-level links, rather than making all Professor/Alumni pages
-   // top-level siblings in the global navigation.
-   const people=$('[data-page="people"]');
-   const mainTabs=$('.pp-jump',people);
-   if(mainTabs){
-     mainTabs.innerHTML=[
-       '<a href="#/people/professor" data-people-nav="professor">01 <span>Professor</span><span aria-hidden="true">↘</span></a>',
-       '<a href="#/people/researchers" data-people-nav="researchers">02 <span>Researchers</span><span aria-hidden="true">↘</span></a>',
-       '<a href="#/people/alumni" data-people-nav="alumni">03 <span>Alumni</span><span aria-hidden="true">↘</span></a>'
-     ].join('');
-     const group=document.createElement('nav');
-     group.className='v2-depth-nav';
-     group.id='v2-people-depth';
-     group.setAttribute('aria-label','People 상세 페이지');
-     mainTabs.after(group);
-   }
-   const staff=$('[data-people-view="staff"]',people);
-   if(staff){
-     staff.dataset.peopleView='researchers';
-     const title=staff.querySelector('#pp-staff-h');
-     if(title)title.innerHTML='Researchers<span>.</span>';
-   }
    const study=$('[data-page="study"]');
    const studyNav=$('.st-nav',study);
    if(studyNav){
@@ -123,52 +101,7 @@
      const heading=$('.ct-section-heading>span',email);
      if(heading)heading.textContent='CONTACT / INFORMATION';
    }
-   const stub=document.createElement('section');
-   stub.className='pp-section v2-people-placeholder';
-   stub.id='v2-people-placeholder';
-   stub.hidden=true;
-   stub.setAttribute('aria-live','polite');
-   $('.pp-main',people)?.appendChild(stub);
- }
- function renderPeople(route){
-   const page=$('[data-page="people"]');
-   if(!page)return;
-   const parts=route.split('/');
-   if(parts[0]!=='people')return;
-   const primary=['professor','researchers','alumni'].includes(parts[1])?parts[1]:'professor';
-   const key=parts.slice(1).join('/');
-   const pending=labelMap[key]||null;
-   $$('[data-people-view]',page).forEach(section=>{
-     section.hidden=!!pending || section.dataset.peopleView!==primary;
-   });
-   const stub=$('#v2-people-placeholder',page);
-   if(stub){
-     stub.hidden=!pending;
-     if(pending){
-       const [heading,desc]=pending;
-       stub.replaceChildren();
-       const eyebrow=document.createElement('span');eyebrow.className='v2-shell-eyebrow';eyebrow.textContent='PEOPLE / '+primary.toUpperCase();
-       const h=document.createElement('h2');h.textContent=heading+'.';
-       const p=document.createElement('p');p.textContent=desc;
-       const note=document.createElement('div');note.className='v2-outline-note';note.textContent='페이지 경로만 먼저 생성했습니다. 세부 디자인과 자료는 추후 적용합니다.';
-       stub.append(eyebrow,h,p,note);
-     }
-   }
-   $$('[data-people-nav]',page).forEach(a=>{
-     const active=a.dataset.peopleNav===primary;
-     a.classList.toggle('is-selected',active);
-     if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
-   });
-   const sub=$('#v2-people-depth',page);
-   if(sub){
-     sub.replaceChildren(...(peopleDetails[primary]||[]).map(([slug,title])=>{
-       const a=document.createElement('a');
-       a.href='#/people/'+slug;a.textContent=title;
-       const active=key===slug || (!key&&slug==='professor');
-       if(active)a.classList.add('is-active');
-       return a;
-     }));
-   }
+
  }
  function renderStudy(route){
    if(!route.startsWith('study'))return;
@@ -209,7 +142,7 @@
      location.replace('#/'+legacy[route]);
      return;
    }
-   renderPeople(route);renderStudy(route);renderLife(route);renderMenu(route);
+   renderStudy(route);renderLife(route);renderMenu(route);
  }
  buildMenus();
  window.addEventListener('hashchange',render);
