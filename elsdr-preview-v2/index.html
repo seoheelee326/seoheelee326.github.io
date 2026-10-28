@@ -33,7 +33,7 @@ body.ko .lang-en{display:none}body:not(.ko) .lang-ko{display:none}
 body.home-view{overflow:hidden}
 body.home-view .footer{display:none}
 .home-scene{position:relative;width:100%;height:calc(100dvh - 87px);overflow:hidden;color:#f5f5ef;background:var(--pine);isolation:isolate}
-.home-background{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=2400&q=90') center 53%/cover;animation:homePhotoIn 1.75s ease-out both}
+.home-background{position:absolute;inset:0;background:url('hero-bg.webp') center 53%/cover;animation:homePhotoIn 1.75s ease-out both}
 .home-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(15,35,29,.07),rgba(15,35,29,.25) 35%,rgba(15,35,29,.66) 70%,rgba(15,35,29,.78)),linear-gradient(0deg,rgba(15,35,29,.4),transparent 25%)}
 .home-layout{position:relative;z-index:2;height:100%;display:flex;justify-content:flex-end;align-items:center}
 .home-message{width:min(700px,70%);text-align:right;margin-left:auto;padding-bottom:12px;animation:homeCopyIn .8s ease-out both}
@@ -217,7 +217,6 @@ body.home-view .footer{display:none}
       </div>
       <div class="ab-theme-grid">
         <article class="ab-theme-card ab-theme-climate">
-          <div class="ab-theme-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&amp;fit=crop&amp;w=1300&amp;q=85" alt="도시와 녹지가 공존하는 경관의 예시 이미지"></div>
           <div class="ab-theme-content">
             <div class="ab-theme-top"><span>01 / CLIMATE</span><span class="ab-theme-symbol">↗</span></div>
             <h3>Climate Adaptation<br>and Resilience</h3>
@@ -227,7 +226,6 @@ body.home-view .footer{display:none}
           </div>
         </article>
         <article class="ab-theme-card ab-theme-ecosystem">
-          <div class="ab-theme-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&amp;fit=crop&amp;w=1300&amp;q=85" alt="산림 생태계의 예시 이미지"></div>
           <div class="ab-theme-content">
             <div class="ab-theme-top"><span>02 / ECOSYSTEM</span><span class="ab-theme-symbol">↗</span></div>
             <h3>Ecosystem Services<br>and Nature-based Solutions</h3>
@@ -237,7 +235,6 @@ body.home-view .footer{display:none}
           </div>
         </article>
         <article class="ab-theme-card ab-theme-coastal">
-          <div class="ab-theme-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&amp;fit=crop&amp;w=1300&amp;q=85" alt="해안과 바다의 예시 이미지"></div>
           <div class="ab-theme-content">
             <div class="ab-theme-top"><span>03 / COASTAL</span><span class="ab-theme-symbol">↗</span></div>
             <h3>Coastal Landscape<br>and Living Systems</h3>
@@ -247,7 +244,6 @@ body.home-view .footer{display:none}
           </div>
         </article>
         <article class="ab-theme-card ab-theme-regional">
-          <div class="ab-theme-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&amp;fit=crop&amp;w=1300&amp;q=85" alt="농촌과 지역 경관의 예시 이미지"></div>
           <div class="ab-theme-content">
             <div class="ab-theme-top"><span>04 / REGIONAL</span><span class="ab-theme-symbol">↗</span></div>
             <h3>Regional<br>Landscape Strategy</h3>
@@ -257,7 +253,7 @@ body.home-view .footer{display:none}
           </div>
         </article>
       </div>
-      <p class="ab-photo-note">* 연구영역의 이미지는 레이아웃 확인을 위한 임시 참고 이미지입니다. 실제 연구 및 현장 사진으로 교체할 예정입니다.</p>
+      
     </div>
     <div class="ab-landscapes">
       <div class="wrap">
@@ -403,10 +399,8 @@ body.home-view .footer{display:none}
         <p class="pp-section-lead">Profile · 연구책임자의 소개와 연락처</p>
       </div>
       <div class="pp-prof-profile">
-   <div class="pp-prof-visual" role="img" aria-label="전진형 교수님 프로필 사진을 교체할 수 있도록 마련한 시안 영역">
-     <span class="pp-prof-visual-top">ECOLOGICAL LANDSCAPE<br>DESIGN &amp; RESEARCH</span>
-     <span class="pp-prof-monogram" aria-hidden="true">JC</span>
-     <span class="pp-prof-visual-bottom">JINHYUNG CHON / ELSDR</span>
+   <div class="pp-prof-visual pp-v2-photo-slot" role="img" aria-label="전진형 교수 프로필 사진 등록 예정, 통일된 세로 사진 비율 4대5">
+     <span class="pp-v2-photo-caption">PROFESSOR PHOTO / 4:5</span>
    </div>
    <div class="pp-prof-content">
     <span class="pp-prof-role">PROFESSOR · PRINCIPAL INVESTIGATOR</span>
@@ -585,27 +579,13 @@ body.home-view .footer{display:none}
   <div id="lf-news-list">
     <div class="lf-intro"><div><span>01 / OFFICIAL LAB UPDATES</span><h2>News<span>.</span></h2></div>
       <p>연구실 공식 소식과 연구성과, 수상,<br>연구실 관련 언론 보도를 전합니다.</p></div>
-    <div class="lf-news-grid lf-v2-news-grid">
-      <article class="lf-news-card lf-featured lf-v2-news-pending">
-        <div class="lf-news-cover lf-cover-1"><span>LAB NEWS / ELSDR</span><b>01</b></div>
-        <div class="lf-news-copy"><div class="lf-news-meta"><span>OFFICIAL UPDATES</span></div>
-          <h3>연구실 공식 소식</h3><p>연구실의 새로운 소식과 공지 기록을 게시합니다.</p>
-          <span class="lf-v2-pending-label">자료 등록 예정</span></div>
-      </article>
-      <article class="lf-news-card lf-v2-news-pending">
-        <div class="lf-news-cover lf-cover-2"><span>RESEARCH / ELSDR</span><b>02</b></div>
-        <div class="lf-news-copy"><div class="lf-news-meta"><span>RESEARCH OUTPUTS</span></div>
-          <h3>연구성과 · 수상</h3><p>검증된 연구성과와 수상 소식을 소개합니다.</p>
-          <span class="lf-v2-pending-label">자료 등록 예정</span></div>
-      </article>
-      <article class="lf-news-card lf-v2-news-pending">
-        <div class="lf-news-cover lf-cover-3"><span>IN THE PRESS / ELSDR</span><b>03</b></div>
-        <div class="lf-news-copy"><div class="lf-news-meta"><span>MEDIA COVERAGE</span></div>
-          <h3>연구실 관련 언론 보도</h3><p>연구활동을 다룬 보도자료와 기사를 모읍니다.</p>
-          <span class="lf-v2-pending-label">자료 등록 예정</span></div>
-      </article>
+    <div class="lf-v2-news-empty" role="status">
+      <span class="lf-v2-news-eyebrow">LAB NEWS / ARCHIVE</span>
+      <h3>연구실 공식 소식 등록 예정</h3>
+      <p>공식 연구실 소식과 연구성과·수상·언론 보도 중 공개가 확인된 자료부터 카드로 소개합니다. 실제 기사와 대표 이미지가 등록되면 이 자리에 표시됩니다.</p>
+      <div class="lf-v2-news-categories"><span>Official Updates</span><span>Research &amp; Awards</span><span>Media Coverage</span></div>
     </div>
-    <p class="lf-v2-news-note">※ 공식 소식에 해당하는 검증된 자료가 확보되면 각 카드에 실제 제목·날짜·대표 이미지를 입력합니다. 기존 교수 개인 칼럼은 <a href="#/people/professor/books">People → Books &amp; Writings</a>, 모집 안내는 <a href="#/contact/join">Contact → Join Us</a>에서 확인할 수 있습니다.</p>
+    <p class="lf-v2-news-note">※ 공식 소식에 해당하는 검증된 자료가 확보되면 해당 소식의 실제 제목·내용·대표 이미지를 등록합니다. 기존 교수 개인 칼럼은 <a href="#/people/professor/books">People → Books &amp; Writings</a>, 모집 안내는 <a href="#/contact/join">Contact → Join Us</a>에서 확인할 수 있습니다.</p>
   </div>
 </div>
 
