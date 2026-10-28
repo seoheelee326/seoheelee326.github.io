@@ -21,3 +21,29 @@
  .v2-study-shell{padding:20px 0 70px}
  .v2-contact-information{margin-top:45px}
 }
+
+
+/* ABOUT 01–04: October 25 approved source copy, V2 only.
+   Retain the existing typographic palette and card/diagram treatments. */
+#about-page .ab-themes{padding-bottom:0}
+#about-page .ab-themes .ab-landscapes{margin-top:90px}
+#about-page .ab-orb strong{letter-spacing:.2px}
+#about-page .ab-vision-statement strong{font-weight:600}
+#about-page .ab-content-heading{display:flex;gap:24px;justify-content:space-between;align-items:end;border-bottom:1px solid rgba(83,109,94,.23);padding-bottom:18px;margin:38px 0 27px}
+#about-page .ab-content-heading span{font-size:10px;letter-spacing:1.8px;color:#688375;font-weight:700}
+#about-page .ab-content-heading h3{font-size:clamp(23px,2.4vw,34px);line-height:1.2;letter-spacing:-.7px;font-weight:500;color:#31473b;margin:0}
+#about-page .ab-process{margin-bottom:72px}
+#about-page .ab-methods-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:4px 0 76px}
+#about-page .ab-methods-grid span{display:flex;align-items:center;padding:20px 17px;min-height:92px;background:#f7f7f2;border-top:2px solid #8caab1;color:#486152;font-size:13px;font-weight:500;line-height:1.55;word-break:keep-all}
+#about-page .ab-approach .ab-practice-line{margin-bottom:105px}
+@media(max-width:1050px){
+ #about-page .ab-methods-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){
+ #about-page .ab-themes .ab-landscapes{margin-top:60px}
+ #about-page .ab-content-heading{display:block;margin-top:34px;margin-bottom:20px}
+ #about-page .ab-content-heading h3{margin-top:10px;font-size:25px}
+ #about-page .ab-methods-grid{gap:8px;margin-bottom:54px}
+ #about-page .ab-methods-grid span{padding:15px 13px;min-height:85px;font-size:11px}
+ #about-page .ab-approach .ab-practice-line{margin-bottom:70px}
+}
