@@ -58,17 +58,6 @@
    const contactNav=$('.ct-jump',contact);
    if(contactNav)contactNav.innerHTML='<a href="#/contact/location"><small>01</small><span>Location</span><b aria-hidden="true">↘</b></a>'+
      '<a href="#/contact/join"><small>02</small><span>Join Us</span><b aria-hidden="true">↘</b></a>';
-   // Keep original contact information; make it part of Location rather than
-   // deleting useful email/phone details from the old page.
-   const location=$('#contact-location'),email=$('#contact-email');
-   if(location&&email){
-     location.appendChild(email);
-     email.classList.add('v2-contact-information');
-     const h=$('#ct-email-title',email);
-     if(h)h.innerHTML='Contact Information<span>.</span>';
-     const heading=$('.ct-section-heading>span',email);
-     if(heading)heading.textContent='CONTACT / INFORMATION';
-   }
 
  }
  function renderStudy(route){
