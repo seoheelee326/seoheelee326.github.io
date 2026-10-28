@@ -285,7 +285,7 @@ window.ELSDR_LIFE_RECORDS={
           "lat": 37.5446,
           "lon": 127.0374,
           "group": "korea",
-          "approximate": false
+          "approximate": true
         }
       ]
     },
