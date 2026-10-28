@@ -54,20 +54,6 @@
    if(lifeNav)lifeNav.innerHTML=[
      ['news','News'],['events','Events'],['activities','Activities']
    ].map(([slug,title],i)=>'<a href="#/life/'+slug+'" data-v2-life-nav="'+slug+'"><small>0'+(i+1)+'</small> '+title+' <b aria-hidden="true">↗</b></a>').join('');
-   // Existing Fieldwork map and Gallery stay intact within the unified
-   // Activities view until their content is reworked later.
-   const field=$('[data-life-view="fieldwork"]',life);
-   const gallery=$('[data-life-view="gallery"]',life);
-   if(field){
-     const kicker=$('.lf-intro span',field),heading=$('.lf-intro h2',field);
-     if(kicker)kicker.textContent='03 / ACTIVITIES · WHERE WE’VE BEEN';
-     if(heading)heading.innerHTML='Where We’ve Been<span>.</span>';
-   }
-   if(gallery){
-     const kicker=$('.lf-intro span',gallery),heading=$('.lf-intro h2',gallery);
-     if(kicker)kicker.textContent='ACTIVITIES / ARCHIVE';
-     if(heading)heading.innerHTML='Activity Archive<span>.</span>';
-   }
    const contact=$('[data-page="contact"]');
    const contactNav=$('.ct-jump',contact);
    if(contactNav)contactNav.innerHTML='<a href="#/contact/location"><small>01</small><span>Location</span><b aria-hidden="true">↘</b></a>'+
@@ -104,19 +90,6 @@
      });
    }
  }
- function renderLife(route){
-   if(!route.startsWith('life'))return;
-   const sub=route.split('/')[1],selected=['news','events','activities'].includes(sub)?sub:'news';
-   const life=$('[data-page="life"]');
-   $$('[data-life-view]',life).forEach(p=>{
-     p.hidden=selected==='activities'? !['fieldwork','gallery'].includes(p.dataset.lifeView):p.dataset.lifeView!==selected;
-   });
-   $$('[data-v2-life-nav]',life).forEach(a=>{
-     const active=a.dataset.v2LifeNav===selected;
-     a.classList.toggle('is-active',active);
-     if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
-   });
- }
  function renderMenu(route){
    $$('[data-subnav]').forEach(el=>{
      const active=el.dataset.subnav===route;
@@ -131,7 +104,7 @@
      location.replace('#/'+legacy[route]);
      return;
    }
-   renderStudy(route);renderLife(route);renderMenu(route);
+   renderStudy(route);renderMenu(route);
  }
  buildMenus();
  window.addEventListener('hashchange',render);
