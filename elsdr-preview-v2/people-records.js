@@ -1,9 +1,8 @@
-/* ELSDR V2 People records, migrated from earlier project preview.
-   Profiles, degree status and affiliations require review before public launch.
-   Edit arrays by content type to add/update people, books, career and theses.
-   Thesis sourceUrl is a record page; fullTextUrl is included only where independently linked.
+/* ELSDR V2 People data; records migrated from original preview.
+   Personal newspaper columns moved here from LIFE / News per October 25 revision.
+   Verify all current affiliations and bibliographic details before publishing.
 */
-window.ELSDR_PEOPLE_RECORDS = {
+window.ELSDR_PEOPLE_RECORDS={
   "professor": {
     "nameEn": "Jinhyung Chon",
     "nameKo": "전진형",
@@ -44,7 +43,44 @@ window.ELSDR_PEOPLE_RECORDS = {
     }
   ],
   "books": [],
-  "columns": [],
+  "columns": [
+    {
+      "id": "column-green-space",
+      "title": "녹지는 도시의 전략자산이다",
+      "publication": "한국경제",
+      "date": "2026-10-01",
+      "author": "전진형 교수",
+      "summary": "기후위기에 대비하는 공원과 숲은 도시의 장기적인 전략자산입니다.",
+      "url": "https://edesign.korea.ac.kr/60/?bmode=view&idx=174930789"
+    },
+    {
+      "id": "column-campus",
+      "title": "숲으로 이어지는 캠퍼스",
+      "publication": "고대신문",
+      "date": "2026-09-07",
+      "author": "전진형 교수",
+      "summary": "건물 사이를 이동하는 공간을 넘어, 머물고 만나는 캠퍼스 경관의 가치를 살펴봅니다.",
+      "url": "https://edesign.korea.ac.kr/60/?bmode=view&idx=173838466"
+    },
+    {
+      "id": "column-light",
+      "title": "밝기 경쟁의 승자는 없다",
+      "publication": "한국경제",
+      "date": "2026-09-07",
+      "author": "전진형 교수",
+      "summary": "대형 전광판의 빛환경이 도시 안전과 쾌적성, 경제적 활동에 미치는 영향을 살펴봅니다.",
+      "url": "https://edesign.korea.ac.kr/60/?bmode=view&idx=173838547"
+    },
+    {
+      "id": "column-summer",
+      "title": "여름은 평등하지 않다",
+      "publication": "한국경제",
+      "date": "2026-07-22",
+      "author": "전진형 교수",
+      "summary": "폭염·극한호우 경보를 넘어 실제 그늘과 물길이 만드는 도시 안전망을 생각합니다.",
+      "url": "https://edesign.korea.ac.kr/60/?bmode=view&idx=172585415"
+    }
+  ],
   "essays": [],
   "researchers": [
     {
