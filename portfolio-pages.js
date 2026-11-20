@@ -1,5 +1,7 @@
 const page=document.body.dataset.page;
 const main=document.getElementById('page-content');
+const pageNav=document.querySelector('.page-nav');
+pageNav.prepend(pageNav.querySelector('[data-page="cv"]'));
 const headings={artwork:['ARTWORK','Painting · Installation · Moving Image · Public Art Projects · Drawing'],exhibitions:['EXHIBITIONS','Solo and group exhibitions'],education:['ARTS EDUCATION','Observation and Shared Questions'],contact:['CONTACT','Art and collaboration inquiries'],cv:['CV','SEOHEE LEE · VISUAL ARTIST']};
 document.querySelectorAll('.page-nav a').forEach(a=>{if(a.dataset.page===page)a.setAttribute('aria-current','page')});
 const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
