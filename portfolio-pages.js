@@ -22,7 +22,7 @@ async function exhibitions(){
     const selected=records.filter(e=>filter==='all'||(filter==='solo'?isSolo(e):!isSolo(e)));
     gallery.innerHTML=selected.map(e=>{
       const i=records.indexOf(e),title=esc(e.title_ko||e.title_en),year=esc(e.year_label||e.year);
-      return `<button class="exhibition-card" type="button" data-ex-index="${i}" aria-label="${title} details"><div class="exhibition-frame"><div class="frame-inner">${e.image?`<img src="${esc(e.image)}" alt="${title}" loading="lazy">`:`<div class="frame-placeholder"><small>EXHIBITION ARCHIVE</small>${title}</div>`}</div></div><div class="exhibition-caption"><strong>${title}</strong><span>${year} · ${esc(e.venue_ko||e.venue_en||'Venue to be added')}</span></div></button>`;
+      return `<button class="exhibition-card" type="button" data-ex-index="${i}" aria-label="${title} details"><div class="exhibition-frame"><span class="frame-pin tl" aria-hidden="true"></span><span class="frame-pin tr" aria-hidden="true"></span><span class="frame-pin bl" aria-hidden="true"></span><span class="frame-pin br" aria-hidden="true"></span><div class="frame-inner">${e.image?`<img src="${esc(e.image)}" alt="${title}" loading="lazy">`:`<div class="frame-placeholder"><small>EXHIBITION ARCHIVE</small>${title}</div>`}</div></div><div class="exhibition-caption"><strong>${title}</strong><span>${year} · ${esc(e.venue_ko||e.venue_en||'Venue to be added')}</span></div></button>`;
     }).join('');
   };
   main.querySelectorAll('[data-ex-type]').forEach(b=>b.addEventListener('click',()=>{main.querySelectorAll('[data-ex-type]').forEach(x=>x.classList.toggle('active',x===b));render(b.dataset.exType)}));
