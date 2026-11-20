@@ -42,7 +42,7 @@ button{font:inherit;cursor:pointer}
 .exhibition-frame::before,.exhibition-frame::after,.frame-inner::before,.frame-inner::after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:#929292;box-shadow:inset 1px 1px 2px rgba(0,0,0,.3),1px 1px 1px white}
 .exhibition-frame::before{top:15px;left:15px}.exhibition-frame::after{top:15px;right:15px}.frame-inner::before{bottom:15px;left:15px}.frame-inner::after{bottom:15px;right:15px}
 .exhibition-frame::before,.exhibition-frame::after,.frame-inner::before,.frame-inner::after{display:none}
-.frame-pin{position:absolute;z-index:3;width:10px;height:10px;border-radius:50%;background:#929292;border:1px solid #858585;box-shadow:none}
+.frame-pin{position:absolute;z-index:3;width:7px;height:7px;border-radius:50%;background:#929292;border:1px solid #858585;box-shadow:none}
 .frame-pin.tl{top:17px;left:17px}.frame-pin.tr{top:17px;right:17px}.frame-pin.bl{bottom:17px;left:17px}.frame-pin.br{bottom:17px;right:17px}
 .frame-inner{position:relative;width:100%;height:100%;background:rgba(247,247,247,.18);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);display:grid;place-items:center;overflow:hidden;color:#616161}
 .frame-inner img{width:100%;height:100%;object-fit:contain}
