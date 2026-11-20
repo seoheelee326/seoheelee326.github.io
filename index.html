@@ -11,6 +11,11 @@
 <body>
 <style>
 /* The landing room is intentionally exactly one viewport tall. */
+.home{background:#fff;isolation:isolate;--spot-x:50%;--spot-y:50%}
+.home::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:url("assets/patterns/seohee-pattern-light.png") center/500px repeat;opacity:0;transition:opacity .45s ease;-webkit-mask-image:radial-gradient(circle 210px at var(--spot-x) var(--spot-y),#000 0%,rgba(0,0,0,.7) 42%,transparent 100%);mask-image:radial-gradient(circle 210px at var(--spot-x) var(--spot-y),#000 0%,rgba(0,0,0,.7) 42%,transparent 100%)}
+.home.pattern-active::before{opacity:.34}
+.home-copy,.hero-art,.home-foot{z-index:1}
+.home-copy{z-index:2}
 .home{height:100svh;min-height:0;grid-template-columns:.58fr 1.42fr;padding-top:76px;padding-bottom:35px}
 .home-copy{align-self:center}.home h1{font-size:clamp(64px,8.5vw,132px)}
 .hero-art{height:min(78svh,820px);min-height:0;cursor:crosshair;touch-action:pan-y}
@@ -54,6 +59,20 @@ portal.setAttribute('role','link');
 portal.setAttribute('tabindex','0');
 portal.setAttribute('aria-label','작업 아카이브 보기 / Explore works');
 const enterWorks = () => { window.location.hash = 'work'; };
+const landing = document.getElementById('home');
+let spotFrame = 0;
+landing.addEventListener('pointermove', event => {
+  if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+  const x = event.clientX - landing.getBoundingClientRect().left;
+  const y = event.clientY - landing.getBoundingClientRect().top;
+  if (spotFrame) cancelAnimationFrame(spotFrame);
+  spotFrame = requestAnimationFrame(() => {
+    landing.style.setProperty('--spot-x', x + 'px');
+    landing.style.setProperty('--spot-y', y + 'px');
+    landing.classList.add('pattern-active');
+  });
+});
+landing.addEventListener('pointerleave', () => landing.classList.remove('pattern-active'));
 portal.addEventListener('click', enterWorks);
 portal.addEventListener('keydown', event => {
   if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); enterWorks(); }
