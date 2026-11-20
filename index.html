@@ -9,6 +9,19 @@
 </style>
 </head>
 <body>
+<style>
+/* The landing room is intentionally exactly one viewport tall. */
+.home{height:100svh;min-height:0;grid-template-columns:.58fr 1.42fr;padding-top:76px;padding-bottom:35px}
+.home-copy{align-self:center}.home h1{font-size:clamp(64px,8.5vw,132px)}
+.hero-art{height:min(78svh,820px);min-height:0;cursor:crosshair;touch-action:pan-y}
+.hex-grid{gap:3px}.hex{opacity:.88;will-change:transform;transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .5s,background .5s}
+.hex.near{transform:translateY(-14px) translateZ(18px) scale(1.18);opacity:1}
+.hero-center{cursor:pointer;outline-offset:8px}.hero-center:focus-visible{outline:2px solid #63535a}
+.hero-center small{font-size:11px}.move-hint{font-size:12px}
+.home-foot{bottom:13px}.home-foot span{font-size:11px}
+@media(max-width:760px){.home{grid-template-columns:1fr;grid-template-rows:auto 1fr;padding-top:88px;padding-bottom:32px;gap:2px}.home-copy{align-self:start}.home h1{font-size:clamp(48px,13vw,76px)}.home .intro,.home-tags{display:none}.home .eyebrow{margin-bottom:10px}.move-hint{margin-top:14px}.hero-art{height:100%;min-height:0}.hex-field{width:min(100%,480px)}.home-foot{bottom:10px}.home-foot span{font-size:10px}}
+@media(max-height:680px) and (min-width:761px){.home .intro,.home-tags{display:none}.hero-art{height:72svh}}
+</style>
 <header class="topbar"><a class="brand" href="#home" aria-label="홈으로"><b>SEOHEE LEE</b><small data-i18n="role">시각예술가</small></a><div class="head-right"><nav id="nav" aria-label="주 메뉴"><a href="#work" data-i18n="navWork">작업</a><a href="#exhibitions" data-i18n="navExhibitions">전시</a><a href="#projects" data-i18n="navProjects">프로젝트</a><a href="#education" data-i18n="navEducation">문화예술교육</a><a href="#contact" data-i18n="navContact">연락</a></nav><div class="language" role="group" aria-label="언어 선택"><button type="button" data-lang="ko" aria-pressed="true">KR</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div><button class="menu" id="menu" aria-expanded="false" aria-controls="nav" data-i18n="menu">메뉴</button></div></header>
 <main>
 <section class="home" id="home"><div class="home-copy"><p class="eyebrow" data-i18n="homeEyebrow">작가 포트폴리오 · 2026</p><h1>SEOHEE<br>LEE</h1><p class="intro" data-i18n="homeIntro">사라짐과 변화의 틈에서, 다시 바라보게 되는 순간을 만듭니다.</p><div class="home-tags"><span data-i18n="tagPainting">회화</span><span data-i18n="tagInstallation">설치</span><span data-i18n="tagVideo">영상</span></div><p class="move-hint"><span data-i18n="moveHint">작업의 표면을 움직여 보세요</span> ↗</p></div><div class="hero-art" id="hero-art" aria-label="커서에 반응하는 육각 큐빅 패턴"><div class="art-frame"><span class="art-frame-label" data-i18n="imageMaterial">이미지 / 재료 / 흔적</span></div><div class="hex-field" id="hex-field"><div class="hex-grid" id="hex-grid"></div><div class="hero-center"><div><b>WAYFARING</b><small data-i18n="featured">대표 작업 · 2026</small></div></div></div></div><div class="home-foot"><span><i class="dot"></i><span data-i18n="placeholderNote">작품 이미지는 등록 후 표시됩니다</span></span><span data-i18n="homeFoot">01 — 05 / 메뉴</span></div></section>
@@ -33,5 +46,28 @@ function openDetail(i){const w=works[i];if(!w)return;const title=translated(w,'t
 $$('.language button').forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));$('#menu').addEventListener('click',()=>{const open=$('#menu').getAttribute('aria-expanded')==='true';$('#menu').setAttribute('aria-expanded',String(!open));$('#nav').classList.toggle('open',!open)});$('#nav').addEventListener('click',()=>{$('#nav').classList.remove('open');$('#menu').setAttribute('aria-expanded','false')});$('#detail-close').addEventListener('click',closeDetail);$('#detail').addEventListener('click',e=>{if(e.target.id==='detail')closeDetail()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDetail()});$('#year').textContent=new Date().getFullYear();renderFilters();setLanguage(lang);
 Array.from({length:72},(_,i)=>{const el=document.createElement('span');el.className='hex';el.style.gridColumn=String(i%9+1);el.style.gridRow=String(Math.floor(i/9)+1);$('#hex-grid').appendChild(el)});const hero=$('#hero-art'),field=$('#hex-field'),hexes=$$('.hex');hero.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=hero.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;field.style.transform=`rotateY(${x*8}deg) rotateX(${-y*7}deg)`;const index=Math.floor((e.clientX-r.left)/r.width*9)+Math.floor((e.clientY-r.top)/r.height*8)*9;hexes.forEach((h,i)=>h.classList.toggle('near',Math.abs(i-index)<3))});hero.addEventListener('pointerleave',()=>{field.style.transform='';hexes.forEach(h=>h.classList.remove('near'))});
 fetch('data/works.json',{cache:'no-store'}).then(r=>r.ok?r.json():[]).then(data=>{works=Array.isArray(data)?data:[];renderWorks($('.filter.active')?.dataset.filter||'all')}).catch(()=>{works=[];renderWorks('all')});
+</script>
+<script>
+// The central object is a doorway into the work archive, also available by keyboard.
+const portal = document.querySelector('.hero-center');
+portal.setAttribute('role','link');
+portal.setAttribute('tabindex','0');
+portal.setAttribute('aria-label','작업 아카이브 보기 / Explore works');
+const enterWorks = () => { window.location.hash = 'work'; };
+portal.addEventListener('click', enterWorks);
+portal.addEventListener('keydown', event => {
+  if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); enterWorks(); }
+});
+// Touch visitors can disturb the field too; movement is purely visual.
+document.getElementById('hero-art').addEventListener('pointerdown', event => {
+  if (event.pointerType !== 'touch' || event.target.closest('.hero-center')) return;
+  const tiles = [...document.querySelectorAll('.hex')];
+  const rect = event.currentTarget.getBoundingClientRect();
+  const x = (event.clientX - rect.left) / rect.width;
+  const y = (event.clientY - rect.top) / rect.height;
+  const index = Math.max(0, Math.min(71, Math.floor(y * 8) * 9 + Math.floor(x * 9)));
+  tiles.forEach((tile, i) => tile.classList.toggle('near', Math.abs(i - index) < 5));
+  window.setTimeout(() => tiles.forEach(tile => tile.classList.remove('near')), 650);
+});
 </script>
 </body></html>
