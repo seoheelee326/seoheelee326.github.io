@@ -46,6 +46,7 @@ button{font:inherit;cursor:pointer}
 .frame-pin.tl{top:17px;left:17px}.frame-pin.tr{top:17px;right:17px}.frame-pin.bl{bottom:17px;left:17px}.frame-pin.br{bottom:17px;right:17px}
 .frame-inner{position:relative;width:100%;height:100%;background:rgba(247,247,247,.18);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);display:grid;place-items:center;overflow:hidden;color:#616161}
 .frame-inner img{width:100%;height:100%;object-fit:contain}
+.exhibition-card .frame-inner img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;object-position:center center}
 .frame-placeholder{text-align:center;padding:15px;font-size:clamp(13px,1.7vw,20px);line-height:1.4;letter-spacing:-.035em;word-break:keep-all}
 .frame-placeholder small{display:block;font-size:10px;letter-spacing:.1em;color:#8c8c8c;margin-bottom:15px;font-weight:400}
 .exhibition-caption{padding:17px 0 0}.exhibition-caption strong{display:block;font-size:15px;font-weight:500;line-height:1.45}
