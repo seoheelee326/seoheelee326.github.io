@@ -19,6 +19,7 @@ async function exhibitions(){
   main.innerHTML=heading()+`<div class="exhibition-filters" role="group" aria-label="Exhibition type"><button class="active" data-ex-type="all">ALL</button><button data-ex-type="solo">SOLO</button><button data-ex-type="group">GROUP</button></div><div class="exhibition-gallery" id="exhibition-gallery"></div><div class="detail-dialog" id="exhibition-detail" role="dialog" aria-modal="true" hidden><button class="detail-close" aria-label="Close">×</button><div class="detail-layout"><div class="detail-image"></div><div class="detail-info"></div></div></div>`;
   const gallery=main.querySelector('#exhibition-gallery');
   const render=filter=>{
+    main.querySelector('.page-heading p').textContent={all:'Solo and Group Exhibitions',solo:'Solo Exhibitions',group:'Group Exhibitions'}[filter];
     const selected=records.filter(e=>filter==='all'||(filter==='solo'?isSolo(e):!isSolo(e)));
     gallery.innerHTML=selected.map(e=>{
       const i=records.indexOf(e),title=esc(e.title_ko||e.title_en),year=esc(e.year_label||e.year);
