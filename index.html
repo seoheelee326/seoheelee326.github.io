@@ -100,10 +100,12 @@ body,body *{font-family:"Inter","SUIT Variable",Arial,sans-serif!important}
 .landing-desc a:hover{color:#737373;text-decoration:none}
 .landing-desc a:focus-visible{outline:1px solid #555;outline-offset:3px}
 @media(max-width:760px){.landing-tile .landing-title{font-size:clamp(13px,3.7vw,19px)}.landing-tile .landing-desc{font-size:10px}}
-.landing-tile{width:clamp(250px,23vw,320px);max-width:none}
+.landing-tile{width:clamp(205px,18vw,245px);max-width:none}
 .landing-tile .landing-desc{width:100%;cursor:pointer}
 .landing-tile .landing-desc:hover{color:#737373;text-decoration:none}
-@media(max-width:760px){.landing-tile{width:min(70vw,260px);max-width:none}.landing-tile:nth-child(2),.landing-tile:nth-child(4){width:50vw}}
+.landing-grid a::after{content:none!important;display:none!important}
+.landing-grid .landing-tile,.landing-grid .landing-tile:hover,.landing-grid .landing-tile:focus-visible,.landing-grid .landing-tile *{text-decoration:none!important}
+@media(max-width:760px){.landing-tile{width:min(62vw,220px);max-width:none}.landing-tile:nth-child(2),.landing-tile:nth-child(4){width:44vw}}
 @media(max-width:760px){.landing-identity{left:52%;top:86%}.landing-identity strong{font-size:clamp(13px,3.6vw,18px)}.landing-identity span{font-size:9px}}
 </style>
 <header class="topbar"><a class="brand" href="#home" aria-label="홈으로"><b>SEOHEE LEE</b><small data-i18n="role">시각예술가</small></a><div class="head-right"><nav id="nav" aria-label="주 메뉴"><a href="#work" data-i18n="navWork">작업</a><a href="#exhibitions" data-i18n="navExhibitions">전시</a><a href="#projects" data-i18n="navProjects">프로젝트</a><a href="#education" data-i18n="navEducation">문화예술교육</a><a href="#contact" data-i18n="navContact">연락</a></nav><div class="language" role="group" aria-label="언어 선택"><button type="button" data-lang="ko" aria-pressed="true">KR</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div><button class="menu" id="menu" aria-expanded="false" aria-controls="nav" data-i18n="menu">메뉴</button></div></header>
@@ -142,11 +144,11 @@ const landing = document.getElementById('home');
 landing.insertAdjacentHTML('beforeend', `<div class="landing-layout">
   <div class="landing-masthead"><div><strong>SEOHEE LEE</strong><small>VISUAL ARTIST</small></div><div class="landing-lang" role="group" aria-label="Language"><button type="button" data-home-lang="ko">KR</button><span>/</span><button type="button" data-home-lang="en">EN</button></div></div>
   <nav class="landing-grid" aria-label="Portfolio sections">
-    <div class="landing-tile"><a class="landing-title" href="#cv">SEOHEE LEE</a><a class="landing-desc" href="#cv"><span>VISUAL ARTIST</span><span>BORN IN 2000</span><span>SEOUL / GYEONGGI-DO</span><span>CV</span></a></div>
-    <div class="landing-tile"><a class="landing-title" href="#work">ARTWORK</a><a class="landing-desc" href="#work"><span>PAINTING</span><span>INSTALLATION</span><span>MOVING IMAGE</span><span>PUBLIC ART PROJECTS</span><span>DRAWING</span></a></div>
-    <div class="landing-tile"><a class="landing-title" href="#exhibitions">EXHIBITIONS</a><a class="landing-desc" href="#exhibitions"><span>SOLO EXHIBITIONS</span><span>GROUP EXHIBITIONS</span></a></div>
-    <div class="landing-tile"><a class="landing-title" href="#education">ARTS EDUCATION</a><a class="landing-desc" href="#education"><span>Observation and Shared Questions</span></a></div>
-    <div class="landing-tile"><a class="landing-title" href="#contact">CONTACT</a><a class="landing-desc" href="#contact"><span>seoheelee.artwork@gmail.com</span><span>Instagram · @seohee_work</span><span>YouTube · SEOHEE's Palette</span></a></div>
+    <a class="landing-tile" href="#cv"><span class="landing-title">SEOHEE LEE</span><span class="landing-desc"><span>VISUAL ARTIST</span><span>BORN IN 2000</span><span>SEOUL / GYEONGGI-DO</span><span>CV</span></span></a>
+    <a class="landing-tile" href="#work"><span class="landing-title">ARTWORK</span><span class="landing-desc"><span>PAINTING</span><span>INSTALLATION</span><span>MOVING IMAGE</span><span>PUBLIC ART PROJECTS</span><span>DRAWING</span></span></a>
+    <a class="landing-tile" href="#exhibitions"><span class="landing-title">EXHIBITIONS</span><span class="landing-desc"><span>SOLO EXHIBITIONS</span><span>GROUP EXHIBITIONS</span></span></a>
+    <a class="landing-tile" href="#education"><span class="landing-title">ARTS EDUCATION</span><span class="landing-desc"><span>Observation and Shared Questions</span></span></a>
+    <a class="landing-tile" href="#contact"><span class="landing-title">CONTACT</span><span class="landing-desc"><span>seoheelee.artwork@gmail.com</span><span>Instagram · @seohee_work</span><span>YouTube · SEOHEE's Palette</span></span></a>
     <div class="landing-signature">SEOHEE LEE © 2026</div>
   </nav>
 </div>`);
