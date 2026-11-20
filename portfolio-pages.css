@@ -36,6 +36,9 @@ button{font:inherit;cursor:pointer}
 .body-copy{font-size:16px;line-height:1.8;max-width:710px;color:#626262}
 .profile-grid{display:grid;grid-template-columns:1fr 2fr;gap:70px;margin-top:60px}
 .profile-grid p,.profile-grid li{font-size:15px;line-height:1.8;color:#666}.profile-grid ul{padding-left:18px;margin:0 0 36px}
+.profile-grid .cv-artist-name{font-size:clamp(24px,2.5vw,34px);font-weight:500;letter-spacing:-.04em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.cv-artist-name small{font-size:12px;font-weight:400;letter-spacing:.015em;color:#777}
+.profile-grid .cv-artist-bio{font-size:12px;line-height:1.85;color:#737373}
 .cv-block{margin-top:65px}.cv-block>h2{font-size:17px;letter-spacing:.02em;margin:0 0 22px;font-weight:600}
 .cv-year{font-size:14px;color:#777;margin:28px 0 9px;font-weight:500}
 .cv-columns,.cv-entry{display:grid;grid-template-columns:2.1fr 1.35fr 1.5fr .9fr;gap:20px;align-items:start}
