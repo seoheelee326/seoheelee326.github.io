@@ -153,11 +153,11 @@ const landing = document.getElementById('home');
 landing.insertAdjacentHTML('beforeend', `<div class="landing-layout">
   <div class="landing-masthead"><div><strong>SEOHEE LEE</strong><small>VISUAL ARTIST</small></div><div class="landing-lang" role="group" aria-label="Language"><button type="button" data-home-lang="ko">KR</button><span>/</span><button type="button" data-home-lang="en">EN</button></div></div>
   <nav class="landing-grid" aria-label="Portfolio sections">
-    <a class="landing-tile" href="#cv"><span class="landing-title">SEOHEE LEE</span><span class="landing-desc"><span>VISUAL ARTIST</span><span>BORN IN 2000</span><span>SEOUL / GYEONGGI-DO</span><span>CV</span></span></a>
-    <a class="landing-tile" href="#work"><span class="landing-title">ARTWORK</span><span class="landing-desc"><span>PAINTING</span><span>INSTALLATION</span><span>MOVING IMAGE</span><span>PUBLIC ART PROJECTS</span><span>DRAWING</span></span></a>
-    <a class="landing-tile" href="#exhibitions"><span class="landing-title">EXHIBITIONS</span><span class="landing-desc"><span>SOLO EXHIBITIONS</span><span>GROUP EXHIBITIONS</span></span></a>
-    <a class="landing-tile" href="#education"><span class="landing-title">ARTS EDUCATION</span><span class="landing-desc"><span>Observation and Shared Questions</span></span></a>
-    <a class="landing-tile" href="#contact"><span class="landing-title">CONTACT</span><span class="landing-desc"><span>seoheelee.artwork@gmail.com</span><span>Instagram · @seohee_work</span><span>YouTube · SEOHEE's Palette</span></span></a>
+    <a class="landing-tile" href="cv.html"><span class="landing-title">SEOHEE LEE</span><span class="landing-desc"><span>VISUAL ARTIST</span><span>BORN IN 2000</span><span>SEOUL / GYEONGGI-DO</span><span>CV</span></span></a>
+    <a class="landing-tile" href="artwork.html"><span class="landing-title">ARTWORK</span><span class="landing-desc"><span>PAINTING</span><span>INSTALLATION</span><span>MOVING IMAGE</span><span>PUBLIC ART PROJECTS</span><span>DRAWING</span></span></a>
+    <a class="landing-tile" href="exhibitions.html"><span class="landing-title">EXHIBITIONS</span><span class="landing-desc"><span>SOLO EXHIBITIONS</span><span>GROUP EXHIBITIONS</span></span></a>
+    <a class="landing-tile" href="education.html"><span class="landing-title">ARTS EDUCATION</span><span class="landing-desc"><span>Observation and Shared Questions</span></span></a>
+    <a class="landing-tile" href="contact.html"><span class="landing-title">CONTACT</span><span class="landing-desc"><span>seoheelee.artwork@gmail.com</span><span>Instagram · @seohee_work</span><span>YouTube · SEOHEE's Palette</span></span></a>
     <div class="landing-signature">SEOHEE LEE © 2026</div>
   </nav>
 </div>`);
@@ -233,6 +233,8 @@ document.getElementById('hero-art').addEventListener('pointerdown', event => {
 // Home is a fixed, non-scrollable screen. Only an explicit menu link opens an archive section.
 function syncHomeLock() {
   const targetId = decodeURIComponent(location.hash.slice(1));
+  const pageRoutes={work:'artwork.html',exhibitions:'exhibitions.html',projects:'artwork.html',education:'education.html',contact:'contact.html',cv:'cv.html'};
+  if(pageRoutes[targetId]) { location.replace(pageRoutes[targetId]); return; }
   const home = !targetId || targetId === 'home';
   document.body.classList.toggle('home-locked', home);
   document.body.classList.toggle('section-mode', !home);
