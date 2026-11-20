@@ -58,6 +58,20 @@ body,body *{font-family:"Inter","SUIT Variable",Arial,sans-serif!important}
 .landing-signature{grid-column:1;grid-row:3;align-self:end;font-size:clamp(12px,1.5vw,17px);letter-spacing:.07em;color:#888}
 @media(max-width:760px){.landing-layout{padding:24px 22px}.landing-grid{padding-top:42px;column-gap:16px;row-gap:12px}.landing-tile .landing-title{font-size:clamp(20px,5.4vw,30px)}.landing-tile .landing-desc{font-size:11px;margin-top:9px}.landing-tile:nth-child(even),.landing-tile:nth-child(5){justify-self:start}.landing-signature{font-size:11px}.landing-masthead{font-size:12px}}
 @media(max-height:570px){.landing-grid{padding-top:18px}.landing-tile .landing-title{font-size:clamp(19px,3vw,32px)}.landing-tile .landing-desc{margin-top:4px;font-size:10px}}
+/* Sparse, asymmetrical navigation inspired by experimental editorial typography. */
+.landing-grid{display:block;position:relative;padding:0;flex:1}
+.landing-tile{position:absolute;display:block;width:max-content;max-width:33%;text-align:left!important;transform:none}
+.landing-tile .landing-title{font-size:clamp(16px,1.7vw,25px);font-weight:600;line-height:1.13;letter-spacing:-.045em}
+.landing-tile .landing-desc{font-size:clamp(10px,.85vw,12px);line-height:1.45;margin-top:8px;max-width:185px;color:#8c8c8c;font-weight:400}
+.landing-tile:nth-child(1){left:8%;top:17%}
+.landing-tile:nth-child(2){left:72%;top:12%;writing-mode:vertical-rl}
+.landing-tile:nth-child(3){left:30%;top:45%}
+.landing-tile:nth-child(4){left:61%;top:51%;writing-mode:vertical-rl}
+.landing-tile:nth-child(5){left:16%;top:76%}
+.landing-tile:nth-child(2)::before,.landing-tile:nth-child(4)::before{content:"";display:block;width:4px;height:45px;background:#202020;margin-bottom:11px}
+.landing-tile:hover,.landing-tile:focus-visible{transform:translate(3px,-3px)}
+.landing-signature{position:absolute;right:0;bottom:0;font-size:11px;letter-spacing:.06em}
+@media(max-width:760px){.landing-grid{padding:0}.landing-tile{max-width:65%;writing-mode:horizontal-tb!important}.landing-tile .landing-title{font-size:clamp(16px,4.2vw,22px)}.landing-tile .landing-desc{font-size:10px;margin-top:5px}.landing-tile:nth-child(1){left:5%;top:14%}.landing-tile:nth-child(2){left:45%;top:28%}.landing-tile:nth-child(3){left:9%;top:46%}.landing-tile:nth-child(4){left:38%;top:62%}.landing-tile:nth-child(5){left:10%;top:81%}.landing-tile:nth-child(2)::before,.landing-tile:nth-child(4)::before{display:none}.landing-signature{right:0;bottom:0;font-size:9px}}
 </style>
 <header class="topbar"><a class="brand" href="#home" aria-label="홈으로"><b>SEOHEE LEE</b><small data-i18n="role">시각예술가</small></a><div class="head-right"><nav id="nav" aria-label="주 메뉴"><a href="#work" data-i18n="navWork">작업</a><a href="#exhibitions" data-i18n="navExhibitions">전시</a><a href="#projects" data-i18n="navProjects">프로젝트</a><a href="#education" data-i18n="navEducation">문화예술교육</a><a href="#contact" data-i18n="navContact">연락</a></nav><div class="language" role="group" aria-label="언어 선택"><button type="button" data-lang="ko" aria-pressed="true">KR</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div><button class="menu" id="menu" aria-expanded="false" aria-controls="nav" data-i18n="menu">메뉴</button></div></header>
 <main>
@@ -95,16 +109,15 @@ const landing = document.getElementById('home');
 landing.insertAdjacentHTML('beforeend', `<div class="landing-layout">
   <div class="landing-masthead"><div><strong>SEOHEE LEE</strong><small>VISUAL ARTIST</small></div><div class="landing-lang" role="group" aria-label="Language"><button type="button" data-home-lang="ko">KR</button><span>/</span><button type="button" data-home-lang="en">EN</button></div></div>
   <nav class="landing-grid" aria-label="Portfolio sections">
-    <a class="landing-tile" href="#work"><span class="landing-title" data-i18n="navWork">작업</span><span class="landing-desc" data-ko="회화, 설치, 영상과 드로잉" data-en="Painting, installation, moving image and drawing"></span></a>
-    <a class="landing-tile" href="#exhibitions"><span class="landing-title" data-i18n="navExhibitions">전시</span><span class="landing-desc" data-ko="작품과 공간이 만났던 순간들" data-en="A record of works meeting spaces"></span></a>
-    <a class="landing-tile" href="#projects"><span class="landing-title" data-i18n="navProjects">프로젝트</span><span class="landing-desc" data-ko="장소, 협업, 예술적 실천" data-en="Places, collaboration and artistic practice"></span></a>
-    <a class="landing-tile" href="#education"><span class="landing-title" data-i18n="navEducation">문화예술교육</span><span class="landing-desc" data-ko="관찰과 질문을 나누는 과정" data-en="Observing and asking questions together"></span></a>
-    <a class="landing-tile" href="#contact"><span class="landing-title" data-i18n="navContact">연락</span><span class="landing-desc" data-ko="작업과 협업에 관한 이야기" data-en="Art and collaboration inquiries"></span></a>
+    <a class="landing-tile" href="#work"><span class="landing-title">WORK</span><span class="landing-desc">Painting · Installation · Moving Image</span></a>
+    <a class="landing-tile" href="#exhibitions"><span class="landing-title">EXHIBITIONS</span><span class="landing-desc">Works in space and time</span></a>
+    <a class="landing-tile" href="#projects"><span class="landing-title">PROJECTS</span><span class="landing-desc">Place · Collaboration · Practice</span></a>
+    <a class="landing-tile" href="#education"><span class="landing-title">ARTS EDUCATION</span><span class="landing-desc">Observation and shared questions</span></a>
+    <a class="landing-tile" href="#contact"><span class="landing-title">CONTACT</span><span class="landing-desc">Inquiries and collaborations</span></a>
     <div class="landing-signature">SEOHEE LEE © 2026</div>
   </nav>
 </div>`);
 const syncLandingLanguage = () => {
-  document.querySelectorAll('.landing-desc').forEach(el => el.textContent = el.dataset[lang]);
   document.querySelectorAll('[data-home-lang]').forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.homeLang === lang)));
 };
 document.querySelectorAll('[data-home-lang]').forEach(btn => btn.addEventListener('click', () => { setLanguage(btn.dataset.homeLang); syncLandingLanguage(); }));
