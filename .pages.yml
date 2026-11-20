@@ -404,8 +404,10 @@ content:
           - { name: title_ko, label: 전시명 · KR, type: string, required: true }
           - { name: title_en, label: Exhibition title · EN, type: string, required: true }
           - { name: year, label: 연도, type: number, required: true }
+          - { name: year_label, label: 표시 연도 · 기간(선택), type: string }
           - { name: venue_ko, label: 전시장 · KR, type: string }
           - { name: venue_en, label: Venue · EN, type: string }
+          - { name: support_ko, label: 지원·후원 기관 · KR, type: string }
           - { name: location_ko, label: 지역 · KR, type: string }
           - { name: location_en, label: Location · EN, type: string }
           - { name: type_ko, label: 전시 유형 · KR, type: string }
