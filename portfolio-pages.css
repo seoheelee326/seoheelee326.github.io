@@ -70,6 +70,10 @@ button{font:inherit;cursor:pointer}
 .exhibition-copy{padding-top:24px;margin-top:24px;border-top:1px solid #e6e6e6}
 .exhibition-copy h3{font-size:12px;letter-spacing:.08em;color:#888;font-weight:500;margin:0 0 16px}
 .exhibition-copy p{font-size:15px;line-height:1.9;white-space:pre-line;word-break:keep-all;margin:0;color:#555}
+.exhibition-transcript{margin:100px 0 20px;padding-top:36px;border-top:1px solid var(--line);max-width:820px}
+.exhibition-transcript h2{font-size:18px;font-weight:500;letter-spacing:-.01em;margin:0 0 10px}
+.exhibition-transcript-lead{font-size:12px!important;color:#999!important;margin-bottom:35px!important}
+.exhibition-transcript p{font-size:15px;line-height:1.9;white-space:pre-line;word-break:keep-all;color:#555;margin:0 0 26px}
 .exhibition-blog-info{border-top:1px solid var(--line);margin-top:48px;padding-top:28px}
 .exhibition-blog-info h2{font-size:12px;font-weight:500;letter-spacing:.1em;color:#888;margin:0 0 20px}
 .exhibition-summary{font-size:15px;line-height:1.85;max-width:520px;word-break:keep-all;margin:0 0 24px;color:#595959}
