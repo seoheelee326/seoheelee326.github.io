@@ -60,7 +60,7 @@ function exhibitionRecords(){
 }
 async function loadExhibitionRecords(){
   const records=(await json('data/exhibitions.json')).filter(r=>r.published!==false);
-  const toRow=r=>[r.year,r.title_ko||r.title_en,r.venue_ko||r.venue_en||'',r.support_ko||r.support_en||'',r.location_ko||r.location_en||''];
+  const toRow=r=>[r.year_label||r.year,r.title_ko||r.title_en,r.venue_ko||r.venue_en||'',r.support_ko||r.support_en||'',r.location_ko||r.location_en||''];
   return {solo:records.filter(r=>String(r.type_en||r.type_ko).toLowerCase().includes('solo')||r.type_ko==='개인전').map(toRow),group:records.filter(r=>String(r.type_en||r.type_ko).toLowerCase().includes('group')||r.type_ko==='단체전').map(toRow)};
 }
 async function cv(){
