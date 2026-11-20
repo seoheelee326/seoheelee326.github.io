@@ -78,7 +78,17 @@ body,body *{font-family:"Inter","SUIT Variable",Arial,sans-serif!important}
 .landing-identity strong{display:block;font-size:clamp(16px,1.7vw,25px);font-weight:600}
 .landing-identity span{display:block;margin-top:7px;font-size:clamp(10px,.85vw,12px);letter-spacing:.035em;color:#737373}
 .landing-signature{display:none}
+.landing-tile .landing-desc{display:flex;flex-direction:column;gap:3px;max-width:none}
+[hidden]{display:none!important}
+.landing-desc a{color:#777;text-decoration:none;display:block;width:fit-content;max-width:100%;overflow-wrap:anywhere}
+.landing-desc a:hover,.landing-desc a:focus-visible{color:#303030;text-decoration:underline;text-underline-offset:3px}
+.landing-desc span{display:block;color:#777}
+.landing-tile:nth-child(2){left:63%;top:10%}
+.landing-tile:nth-child(3){left:25%;top:47%}
+.landing-tile:nth-child(4){left:62%;top:56%}
+.landing-tile:nth-child(5){left:9%;top:75%}
 @media(max-width:760px){.landing-grid{padding:0}.landing-tile{max-width:65%;writing-mode:horizontal-tb!important}.landing-tile .landing-title{font-size:clamp(16px,4.2vw,22px)}.landing-tile .landing-desc{font-size:10px;margin-top:5px}.landing-tile:nth-child(1){left:5%;top:14%}.landing-tile:nth-child(2){left:45%;top:28%}.landing-tile:nth-child(3){left:9%;top:46%}.landing-tile:nth-child(4){left:38%;top:62%}.landing-tile:nth-child(5){left:10%;top:81%}.landing-tile:nth-child(2)::before,.landing-tile:nth-child(4)::before{display:none}.landing-signature{right:0;bottom:0;font-size:9px}}
+@media(max-width:760px){.landing-tile:nth-child(1){left:5%;top:9%}.landing-tile:nth-child(2){left:43%;top:24%}.landing-tile:nth-child(3){left:8%;top:47%}.landing-tile:nth-child(4){left:47%;top:60%}.landing-tile:nth-child(5){left:8%;top:79%}.landing-tile .landing-desc{gap:2px}.landing-tile .landing-title{font-size:clamp(14px,4vw,21px)}.landing-desc a,.landing-desc span{line-height:1.3}}
 @media(max-width:760px){.landing-identity{left:52%;top:86%}.landing-identity strong{font-size:clamp(13px,3.6vw,18px)}.landing-identity span{font-size:9px}}
 </style>
 <header class="topbar"><a class="brand" href="#home" aria-label="홈으로"><b>SEOHEE LEE</b><small data-i18n="role">시각예술가</small></a><div class="head-right"><nav id="nav" aria-label="주 메뉴"><a href="#work" data-i18n="navWork">작업</a><a href="#exhibitions" data-i18n="navExhibitions">전시</a><a href="#projects" data-i18n="navProjects">프로젝트</a><a href="#education" data-i18n="navEducation">문화예술교육</a><a href="#contact" data-i18n="navContact">연락</a></nav><div class="language" role="group" aria-label="언어 선택"><button type="button" data-lang="ko" aria-pressed="true">KR</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div><button class="menu" id="menu" aria-expanded="false" aria-controls="nav" data-i18n="menu">메뉴</button></div></header>
@@ -117,15 +127,40 @@ const landing = document.getElementById('home');
 landing.insertAdjacentHTML('beforeend', `<div class="landing-layout">
   <div class="landing-masthead"><div><strong>SEOHEE LEE</strong><small>VISUAL ARTIST</small></div><div class="landing-lang" role="group" aria-label="Language"><button type="button" data-home-lang="ko">KR</button><span>/</span><button type="button" data-home-lang="en">EN</button></div></div>
   <nav class="landing-grid" aria-label="Portfolio sections">
-    <a class="landing-tile" href="#work"><span class="landing-title">WORK</span><span class="landing-desc">Painting · Installation · Moving Image</span></a>
-    <a class="landing-tile" href="#exhibitions"><span class="landing-title">EXHIBITIONS</span><span class="landing-desc">Works in space and time</span></a>
-    <a class="landing-tile" href="#projects"><span class="landing-title">PROJECTS</span><span class="landing-desc">Place · Collaboration · Practice</span></a>
-    <a class="landing-tile" href="#education"><span class="landing-title">ARTS EDUCATION</span><span class="landing-desc">Observation and shared questions</span></a>
-    <a class="landing-tile" href="#contact"><span class="landing-title">CONTACT</span><span class="landing-desc">Inquiries and collaborations</span></a>
-    <div class="landing-identity"><strong>SEOHEE LEE</strong><span>VISUAL ARTIST</span></div>
+    <div class="landing-tile"><a class="landing-title" href="#cv">SEOHEE LEE</a><div class="landing-desc"><span>VISUAL ARTIST</span><span>BORN IN 2000</span><span>SEOUL / GYEONGGI-DO</span><a href="#cv">CV</a></div></div>
+    <div class="landing-tile"><a class="landing-title" href="#work" data-work-filter="all">ARTWORK</a><div class="landing-desc"><a href="#work" data-work-filter="painting">PAINTING</a><a href="#work" data-work-filter="installation">INSTALLATION</a><a href="#work" data-work-filter="video">MOVING IMAGE</a><a href="#projects">PUBLIC ART PROJECTS</a><a href="#work" data-work-filter="drawing">DRAWING</a></div></div>
+    <div class="landing-tile"><a class="landing-title" href="#exhibitions">EXHIBITIONS</a><div class="landing-desc"><a href="#exhibitions" data-exhibition-filter="solo">SOLO EXHIBITIONS</a><a href="#exhibitions" data-exhibition-filter="group">GROUP EXHIBITIONS</a></div></div>
+    <div class="landing-tile"><a class="landing-title" href="#education">ARTS EDUCATION</a><div class="landing-desc"><a href="#education">Observation and Shared Questions</a></div></div>
+    <div class="landing-tile"><a class="landing-title" href="#contact">CONTACT</a><div class="landing-desc"><a href="mailto:seoheelee.artwork@gmail.com">seoheelee.artwork@gmail.com</a><a href="https://www.instagram.com/seohee_work/" target="_blank" rel="noopener noreferrer">Instagram · @seohee_work</a><a href="https://www.youtube.com/results?search_query=SEOHEE%27s+Palette" target="_blank" rel="noopener noreferrer" title="YouTube search until channel URL is confirmed">YouTube · SEOHEE's Palette</a></div></div>
     <div class="landing-signature">SEOHEE LEE © 2026</div>
   </nav>
 </div>`);
+document.querySelector('main').insertAdjacentHTML('beforeend', `<section class="section" id="cv" aria-labelledby="cv-title">
+  <div class="section-head"><div><p class="eyebrow">ARTIST PROFILE</p><h2 id="cv-title">CV</h2></div><p class="section-intro">Selected background. Full CV to be updated.</p></div>
+  <div class="education"><div><h3>SEOHEE LEE</h3><p>Visual Artist · Born in 2000<br>Working across Seoul &amp; Gyeonggi-do, South Korea</p></div>
+  <div class="education-body"><h3>EDUCATION</h3><p>2024 · M.F.A., Art &amp; Culture, Korea University<br>2022 · B.F.A., Art &amp; Design, Korea University</p><h3>SELECTED SOLO EXHIBITION</h3><p>2026 · Yesterday’s Tomorrow, The Narte, Namyangju</p><p>More exhibition and career details will be added after review.</p></div></div>
+</section>`);
+document.querySelectorAll('[data-work-filter]').forEach(link => link.addEventListener('click', () => {
+  const filter = link.dataset.workFilter;
+  document.querySelectorAll('#filters .filter').forEach(btn => {
+    const active = btn.dataset.filter === filter;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', String(active));
+  });
+  renderWorks(filter);
+}));
+const soloArchive = document.querySelector('#exhibitions .archive-card');
+const groupArchiveNote = document.createElement('p');
+groupArchiveNote.className = 'empty';
+groupArchiveNote.textContent = 'Group exhibition records will be added after review.';
+groupArchiveNote.hidden = true;
+document.getElementById('exhibitions').appendChild(groupArchiveNote);
+const showExhibitions = type => {
+  soloArchive.hidden = type === 'group';
+  groupArchiveNote.hidden = type !== 'group';
+};
+document.querySelectorAll('[data-exhibition-filter]').forEach(link => link.addEventListener('click', () => showExhibitions(link.dataset.exhibitionFilter)));
+document.querySelectorAll('a[href="#exhibitions"]:not([data-exhibition-filter])').forEach(link => link.addEventListener('click', () => showExhibitions('all')));
 const syncLandingLanguage = () => {
   document.querySelectorAll('[data-home-lang]').forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.homeLang === lang)));
 };
