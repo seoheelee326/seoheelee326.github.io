@@ -36,6 +36,14 @@ button{font:inherit;cursor:pointer}
 .body-copy{font-size:16px;line-height:1.8;max-width:710px;color:#626262}
 .profile-grid{display:grid;grid-template-columns:1fr 2fr;gap:70px;margin-top:60px}
 .profile-grid p,.profile-grid li{font-size:15px;line-height:1.8;color:#666}.profile-grid ul{padding-left:18px;margin:0 0 36px}
+.cv-block{margin-top:65px}.cv-block>h2{font-size:17px;letter-spacing:.02em;margin:0 0 22px;font-weight:600}
+.cv-year{font-size:14px;color:#777;margin:28px 0 9px;font-weight:500}
+.cv-columns,.cv-entry{display:grid;grid-template-columns:2.1fr 1.35fr 1.5fr .9fr;gap:20px;align-items:start}
+.cv-columns{padding:0 0 10px;color:#888;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+.cv-entry{padding:14px 0;border-top:1px solid var(--line);font-size:13px;line-height:1.65}
+.cv-entry strong{font-weight:500}.cv-entry span{color:#727272}
+.cv-school{display:grid;grid-template-columns:85px 1fr;gap:20px;padding:13px 0;border-top:1px solid var(--line);font-size:14px}
+.cv-note{font-size:12px;color:#999;margin-top:18px;line-height:1.7}
 .contact-list{display:grid;gap:16px;margin-top:58px;max-width:670px}.contact-list a{font-size:clamp(17px,2vw,26px);padding:18px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
 .contact-list a:hover{color:#111}
 .detail-dialog{position:fixed;inset:0;background:rgba(255,255,255,.97);padding:65px clamp(22px,7vw,100px);overflow:auto;z-index:30}
@@ -45,3 +53,4 @@ button{font:inherit;cursor:pointer}
 .detail-info h2{font-size:clamp(28px,4vw,54px);font-weight:400}.detail-info p{font-size:15px;color:#666;line-height:1.7}
 @media(max-width:760px){.page-header{height:auto;min-height:72px;align-items:flex-start;flex-direction:column;padding:18px 20px;gap:13px}.page-nav{gap:12px}.page-nav a{font-size:11px}.page-content{height:calc(100svh - 110px);padding:42px 20px 80px}.page-heading{display:block}.page-heading p{margin-top:18px}.art-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.art-image{height:210px}.records,.profile-grid,.detail-layout{grid-template-columns:1fr;gap:25px}.statement{margin-top:50px}.detail-layout{padding-top:20px}}
 @media(max-width:480px){.art-grid{grid-template-columns:1fr}.art-image{height:300px}}
+@media(max-width:760px){.cv-columns{display:none}.cv-entry{grid-template-columns:1fr 1fr;gap:6px 14px}.cv-entry strong{grid-column:1/-1}.cv-entry span{font-size:12px}.cv-entry span:last-child{grid-column:1/-1}}
