@@ -100,16 +100,16 @@ body,body *{font-family:"Inter","SUIT Variable",Arial,sans-serif!important}
 .landing-desc a:hover{color:#737373;text-decoration:none}
 .landing-desc a:focus-visible{outline:1px solid #555;outline-offset:3px}
 @media(max-width:760px){.landing-tile .landing-title{font-size:clamp(13px,3.7vw,19px)}.landing-tile .landing-desc{font-size:10px}}
-.landing-tile{width:clamp(170px,13vw,190px);max-width:none}
-.landing-tile:nth-child(5){width:clamp(205px,17vw,235px)}
+.landing-tile{--group-width:clamp(150px,11vw,170px);width:var(--group-width);max-width:none}
+.landing-tile:nth-child(5){--group-width:clamp(185px,15vw,205px)}
 .landing-tile .landing-desc{width:100%;cursor:pointer}
 .landing-tile .landing-desc:hover{color:#737373;text-decoration:none}
 .landing-grid a::after{content:none!important;display:none!important}
 .landing-grid .landing-tile,.landing-grid .landing-tile:hover,.landing-grid .landing-tile:focus-visible,.landing-grid .landing-tile *{text-decoration:none!important}
 .landing-tile .landing-title{display:inline-block;position:relative}
 .landing-tile .landing-title::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:1px;background:#424242;transition:width .22s ease}
-.landing-tile:hover .landing-title::after,.landing-tile:focus-visible .landing-title::after,.landing-tile:active .landing-title::after{width:100%}
-@media(max-width:760px){.landing-tile{width:min(47vw,185px);max-width:none}.landing-tile:nth-child(2),.landing-tile:nth-child(4){width:40vw}.landing-tile:nth-child(5){width:min(65vw,230px)}}
+.landing-tile:hover .landing-title::after,.landing-tile:focus-visible .landing-title::after,.landing-tile:active .landing-title::after{width:var(--group-width)}
+@media(max-width:760px){.landing-tile{--group-width:min(42vw,165px)}.landing-tile:nth-child(2),.landing-tile:nth-child(4){--group-width:37vw}.landing-tile:nth-child(5){--group-width:min(58vw,205px)}}
 @media(max-width:760px){.landing-identity{left:52%;top:86%}.landing-identity strong{font-size:clamp(13px,3.6vw,18px)}.landing-identity span{font-size:9px}}
 </style>
 <header class="topbar"><a class="brand" href="#home" aria-label="홈으로"><b>SEOHEE LEE</b><small data-i18n="role">시각예술가</small></a><div class="head-right"><nav id="nav" aria-label="주 메뉴"><a href="#work" data-i18n="navWork">작업</a><a href="#exhibitions" data-i18n="navExhibitions">전시</a><a href="#projects" data-i18n="navProjects">프로젝트</a><a href="#education" data-i18n="navEducation">문화예술교육</a><a href="#contact" data-i18n="navContact">연락</a></nav><div class="language" role="group" aria-label="언어 선택"><button type="button" data-lang="ko" aria-pressed="true">KR</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div><button class="menu" id="menu" aria-expanded="false" aria-controls="nav" data-i18n="menu">메뉴</button></div></header>
