@@ -13,8 +13,8 @@ const grid=document.getElementById('art-grid');const render=filter=>{const selec
 main.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{main.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));render(b.dataset.filter)}));
 grid.addEventListener('click',e=>{const b=e.target.closest('[data-index]');if(!b)return;const w=works[Number(b.dataset.index)],d=document.getElementById('work-detail');d.querySelector('.detail-image').innerHTML=w.image?`<img src="${esc(w.image)}" alt="${esc(w.title)}">`:'IMAGE TO BE ADDED';d.querySelector('.detail-info').innerHTML=`<h2>${esc(w.title)}</h2><p>${esc(w.year)} · ${esc(w.materials_en||w.materials_ko)}</p><p>${esc(w.height_cm&&w.width_cm?`${w.height_cm} × ${w.width_cm} cm`:'')}</p><p>${esc(w.description_en||w.description_ko)}</p>`;d.hidden=false});
 const d=document.getElementById('work-detail');d.querySelector('.detail-close').addEventListener('click',()=>d.hidden=true);d.addEventListener('click',e=>{if(e.target===d)d.hidden=true});document.addEventListener('keydown',e=>{if(e.key==='Escape')d.hidden=true});render('all')}
-function exhibitions(){
-  const {solo,group}=exhibitionRecords();
+async function exhibitions(){
+  const {solo,group}=await loadExhibitionRecords();
   const section=(title,items)=>{
     const records=items.map((r,i)=>`${i===0||r[0]!==items[i-1][0]?`<h3 class="cv-year">${esc(r[0])}</h3>`:''}<article class="cv-entry"><strong>${esc(r[1])}</strong><span>${esc(r[2]||'—')}</span><span>${esc(r[3]||'—')}</span><span>${esc(r[4]||'—')}</span></article>`).join('');
     return `<section class="cv-block"><h2>${title}</h2><div class="cv-columns"><span>EXHIBITION</span><span>VENUE</span><span>SUPPORT / SPONSOR</span><span>LOCATION</span></div>${records}</section>`;
@@ -58,8 +58,13 @@ function exhibitionRecords(){
   ];
   return {solo,group};
 }
-function cv(){
-  const {solo,group}=exhibitionRecords();
+async function loadExhibitionRecords(){
+  const records=(await json('data/exhibitions.json')).filter(r=>r.published!==false);
+  const toRow=r=>[r.year,r.title_ko||r.title_en,r.venue_ko||r.venue_en||'',r.support_ko||r.support_en||'',r.location_ko||r.location_en||''];
+  return {solo:records.filter(r=>String(r.type_en||r.type_ko).toLowerCase().includes('solo')||r.type_ko==='개인전').map(toRow),group:records.filter(r=>String(r.type_en||r.type_ko).toLowerCase().includes('group')||r.type_ko==='단체전').map(toRow)};
+}
+async function cv(){
+  const {solo,group}=await loadExhibitionRecords();
   const residency=[['2022–2023','신흥공공예술창작소','신흥공공예술창작소','성남문화재단','경기도, 한국']];
   const artsEducation=[
     ['2025','경기문화재단 〈노는예술〉 우수단체 선정 및 예술교육 활동','문화제작예술소','경기문화재단','경기도, 한국']
