@@ -13,10 +13,17 @@ const grid=document.getElementById('art-grid');const render=filter=>{const selec
 main.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{main.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));render(b.dataset.filter)}));
 grid.addEventListener('click',e=>{const b=e.target.closest('[data-index]');if(!b)return;const w=works[Number(b.dataset.index)],d=document.getElementById('work-detail');d.querySelector('.detail-image').innerHTML=w.image?`<img src="${esc(w.image)}" alt="${esc(w.title)}">`:'IMAGE TO BE ADDED';d.querySelector('.detail-info').innerHTML=`<h2>${esc(w.title)}</h2><p>${esc(w.year)} · ${esc(w.materials_en||w.materials_ko)}</p><p>${esc(w.height_cm&&w.width_cm?`${w.height_cm} × ${w.width_cm} cm`:'')}</p><p>${esc(w.description_en||w.description_ko)}</p>`;d.hidden=false});
 const d=document.getElementById('work-detail');d.querySelector('.detail-close').addEventListener('click',()=>d.hidden=true);d.addEventListener('click',e=>{if(e.target===d)d.hidden=true});document.addEventListener('keydown',e=>{if(e.key==='Escape')d.hidden=true});render('all')}
-async function exhibitions(){const records=(await json('data/exhibitions.json')).filter(x=>x.published!==false);const group=t=>records.filter(x=>String(x.type_en||x.type_ko).toLowerCase().includes(t));const section=(title,items)=>`<section><h2>${title}</h2>${items.length?items.map(e=>`<article class="record"><strong>${esc(e.title_en||e.title_ko)}</strong><p>${esc(e.year)} · ${esc(e.venue_en||e.venue_ko)} · ${esc(e.location_en||e.location_ko)}</p></article>`).join(''):'<p class="empty">Records will be added after review.</p>'}</section>`;main.innerHTML=heading()+`<div class="records">${section('SOLO EXHIBITIONS',group('solo'))}${section('GROUP EXHIBITIONS',group('group'))}</div>`}
+function exhibitions(){
+  const {solo,group}=exhibitionRecords();
+  const section=(title,items)=>{
+    const records=items.map((r,i)=>`${i===0||r[0]!==items[i-1][0]?`<h3 class="cv-year">${esc(r[0])}</h3>`:''}<article class="cv-entry"><strong>${esc(r[1])}</strong><span>${esc(r[2]||'—')}</span><span>${esc(r[3]||'—')}</span><span>${esc(r[4]||'—')}</span></article>`).join('');
+    return `<section class="cv-block"><h2>${title}</h2><div class="cv-columns"><span>EXHIBITION</span><span>VENUE</span><span>SUPPORT / SPONSOR</span><span>LOCATION</span></div>${records}</section>`;
+  };
+  main.innerHTML=heading()+section('SOLO EXHIBITIONS',solo)+section('GROUP EXHIBITIONS',group);
+}
 function education(){main.innerHTML=heading()+`<h2 class="statement">Art as a way to observe, question and create together.</h2><p class="body-copy">Through observation, making and dialogue, arts education becomes an extension of artistic practice. Experiences with places, environments and materials are translated into shared questions and individual forms of expression.</p><p class="body-copy"><a href="https://sites.google.com/view/culturemakingart/" target="_blank" rel="noopener noreferrer">Culturemakingart Archive</a></p>`}
 function contact(){main.innerHTML=heading()+`<div class="contact-list"><a href="mailto:seoheelee.artwork@gmail.com">seoheelee.artwork@gmail.com</a><a href="https://www.instagram.com/seohee_work/" target="_blank" rel="noopener noreferrer">Instagram · @seohee_work</a><a href="https://www.youtube.com/results?search_query=SEOHEE%27s+Palette" target="_blank" rel="noopener noreferrer" title="Channel URL pending confirmation">YouTube · SEOHEE's Palette</a></div>`}
-function cv(){
+function exhibitionRecords(){
   // The supplied CV image is the source for historical group exhibitions.
   // Unverified venues/supporters are deliberately left blank.
   const solo=[
@@ -49,6 +56,10 @@ function cv(){
     ['2017','미묘한 소통','갤러리와부','경기문화재단','서울, 한국'],
     ['2017','원더랜드 큐브','갤러리와부','경기문화재단 · 현대차정몽구재단','경기도, 한국']
   ];
+  return {solo,group};
+}
+function cv(){
+  const {solo,group}=exhibitionRecords();
   const residency=[['2022–2023','신흥공공예술창작소','신흥공공예술창작소','성남문화재단','경기도, 한국']];
   const artsEducation=[
     ['2025','경기문화재단 〈노는예술〉 우수단체 선정 및 예술교육 활동','문화제작예술소','경기문화재단','경기도, 한국']
