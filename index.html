@@ -17,6 +17,11 @@
 /* The landing room is intentionally exactly one viewport tall. */
 body.home-locked{position:fixed;inset:0;width:100%;height:100svh;overflow:hidden;overscroll-behavior:none}
 body.home-locked .home{height:100svh;overflow:hidden}
+body.section-mode{position:fixed;inset:0;width:100%;height:100svh;overflow:hidden}
+body.section-mode main{height:100svh;overflow:hidden}
+body.section-mode .home,body.section-mode footer{display:none}
+body.section-mode .section{display:none}
+body.section-mode .section.active-view{display:block;height:100svh;overflow-y:auto;overscroll-behavior:contain;padding-top:115px}
 /* Inter handles Latin letters; SUIT Variable supplies Korean glyphs. */
 body,body *{font-family:"Inter","SUIT Variable",Arial,sans-serif!important}
 .home h1{font-weight:400;line-height:.93;letter-spacing:-.065em}
@@ -190,7 +195,7 @@ document.querySelectorAll('.language button').forEach(btn => btn.addEventListene
 setLanguage(lang);
 syncLandingLanguage();
 const siteHeader = document.querySelector('.topbar');
-const updateHeader = () => siteHeader.classList.toggle('on-home', window.scrollY < 20);
+const updateHeader = () => siteHeader.classList.toggle('on-home', !location.hash || location.hash === '#home');
 window.addEventListener('scroll', updateHeader, {passive:true});
 updateHeader();
 let spotFrame = 0;
@@ -230,11 +235,14 @@ function syncHomeLock() {
   const targetId = decodeURIComponent(location.hash.slice(1));
   const home = !targetId || targetId === 'home';
   document.body.classList.toggle('home-locked', home);
+  document.body.classList.toggle('section-mode', !home);
+  document.querySelectorAll('main > .section').forEach(section => {
+    const active = !home && section.id === targetId;
+    section.classList.toggle('active-view', active);
+    if (active) section.scrollTop = 0;
+  });
   if (home) {
     window.scrollTo({top:0,behavior:'auto'});
-  } else {
-    const target = document.getElementById(targetId);
-    if (target) requestAnimationFrame(() => target.scrollIntoView({behavior:'auto',block:'start'}));
   }
   updateHeader();
 }
