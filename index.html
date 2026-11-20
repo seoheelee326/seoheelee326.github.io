@@ -12,6 +12,7 @@
 <style>
 /* The landing room is intentionally exactly one viewport tall. */
 .home{background:#fff;isolation:isolate;--spot-x:50%;--spot-y:50%}
+.topbar.on-home{background:transparent;border-bottom-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
 .home::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:url("assets/patterns/seohee-pattern-light.png") center/500px repeat;opacity:0;transition:opacity .45s ease;-webkit-mask-image:radial-gradient(circle 210px at var(--spot-x) var(--spot-y),#000 0%,rgba(0,0,0,.7) 42%,transparent 100%);mask-image:radial-gradient(circle 210px at var(--spot-x) var(--spot-y),#000 0%,rgba(0,0,0,.7) 42%,transparent 100%)}
 .home.pattern-active::before{opacity:.34}
 .home-copy,.hero-art,.home-foot{z-index:1}
@@ -64,9 +65,14 @@ portal.setAttribute('tabindex','0');
 portal.setAttribute('aria-label','작업 아카이브 보기 / Explore works');
 const enterWorks = () => { window.location.hash = 'work'; };
 const landing = document.getElementById('home');
+const siteHeader = document.querySelector('.topbar');
+const updateHeader = () => siteHeader.classList.toggle('on-home', window.scrollY < 20);
+window.addEventListener('scroll', updateHeader, {passive:true});
+updateHeader();
 let spotFrame = 0;
-landing.addEventListener('pointermove', event => {
+const revealPattern = event => {
   if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+  if (window.scrollY > 20) return;
   const x = event.clientX - landing.getBoundingClientRect().left;
   const y = event.clientY - landing.getBoundingClientRect().top;
   if (spotFrame) cancelAnimationFrame(spotFrame);
@@ -75,8 +81,11 @@ landing.addEventListener('pointermove', event => {
     landing.style.setProperty('--spot-y', y + 'px');
     landing.classList.add('pattern-active');
   });
-});
+};
+landing.addEventListener('pointermove', revealPattern);
+siteHeader.addEventListener('pointermove', revealPattern);
 landing.addEventListener('pointerleave', () => landing.classList.remove('pattern-active'));
+siteHeader.addEventListener('pointerleave', () => landing.classList.remove('pattern-active'));
 portal.addEventListener('click', enterWorks);
 portal.addEventListener('keydown', event => {
   if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); enterWorks(); }
