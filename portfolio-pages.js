@@ -3,7 +3,7 @@ const main=document.getElementById('page-content');
 const pageNav=document.querySelector('.page-nav');
 pageNav.prepend(pageNav.querySelector('[data-page="cv"]'));
 const headings={artwork:['ARTWORK','Painting · Installation · Moving Image · Public Art Projects · Drawing'],exhibitions:['EXHIBITIONS','Solo and group exhibitions'],education:['ARTS EDUCATION','Observation and Shared Questions'],contact:['CONTACT','Art and collaboration inquiries'],cv:['CV','SEOHEE LEE · VISUAL ARTIST']};
-document.querySelectorAll('.page-nav a').forEach(a=>{if(a.dataset.page===page)a.setAttribute('aria-current','page')});
+document.querySelectorAll('.page-nav a').forEach(a=>{if(a.dataset.page===(page==='exhibition-detail'?'exhibitions':page))a.setAttribute('aria-current','page')});
 const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 function heading(){const [title,subtitle]=headings[page];return `<div class="page-heading"><h1>${title}</h1><p>${subtitle}</p></div>`}
 async function json(path){try{const r=await fetch(path,{cache:'no-store'});if(!r.ok)throw Error(r.status);return await r.json()}catch{return []}}
@@ -16,27 +16,31 @@ const d=document.getElementById('work-detail');d.querySelector('.detail-close').
 async function exhibitions(){
   const records=(await json('data/exhibitions.json')).filter(e=>e.published!==false).sort((a,b)=>Number(b.year)-Number(a.year));
   const isSolo=e=>String(e.type_en||e.type_ko).toLowerCase().includes('solo')||e.type_ko==='개인전';
-  main.innerHTML=heading()+`<div class="exhibition-filters" role="group" aria-label="Exhibition type"><button class="active" data-ex-type="all">ALL</button><button data-ex-type="solo">SOLO</button><button data-ex-type="group">GROUP</button></div><div class="exhibition-gallery" id="exhibition-gallery"></div><div class="detail-dialog" id="exhibition-detail" role="dialog" aria-modal="true" hidden><button class="detail-close" aria-label="Close">×</button><div class="detail-layout"><div class="detail-image"></div><div class="detail-info"></div></div></div>`;
+  main.innerHTML=heading()+`<div class="exhibition-filters" role="group" aria-label="Exhibition type"><button class="active" data-ex-type="all">ALL</button><button data-ex-type="solo">SOLO</button><button data-ex-type="group">GROUP</button></div><div class="exhibition-gallery" id="exhibition-gallery"></div>`;
   const gallery=main.querySelector('#exhibition-gallery');
   const render=filter=>{
     main.querySelector('.page-heading p').textContent={all:'Solo and Group Exhibitions',solo:'Solo Exhibitions',group:'Group Exhibitions'}[filter];
     const selected=records.filter(e=>filter==='all'||(filter==='solo'?isSolo(e):!isSolo(e)));
     gallery.innerHTML=selected.map(e=>{
-      const i=records.indexOf(e),title=esc(e.title_ko||e.title_en),year=esc(e.year_label||e.year);
-      return `<button class="exhibition-card" type="button" data-ex-index="${i}" aria-label="${title} details"><div class="exhibition-frame"><span class="frame-pin tl" aria-hidden="true"></span><span class="frame-pin tr" aria-hidden="true"></span><span class="frame-pin bl" aria-hidden="true"></span><span class="frame-pin br" aria-hidden="true"></span><div class="frame-inner">${e.image?`<img src="${esc(e.image)}" alt="${title}" loading="lazy">`:`<div class="frame-placeholder"><small>EXHIBITION ARCHIVE</small>${title}</div>`}</div></div><div class="exhibition-caption"><strong>${title}</strong><span>${year} · ${esc(e.venue_ko||e.venue_en||'Venue to be added')}</span></div></button>`;
+      const title=esc(e.title_ko||e.title_en),year=esc(e.year_label||e.year);
+      const href=`exhibition-detail.html?id=${encodeURIComponent(`${e.year}|${e.title_ko||e.title_en}`)}`;
+      return `<a class="exhibition-card" href="${esc(href)}" aria-label="${title} details"><div class="exhibition-frame"><span class="frame-pin tl" aria-hidden="true"></span><span class="frame-pin tr" aria-hidden="true"></span><span class="frame-pin bl" aria-hidden="true"></span><span class="frame-pin br" aria-hidden="true"></span><div class="frame-inner">${e.image?`<img src="${esc(e.image)}" alt="${title}" loading="lazy">`:`<div class="frame-placeholder"><small>EXHIBITION ARCHIVE</small>${title}</div>`}</div></div><div class="exhibition-caption"><strong>${title}</strong><span>${year} · ${esc(e.venue_ko||e.venue_en||'Venue to be added')}</span></div></a>`;
     }).join('');
   };
   main.querySelectorAll('[data-ex-type]').forEach(b=>b.addEventListener('click',()=>{main.querySelectorAll('[data-ex-type]').forEach(x=>x.classList.toggle('active',x===b));render(b.dataset.exType)}));
-  gallery.addEventListener('click',event=>{
-    const card=event.target.closest('[data-ex-index]');if(!card)return;
-    const e=records[Number(card.dataset.exIndex)],d=main.querySelector('#exhibition-detail'),title=esc(e.title_ko||e.title_en);
-    d.querySelector('.detail-image').innerHTML=e.image?`<img src="${esc(e.image)}" alt="${title}">`:'IMAGE TO BE ADDED';
-    const entries=[['YEAR',e.year_label||e.year],['VENUE',e.venue_ko||e.venue_en],['SUPPORT / SPONSOR',e.support_ko||e.support_en],['LOCATION',e.location_ko||e.location_en]];
-    d.querySelector('.detail-info').innerHTML=`<p class="eyebrow">${isSolo(e)?'SOLO EXHIBITION':'GROUP EXHIBITION'}</p><h2>${title}</h2><dl class="exhibition-info-grid">${entries.map(([label,value])=>`<dt>${label}</dt><dd>${esc(value||'—')}</dd>`).join('')}</dl>`;
-    d.hidden=false;
-  });
-  const detail=main.querySelector('#exhibition-detail');detail.querySelector('.detail-close').addEventListener('click',()=>detail.hidden=true);detail.addEventListener('click',e=>{if(e.target===detail)detail.hidden=true});document.addEventListener('keydown',e=>{if(e.key==='Escape')detail.hidden=true});
   render('all');
+}
+async function exhibitionDetail(){
+  const id=new URLSearchParams(location.search).get('id');
+  const records=(await json('data/exhibitions.json')).filter(e=>e.published!==false);
+  const e=records.find(e=>`${e.year}|${e.title_ko||e.title_en}`===id);
+  if(!e){main.innerHTML='<div class="exhibition-detail-page"><a class="exhibition-back" href="exhibitions.html">BACK TO EXHIBITIONS</a><h1>Exhibition not found</h1></div>';return;}
+  const title=esc(e.title_ko||e.title_en);
+  const solo=String(e.type_en||e.type_ko).toLowerCase().includes('solo')||e.type_ko==='개인전';
+  const entries=[['YEAR',e.year_label||e.year],['VENUE',e.venue_ko||e.venue_en],['SUPPORT / SPONSOR',e.support_ko||e.support_en],['LOCATION',e.location_ko||e.location_en]];
+  const gallery=Array.isArray(e.gallery)?e.gallery.filter(Boolean):[];
+  main.innerHTML=`<article class="exhibition-detail-page"><a class="exhibition-back" href="exhibitions.html">BACK TO EXHIBITIONS</a><div class="exhibition-detail-layout"><div><div class="exhibition-frame exhibition-detail-frame"><span class="frame-pin tl" aria-hidden="true"></span><span class="frame-pin tr" aria-hidden="true"></span><span class="frame-pin bl" aria-hidden="true"></span><span class="frame-pin br" aria-hidden="true"></span><div class="frame-inner">${e.image?`<img src="${esc(e.image)}" alt="${title}">`:`<div class="frame-placeholder"><small>EXHIBITION ARCHIVE</small>${title}</div>`}</div></div>${gallery.length?`<div class="exhibition-detail-images">${gallery.map(src=>`<img src="${esc(typeof src==='string'?src:src.image||src.src||'')}" alt="${title}" loading="lazy">`).join('')}</div>`:''}</div><div class="exhibition-detail-text"><p class="exhibition-type">${solo?'SOLO EXHIBITION':'GROUP EXHIBITION'}</p><h1>${title}</h1><dl class="exhibition-info-grid">${entries.map(([label,value])=>`<dt>${label}</dt><dd>${esc(value||'—')}</dd>`).join('')}</dl></div></div></article>`;
+  document.title=`${e.title_ko||e.title_en} | SEOHEE LEE`;
 }
 function education(){main.innerHTML=heading()+`<h2 class="statement">Art as a way to observe, question and create together.</h2><p class="body-copy">Through observation, making and dialogue, arts education becomes an extension of artistic practice. Experiences with places, environments and materials are translated into shared questions and individual forms of expression.</p><p class="body-copy"><a href="https://sites.google.com/view/culturemakingart/" target="_blank" rel="noopener noreferrer">Culturemakingart Archive</a></p>`}
 function contact(){main.innerHTML=heading()+`<div class="contact-list"><a href="mailto:seoheelee.artwork@gmail.com">seoheelee.artwork@gmail.com</a><a href="https://www.instagram.com/seohee_work/" target="_blank" rel="noopener noreferrer">Instagram · @seohee_work</a><a href="https://www.youtube.com/results?search_query=SEOHEE%27s+Palette" target="_blank" rel="noopener noreferrer" title="Channel URL pending confirmation">YouTube · SEOHEE's Palette</a></div>`}
@@ -98,4 +102,4 @@ async function cv(){
   ${block('ARTS EDUCATION',artsEducation,['ACTIVITY','ORGANIZATION','SUPPORT','LOCATION'])}
   <p class="cv-note">Entries with “—” require source confirmation. Some exhibition titles, dates and institutions transcribed from the supplied CV image are pending final verification.</p>`;
 }
-({artwork,exhibitions,education,contact,cv}[page]||contact)();
+({artwork,exhibitions,'exhibition-detail':exhibitionDetail,education,contact,cv}[page]||contact)();
