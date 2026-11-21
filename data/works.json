@@ -103,7 +103,23 @@
     "materials_ko": "자판기, 티백, 피드백 종이, 가변설치",
     "description_ko": "'티 브레이크(tea break)'은 농장의 농부들이 일을 하다 잠시 쉬며 차를 마시는 시간에서 유래했다. 이 시간으로 인해 농부들의 작업 능률이 올라갔고, 현재 직장인들의 '티타임(tea time)' 역시 중요한 휴식시간으로 자리 잡혀 있다. 휴식, 흔히 회자되는 키워드인 '힐링'은 자신이 자신을 위해 스스로 치유할 수 있는 '무엇을 한다'는 의미를 포함하고 있다. 내가 이번 전시에서 선택한 오브제인 자판기는 올해 상반기 열풍을 일으켰던 '뽑기 기계\"의 모태라 할 수 있다. 최근 이상현상처럼 열광적인 반응을 드러냈다고 하는 '뽑기 기계\"는 성공을 통해 성취감을 느끼기 어려운 시대를 살아가는 현대인들의 욕망을 투영한 단발적인 힐링 머신이 아니었을까? 관객은 워크숍에 참여하여 500원 어치의 코인으로 한 잔의 차를 마실 수 있는 티백을 뽑을 수도, 전시되어있는 어떤 작가의 작품을 뽑을 수도 있다. 어느 쪽이든 이 워크숍을 통해 미묘한 소통의 틈을 보여주고 싶다.",
     "image": "assets/artworks/from-day-to-day-healing/exhibition-view-01.webp",
-    "detail_images": [],
+    "detail_images": [
+      {
+        "src": "assets/artworks/from-day-to-day-healing/detail-01.webp"
+      },
+      {
+        "src": "assets/artworks/from-day-to-day-healing/detail-02.webp"
+      },
+      {
+        "src": "assets/artworks/from-day-to-day-healing/detail-03.webp"
+      },
+      {
+        "src": "assets/artworks/from-day-to-day-healing/detail-04.webp"
+      },
+      {
+        "src": "assets/artworks/from-day-to-day-healing/detail-05.webp"
+      }
+    ],
     "exhibition_views": [
       {
         "src": "assets/artworks/from-day-to-day-healing/exhibition-view-01.webp",
