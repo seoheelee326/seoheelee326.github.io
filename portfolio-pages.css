@@ -163,3 +163,39 @@ body[data-page="artwork"]>.page-header,body[data-page="artwork"]>.page-content,b
  .artwork-back{margin-bottom:32px}
 }
 @media(max-width:520px){.artwork-gallery{grid-template-columns:1fr}.artwork-card--featured{grid-column:auto}.artwork-card--offset{margin-top:0}.artwork-card--featured .artwork-thumb--empty{aspect-ratio:4/3}}
+
+
+/* Artwork detail: close-ups, artist's writing, series and exhibition archive. */
+.artwork-jump-nav{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:35px;padding-top:21px;border-top:1px solid var(--line)}
+.artwork-jump-nav a{font-size:10px;letter-spacing:.075em;color:#888;border-bottom:1px solid transparent;padding-bottom:5px}
+.artwork-jump-nav a:hover{color:#333;border-bottom-color:#555}
+.artwork-archive-content{margin-top:clamp(80px,10vw,150px)}
+.artwork-archive-content>div{scroll-margin-top:32px}
+.artwork-archive-section{border-top:1px solid var(--line);padding:32px 0 clamp(65px,9vw,112px)}
+.artwork-section-top{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin:0 0 35px}
+.artwork-section-top h2{font-size:clamp(19px,2.3vw,30px);font-weight:400;letter-spacing:-.04em;margin:0}
+.artwork-section-top p{font-size:12px;line-height:1.65;color:#aaa;margin:0}
+.artwork-section-empty{padding:60px 0;color:#aaa;font-size:13px;letter-spacing:.015em}
+.artwork-detail-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:35px}
+.artwork-detail-gallery figure{margin:0}
+.artwork-detail-gallery img{display:block;width:100%;height:auto;object-fit:contain;max-height:700px}
+.artwork-detail-gallery figcaption{margin-top:12px;font-size:12px;color:#888}
+.artwork-statement{max-width:800px;font-size:16px;line-height:2;white-space:pre-line;word-break:keep-all;color:#555}
+.artwork-related-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
+.artwork-related-card{display:block}
+.artwork-related-image{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;background:rgba(244,244,244,.35)}
+.artwork-related-image img{display:block;width:100%;height:100%;object-fit:contain}
+.artwork-related-image span{font-size:10px;color:#aaa;letter-spacing:.06em}
+.artwork-related-card h3{font-size:15px;font-weight:500;margin:15px 0 7px}
+.artwork-related-card p{font-size:12px;color:#999;margin:0}
+.artwork-exhibitions{display:grid;gap:0}
+.artwork-exhibition-card{display:grid;grid-template-columns:132px minmax(0,1fr) 24px;gap:28px;align-items:center;border-bottom:1px solid var(--line);padding:23px 0}
+.artwork-exhibition-preview{height:108px;display:grid;place-items:center;background:rgba(244,244,244,.25)}
+.artwork-exhibition-preview img{display:block;width:100%;height:100%;object-fit:contain}
+.artwork-exhibition-preview span{font-size:10px;color:#aaa}
+.artwork-exhibition-card p{font-size:12px;color:#999;margin:0 0 8px}
+.artwork-exhibition-card h3{font-weight:500;font-size:18px;margin:0 0 7px;word-break:keep-all}
+.artwork-exhibition-card div>span{font-size:12px;color:#888}
+.artwork-exhibition-arrow{justify-self:end;font-size:18px;color:#aaa}
+@media(max-width:760px){.artwork-section-top{display:block}.artwork-section-top p{margin-top:10px}.artwork-detail-gallery{gap:18px}.artwork-related-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.artwork-exhibition-card{grid-template-columns:85px minmax(0,1fr) 16px;gap:15px}.artwork-exhibition-preview{height:90px}.artwork-exhibition-card h3{font-size:15px}.artwork-section-empty{padding:35px 0}}
+@media(max-width:480px){.artwork-detail-gallery{grid-template-columns:1fr}}
