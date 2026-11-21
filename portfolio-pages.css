@@ -300,26 +300,33 @@ body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{
 .artwork-related-pending{cursor:default}
 .artwork-related-pending .artwork-related-image{border:1px dashed #e4e4e4;background:transparent}
 
-/* Strange Axis detail only: every structural divider is an interactive red line. */
-[data-axis-detail="true"] .axis-reactive-divider{
+/* Strange Axis (2019): visible red rules, embedded in all 8 dividers. */
+[data-axis-detail="true"] .artwork-archive-section,
+[data-axis-detail="true"] .artwork-meta,
+[data-axis-detail="true"] .artwork-jump-nav,
+[data-axis-detail="true"] .artwork-pagination{
   position:relative;
   border-top:0!important;
   overflow:visible;
 }
 [data-axis-detail="true"] .axis-divider-overlay{
   position:absolute;
-  left:0;top:-40px;
-  width:100%;height:80px;
-  z-index:1;
+  top:-40px;
+  left:0;
+  width:100%;
+  height:80px;
   display:block;
-  pointer-events:none;
   overflow:visible;
-  user-select:none;
+  pointer-events:none;
+  z-index:3;
 }
 [data-axis-detail="true"] .axis-divider-overlay path{
+  stroke:#be3340;
+  stroke-width:2.25;
   fill:none;
-  stroke:#b52e3d;
-  stroke-width:2px;
-  vector-effect:non-scaling-stroke;
   stroke-linecap:round;
+  vector-effect:non-scaling-stroke;
+}
+@media(prefers-reduced-motion:reduce){
+ [data-axis-detail="true"] .axis-divider-overlay{animation:none}
 }
