@@ -199,3 +199,15 @@ body[data-page="artwork"]>.page-header,body[data-page="artwork"]>.page-content,b
 .artwork-exhibition-arrow{justify-self:end;font-size:18px;color:#aaa}
 @media(max-width:760px){.artwork-section-top{display:block}.artwork-section-top p{margin-top:10px}.artwork-detail-gallery{gap:18px}.artwork-related-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.artwork-exhibition-card{grid-template-columns:85px minmax(0,1fr) 16px;gap:15px}.artwork-exhibition-preview{height:90px}.artwork-exhibition-card h3{font-size:15px}.artwork-section-empty{padding:35px 0}}
 @media(max-width:480px){.artwork-detail-gallery{grid-template-columns:1fr}}
+
+
+/* Donuimun ghost cat: a quiet seated vignette, tail only moves. */
+.ghost-cat-scene{position:relative;min-height:610px;display:flex;align-items:flex-end;justify-content:center;overflow:visible}
+.ghost-cat-figure{position:relative;width:min(195px,48%);aspect-ratio:290/925;margin-bottom:10px;isolation:isolate}
+.ghost-cat-figure img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:fill;mix-blend-mode:multiply;pointer-events:none}
+.ghost-cat-body{clip-path:inset(0 0 39% 0)}
+.ghost-cat-tail{clip-path:inset(59% 0 0 0);transform-origin:43% 60%;animation:ghost-cat-tail-sway 5.4s ease-in-out infinite}
+.ghost-cat-ledge{position:absolute;bottom:8px;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,#dfdfdf 25%,#dfdfdf 75%,transparent);z-index:-1}
+@keyframes ghost-cat-tail-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(3deg)}}
+@media(prefers-reduced-motion:reduce){.ghost-cat-tail{animation:none;transform:none}}
+@media(max-width:760px){.ghost-cat-scene{min-height:490px}.ghost-cat-figure{width:min(160px,50%)}}
