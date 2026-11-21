@@ -102,10 +102,17 @@
     "category": "Installation",
     "materials_ko": "자판기, 티백, 피드백 종이, 가변설치",
     "description_ko": "",
-    "image": "",
+    "image": "assets/artworks/from-day-to-day-healing/exhibition-view-01.webp",
     "detail_images": [],
-    "exhibition_views": [],
-    "related_exhibitions": [],
+    "exhibition_views": [
+      {
+        "src": "assets/artworks/from-day-to-day-healing/exhibition-view-01.webp",
+        "caption": "《미묘한 소통》 전시 전경, 2017"
+      }
+    ],
+    "related_exhibitions": [
+      "2017|미묘한 소통"
+    ],
     "related_works": [],
     "featured": false,
     "published": true
