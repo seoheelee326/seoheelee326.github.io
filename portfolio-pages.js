@@ -7,7 +7,7 @@ document.querySelectorAll('.page-nav a').forEach(a=>{if(a.dataset.page===((page=
 const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 function heading(){const [title,subtitle]=headings[page];return `<div class="page-heading"><h1>${title}</h1><p>${subtitle}</p></div>`}
 async function json(path){try{const r=await fetch(path,{cache:'no-store'});if(!r.ok)throw Error(r.status);return await r.json()}catch{return []}}
-const category=w=>{const c=String(w.category||'').toLowerCase();if(c.includes('public'))return'public';if(c.includes('draw'))return'drawing';if(c.includes('install'))return'installation';if(c.includes('video')||c.includes('media')||c.includes('moving'))return'video';return'painting'};
+const category=w=>{const c=String(w.category||'').toLowerCase();if(c.includes('print')||c.includes('silk'))return'printmaking';if(c.includes('public'))return'public';if(c.includes('draw'))return'drawing';if(c.includes('install'))return'installation';if(c.includes('video')||c.includes('media')||c.includes('moving'))return'video';return'painting'};
 async function exhibitionArchive(){
   const [records,posts,content,localPhotos,source]=await Promise.all([json('data/exhibitions.json'),json('data/exhibition-blog.json'),json('data/exhibition-content.json'),json('data/exhibition-local-photos.json'),json('data/exhibition-source.json')]);
   const enrich=post=>post?{...post,...content.find(c=>c.post_id===post.post_id),photos_local:source[post.post_id]?.photos||localPhotos[post.post_id]||[],source_paragraphs:source[post.post_id]?.paragraphs||[]}:null;
@@ -17,7 +17,7 @@ async function exhibitionArchive(){
 }
 const workId=(w,i)=>String(w.id||w.slug||[w.year,w.title].filter(Boolean).join('|')||i);
 const workImages=w=>[w.image,...(Array.isArray(w.gallery)?w.gallery.map(x=>typeof x==='string'?x:x?.image||x?.src):[])].filter(Boolean);
-const artCategories=[['all','ALL'],['painting','PAINTING'],['installation','INSTALLATION'],['video','MOVING IMAGE'],['public','PUBLIC ART'],['drawing','DRAWING']];
+const artCategories=[['all','ALL'],['painting','PAINTING'],['installation','INSTALLATION'],['video','MOVING IMAGE'],['public','PUBLIC ART'],['printmaking','PRINTMAKING'],['drawing','DRAWING']];
 async function artwork(){
  const works=(await json('data/works.json')).filter(w=>w.published!==false);
  main.innerHTML=heading()+'<div class="artwork-intro">Selected works <span>— An ongoing visual archive</span></div><div class="artwork-filters" role="group" aria-label="Artwork category">'+artCategories.map(([k,l],i)=>'<button data-art-filter="'+k+'" class="'+(i===0?'active':'')+'">'+l+'</button>').join('')+'</div><div class="artwork-gallery" id="artwork-gallery"></div>';
@@ -72,8 +72,8 @@ async function artworkDetail(){
  const detailBlock=block('DETAIL VIEWS','A closer look at materials, surfaces and process',
   detailImages.length?'<div class="artwork-detail-gallery">'+detailImages.map((item,i)=>'<figure><img src="'+esc(item.src||item.image)+'" alt="'+title+' — detail '+(i+1)+'" loading="lazy">'+(item.caption?'<figcaption>'+esc(item.caption)+'</figcaption>':'')+'</figure>').join('')+'</div>':empty('Detail photographs will be added.'));
  const noteBlock=block('ARTIST’S NOTE','Words behind the work',note?'<div class="artwork-statement">'+esc(note)+'</div>':empty('Artist’s text will be added.'));
- const seriesBlock=block('RELATED WORKS','Works from the same series',
-  relatedWorks.length?'<div class="artwork-related-grid">'+relatedWorks.map(({work,i})=>{const image=workImages(work)[0],name=esc(work.title||work.title_ko||'Untitled');return '<a class="artwork-related-card" href="artwork-detail.html?id='+encodeURIComponent(workId(work,i))+'"><div class="artwork-related-image">'+(image?'<img src="'+esc(image)+'" alt="'+name+'" loading="lazy">':'<span>IMAGE TO BE ADDED</span>')+'</div><h3>'+name+'</h3><p>'+esc(work.year||'')+' · '+esc(work.category||'')+'</p></a>'}).join('')+'</div>':empty('Related works will appear here when a series is linked.'));
+ const seriesBlock=block('RELATED WORKS',w.series_name?esc(w.series_name):'Works from the same series',
+  relatedWorks.length?'<div class="artwork-related-grid">'+relatedWorks.map(({work,i})=>{const image=workImages(work)[0],name=esc(work.title||work.title_ko||'Untitled');return '<a class="artwork-related-card" href="artwork-detail.html?id='+encodeURIComponent(workId(work,i))+'"><div class="artwork-related-image">'+(image?'<img src="'+esc(image)+'" alt="'+name+'" loading="lazy">':'<span>IMAGE TO BE ADDED</span>')+'</div><h3>'+name+'</h3><p>'+esc(work.year||'')+' · '+esc(work.category||'')+'</p></a>'}).join('')+'</div>':empty(w.series_name?'Other works from this series will be linked here.':'Related works will appear here when a series is linked.'));
  const exhibitionBlock=block('RELATED EXHIBITIONS','Where this work has been presented',
   relatedExhibitions.length?'<div class="artwork-exhibitions">'+relatedExhibitions.map(e=>{const name=esc(e.title_ko||e.title_en),href='exhibition-detail.html?id='+encodeURIComponent([e.year,e.title_ko||e.title_en].join('|')),poster=e.image||e.blog?.photos_local?.[0];return '<a class="artwork-exhibition-card" href="'+esc(href)+'"><div class="artwork-exhibition-preview">'+(poster?'<img src="'+esc(poster)+'" alt="'+name+'" loading="lazy">':'<span>EXHIBITION ARCHIVE</span>')+'</div><div><p>'+esc(e.year_label||e.year)+'</p><h3>'+name+'</h3><span>'+esc(e.venue_ko||e.venue_en||'')+'</span></div><span class="artwork-exhibition-arrow">↗</span></a>'}).join('')+'</div>':empty('Related exhibition records will be linked here.'));
  const prev=visible[index-1],next=visible[index+1];
