@@ -243,3 +243,11 @@ body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{
 @media(max-width:1000px){.artwork-jump-nav .ghost-companion{top:-125px;right:0;width:67px;height:205px}.artwork-jump-nav:has(.ghost-companion){padding-right:80px}}
 @media(max-width:760px){.artwork-jump-nav .ghost-companion{top:-135px;right:2px;width:70px;height:210px}.artwork-jump-nav:has(.ghost-companion){padding-right:84px}.artwork-carousel-stage{min-height:320px}}
 @media(max-width:480px){.artwork-jump-nav .ghost-companion{top:-100px;right:0;width:52px;height:165px}.artwork-jump-nav:has(.ghost-companion){padding-right:60px}}
+
+/* Precisely seat the cropped decorative cat: rump at the top rule, tail below. */
+.artwork-jump-nav .ghost-companion{top:0!important;right:8px!important;height:230px!important;width:auto!important;aspect-ratio:var(--ghost-aspect,237 / 885)!important;transform:translateY(-61%)!important;overflow:visible}
+.artwork-jump-nav .ghost-companion img{object-fit:fill!important;mix-blend-mode:normal}
+.artwork-jump-nav .ghost-companion-body{clip-path:inset(0 0 38% 0)}
+.artwork-jump-nav .ghost-companion-tail{clip-path:inset(60% 0 0 0)}
+@media(max-width:760px){.artwork-jump-nav .ghost-companion{height:195px!important;right:5px!important}}
+@media(max-width:480px){.artwork-jump-nav .ghost-companion{height:165px!important;right:3px!important}}
