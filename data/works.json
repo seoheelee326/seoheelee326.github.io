@@ -109,21 +109,24 @@
       },
       {
         "src": "assets/artworks/from-day-to-day-healing/detail-02.webp"
-      },
-      {
-        "src": "assets/artworks/from-day-to-day-healing/detail-03.webp"
-      },
-      {
-        "src": "assets/artworks/from-day-to-day-healing/detail-04.webp"
-      },
-      {
-        "src": "assets/artworks/from-day-to-day-healing/detail-05.webp"
       }
     ],
     "exhibition_views": [
       {
         "src": "assets/artworks/from-day-to-day-healing/exhibition-view-01.webp",
         "caption": "《미묘한 소통》 전시 전경, 2017"
+      },
+      {
+        "src": "assets/artworks/from-day-to-day-healing/detail-03.webp",
+        "caption": "《미묘한 소통》 참여 전경, 2017"
+      },
+      {
+        "src": "assets/artworks/from-day-to-day-healing/detail-04.webp",
+        "caption": "《미묘한 소통》 참여 전경, 2017"
+      },
+      {
+        "src": "assets/artworks/from-day-to-day-healing/detail-05.webp",
+        "caption": "《미묘한 소통》 참여 전경, 2017"
       }
     ],
     "related_exhibitions": [
