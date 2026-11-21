@@ -32,13 +32,14 @@
     if(balls.length) for(const p of balls) {p.x=clamp(p.x,p.r,w-p.r);p.y=Math.min(p.y,h-p.r);}
   }
   function spawn(){
-    // Restore original arrival speed and stagger while retaining inelastic settling.
+    // Stagger release times, not starting heights, so every capsule enters at a comparable speed.
     const number=clamp(Math.round(w*h/4200),70,230);
     const radiusScale=clamp(w/1000,.64,1.12);
     balls=Array.from({length:number},(_,i)=>{
       const r=(19+rand()*13)*radiusScale;
-      return {x:r+rand()*Math.max(1,w-2*r),y:-r-15-rand()*h*1.6-i*2.1,
-        vx:(rand()-.5)*2.7,vy:rand()*1.2,r,angle:rand()*Math.PI,
+      return {x:r+rand()*Math.max(1,w-2*r),y:-r-15,
+        delay:i*.58+rand()*9,
+        vx:(rand()-.5)*2.7,vy:.8,r,angle:rand()*Math.PI,
         spin:(rand()-.5)*.025,color:palettes[Math.floor(rand()*palettes.length)],
         opacity:1,cleared:false,rest:0,asleep:false,contact:false};
     });
@@ -71,6 +72,7 @@
     const pointerRadius=145;
     for(const p of balls){
       if(p.opacity<=0)continue;
+      if(!p.cleared&&!clearing&&!scrolled&&elapsed<p.delay)continue;
       if(p.cleared||clearing||scrolled){
         if(!p.cleared){p.cleared=true;p.vy=-.7;}
         p.opacity=Math.max(0,p.opacity-.022*dt);
@@ -109,7 +111,7 @@
     for(let pass=0;pass<4;pass++){
       const cell=76,grid=new Map();
       for(let i=0;i<balls.length;i++){
-        const p=balls[i];if(p.cleared||p.opacity<=0||p.y<-70)continue;
+        const p=balls[i];if(p.cleared||p.opacity<=0||p.y<-70||(!clearing&&!scrolled&&elapsed<p.delay))continue;
         if(p.y+p.r>floorY){
           p.y=floorY-p.r;p.contact=true;
           if(p.vy>0)p.vy=-p.vy*restitution;
@@ -174,7 +176,7 @@
     ctx.clearRect(0,0,w,h);
     advance(dt);
     for(const p of balls){
-      if(p.opacity<=0||p.y+p.r<0||p.y-p.r>h)continue;
+      if(p.opacity<=0||p.y+p.r<0||p.y-p.r>h||(!clearing&&!scrolled&&elapsed<p.delay))continue;
       ctx.globalAlpha=p.opacity*.86;frameImage(p);
     }
     ctx.globalAlpha=1;
