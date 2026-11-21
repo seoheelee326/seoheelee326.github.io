@@ -32,15 +32,14 @@
     if(balls.length) for(const p of balls) {p.x=clamp(p.x,p.r,w-p.r);p.y=Math.min(p.y,h-p.r);}
   }
   function spawn(){
-    // Slow cascade rather than fast, chaotic rain. Natural accumulation fills the lower view.
-    const number=clamp(Math.round(w*h/4800),85,205);
-    const radiusScale=clamp(w/1000,.70,1.10);
+    // Restore original arrival speed and stagger while retaining inelastic settling.
+    const number=clamp(Math.round(w*h/4200),70,230);
+    const radiusScale=clamp(w/1000,.64,1.12);
     balls=Array.from({length:number},(_,i)=>{
-      const r=(21+rand()*10)*radiusScale;
-      return {x:r+rand()*Math.max(1,w-2*r),
-        y:-r-15-rand()*h*.55-i*.65,
-        vx:(rand()-.5)*.40,vy:0,r,angle:rand()*Math.PI,
-        spin:(rand()-.5)*.002,color:palettes[Math.floor(rand()*palettes.length)],
+      const r=(19+rand()*13)*radiusScale;
+      return {x:r+rand()*Math.max(1,w-2*r),y:-r-15-rand()*h*1.6-i*2.1,
+        vx:(rand()-.5)*2.7,vy:rand()*1.2,r,angle:rand()*Math.PI,
+        spin:(rand()-.5)*.025,color:palettes[Math.floor(rand()*palettes.length)],
         opacity:1,cleared:false,rest:0,asleep:false,contact:false};
     });
   }
@@ -67,9 +66,9 @@
   function advance(dt){
     // Fixed-step-like semi-implicit integration: low restitution and strong tangential
     // friction remove collision energy. A quiet contact enters a sleeping state.
-    const gravity=.095, terminalSpeed=3.05, restitution=.075, floorY=h-8;
-    const pointerMoving=pointer.active && pointer.energy>1.35 && !clearing && !scrolled;
-    const pointerRadius=82;
+    const gravity=.27, restitution=.15, floorY=h-8;
+    const pointerMoving=pointer.active && !clearing && !scrolled;
+    const pointerRadius=145;
     for(const p of balls){
       if(p.opacity<=0)continue;
       if(p.cleared||clearing||scrolled){
@@ -82,24 +81,23 @@
       }
       p.contact=false;
       if(pointerMoving){
-        const dx=p.x-pointer.x,dy=p.y-pointer.y;
-        const dist=Math.hypot(dx,dy)||.0001;
+        const dx=p.x-pointer.x,dy=p.y-pointer.y,dist=Math.hypot(dx,dy)||1;
         if(dist<pointerRadius+p.r){
-          // No constant force from a stationary pointer; only an intentional sweep.
-          const strength=1-dist/(pointerRadius+p.r);
-          const moveX=pointer.x-pointer.px,moveY=pointer.y-pointer.py;
-          p.vx+=clamp(moveX*.25,-2.8,2.8)*strength+(dx/dist)*.22;
-          p.vy+=clamp(moveY*.18,-2,2)*strength+(dy/dist)*.2;
+          const strength=(1-dist/(pointerRadius+p.r));
+          // Original cursor behaviour: a broad push, then sweep to clear.
+          p.vx+=((dx/dist)*2.5+(pointer.x-pointer.px)*.5)*strength*dt;
+          p.vy+=((dy/dist)*2.5+(pointer.y-pointer.py)*.38-2.2)*strength*dt;
           p.asleep=false;p.rest=0;
-          if(dist<p.r+14 && pointer.energy>4){
-            p.cleared=true;p.vy=-.6;p.vx*=.5;
+          if(strength>.58 || (pointer.energy>15 && strength>.28)){
+            p.cleared=true;p.vy-=3.5;
+            p.vx+=(dx>=0?1:-1)*(2+rand()*4);
           }
         }
       }
       if(p.asleep)continue;
-      p.vy=Math.min(terminalSpeed,p.vy+gravity*dt);
-      p.vx*=Math.pow(.976,dt);
-      p.vy*=Math.pow(.995,dt);
+      p.vy+=gravity*dt;
+      p.vx*=Math.pow(.994,dt);
+      p.vy*=Math.pow(.996,dt);
       p.x+=p.vx*dt;p.y+=p.vy*dt;
       p.spin*=Math.pow(.98,dt);
       p.angle+=p.spin*dt;
