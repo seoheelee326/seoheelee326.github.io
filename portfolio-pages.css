@@ -313,3 +313,10 @@ body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{
   .axis-yarn-shadow{stroke-width:7}.axis-yarn-main{stroke-width:4}
 }
 @media(prefers-reduced-motion:reduce){.axis-red-yarn{animation:none}}
+
+/* Strange Axis — clean, unbroken red lines. No wool noise or rotation. */
+.axis-yarn-note .axis-red-yarn{overflow:visible;pointer-events:none}
+.axis-yarn-note .axis-yarn-shadow,
+.axis-yarn-note .axis-yarn-highlight{display:none}
+.axis-yarn-note .axis-yarn-main{stroke:#b52e3d;stroke-width:3;filter:none;opacity:.91;vector-effect:non-scaling-stroke}
+@media(max-width:760px){.axis-yarn-note .axis-yarn-main{stroke-width:2.4}}
