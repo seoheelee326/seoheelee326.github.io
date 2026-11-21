@@ -54,7 +54,7 @@
     for(let i=0;i<=points;i++){
       const px=i*1000/points;
       const fade=Math.sin(Math.PI*px/1000)**2;
-      const dy=offset*Math.exp(-((px-x)/sigma)**2/2)*fade;
+      const dy=offset*Math.exp(-Math.pow((px-x)/sigma,2)/2)*fade;
       values.push(40+dy);
     }
     for(let i=1;i<points;i++){
