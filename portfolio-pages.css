@@ -300,23 +300,9 @@ body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{
 .artwork-related-pending{cursor:default}
 .artwork-related-pending .artwork-related-image{border:1px dashed #e4e4e4;background:transparent}
 
-/* Strange Axis (2019): loose red wool draped over the top of ARTIST'S NOTE only. */
-.axis-yarn-note{position:relative;isolation:isolate}
-.axis-yarn-note .artwork-archive-section{position:relative}
-.axis-red-yarn{position:absolute;top:0;left:-4%;width:108%;height:525px;overflow:visible;z-index:1;pointer-events:none;user-select:none}
-.axis-yarn-note .artwork-section-top,.axis-yarn-note .artwork-statement,.axis-yarn-note .artwork-exhibition-context{position:relative;z-index:2}
-.axis-yarn-shadow{stroke:rgba(91,16,26,.18);stroke-width:10;filter:url(#axis-wool-fuzz)}
-.axis-yarn-main{stroke:#b73342;stroke-width:5.3;filter:url(#axis-wool-fuzz)}
-.axis-yarn-highlight{stroke:rgba(240,116,117,.54);stroke-width:1.3}
-@media(max-width:760px){
-  .axis-red-yarn{left:-3%;width:106%;height:350px;opacity:.72}
-  .axis-yarn-shadow{stroke-width:7}.axis-yarn-main{stroke-width:4}
-}
-@media(prefers-reduced-motion:reduce){.axis-red-yarn{animation:none}}
-
-/* Strange Axis — clean, unbroken red lines. No wool noise or rotation. */
-.axis-yarn-note .axis-red-yarn{overflow:visible;pointer-events:none}
-.axis-yarn-note .axis-yarn-shadow,
-.axis-yarn-note .axis-yarn-highlight{display:none}
-.axis-yarn-note .axis-yarn-main{stroke:#b52e3d;stroke-width:3;filter:none;opacity:.91;vector-effect:non-scaling-stroke}
-@media(max-width:760px){.axis-yarn-note .axis-yarn-main{stroke-width:2.4}}
+/* Strange Axis (2019): its original divider becomes one responsive red line. */
+.axis-yarn-note{position:relative}
+.axis-yarn-note .artwork-archive-section{position:relative;border-top:0}
+.axis-interactive-divider{position:absolute;top:-30px;left:0;display:block;width:100%;height:60px;overflow:visible;z-index:1;pointer-events:none;user-select:none}
+.axis-interactive-divider path{stroke:#b52e3d;stroke-width:2;fill:none;vector-effect:non-scaling-stroke}
+@media(prefers-reduced-motion:reduce){.axis-interactive-divider path{transition:none}}
