@@ -213,3 +213,33 @@ body[data-page="artwork"]>.page-header,body[data-page="artwork"]>.page-content,b
 @media(max-width:1000px){.ghost-companion{right:-5px;top:180px;width:65px;height:200px}}
 @media(max-width:760px){.artwork-detail-info:has(.ghost-companion){min-height:420px}.ghost-companion{right:4px;top:165px;width:70px;height:215px}}
 @media(max-width:480px){.ghost-companion{right:0;top:190px;width:55px;height:170px}}
+
+
+/* Artwork detail pages use a clean white canvas; pattern remains on other pages. */
+body[data-page="artwork-detail"]::before{display:none!important;content:none!important}
+body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{background:#fff}
+
+/* One intact artwork photo per frame: click through, never crop the paper margins. */
+.artwork-detail-carousel{max-width:1040px;margin:0 auto;outline-offset:7px}
+.artwork-carousel-stage{width:100%;display:grid;place-items:center;min-height:clamp(340px,53vw,700px)}
+.artwork-carousel-slide{width:100%;margin:0;text-align:center}
+.artwork-carousel-slide[hidden]{display:none!important}
+.artwork-carousel-slide img{display:block;width:auto;max-width:100%;height:auto;max-height:min(74vh,720px);object-fit:contain;margin:0 auto}
+.artwork-carousel-slide figcaption{font-size:12px;line-height:1.5;color:#888;margin-top:12px}
+.artwork-carousel-controls{display:flex;align-items:center;justify-content:center;gap:clamp(30px,5vw,70px);padding:18px 0 8px}
+.artwork-carousel-arrow{border:1px solid #ddd;background:#fff;width:45px;height:45px;border-radius:50%;font-size:20px;color:#555;display:grid;place-items:center;transition:background .2s}
+.artwork-carousel-arrow:hover{background:#f5f5f5}
+.artwork-carousel-arrow:focus-visible{outline:2px solid #777;outline-offset:3px}
+.artwork-carousel-count{min-width:68px;text-align:center;font-size:12px;letter-spacing:.09em;color:#999}
+
+/* The sitting ghost cat is anchored to the navigation rule; the tail sways below it. */
+.artwork-jump-nav:has(.ghost-companion){position:relative;padding-right:105px;min-height:42px}
+.artwork-detail-info:has(.ghost-companion){min-height:0}
+.artwork-jump-nav .ghost-companion{position:absolute;top:-148px;right:0;width:80px;height:235px;pointer-events:none;z-index:2;overflow:visible}
+.artwork-jump-nav .ghost-companion-figure{display:block;position:relative;width:100%;height:100%}
+.artwork-jump-nav .ghost-companion img{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.artwork-jump-nav .ghost-companion-body{clip-path:inset(0 0 39% 0)}
+.artwork-jump-nav .ghost-companion-tail{clip-path:inset(59% 0 0 0)}
+@media(max-width:1000px){.artwork-jump-nav .ghost-companion{top:-125px;right:0;width:67px;height:205px}.artwork-jump-nav:has(.ghost-companion){padding-right:80px}}
+@media(max-width:760px){.artwork-jump-nav .ghost-companion{top:-135px;right:2px;width:70px;height:210px}.artwork-jump-nav:has(.ghost-companion){padding-right:84px}.artwork-carousel-stage{min-height:320px}}
+@media(max-width:480px){.artwork-jump-nav .ghost-companion{top:-100px;right:0;width:52px;height:165px}.artwork-jump-nav:has(.ghost-companion){padding-right:60px}}
