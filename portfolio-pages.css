@@ -201,13 +201,15 @@ body[data-page="artwork"]>.page-header,body[data-page="artwork"]>.page-content,b
 @media(max-width:480px){.artwork-detail-gallery{grid-template-columns:1fr}}
 
 
-/* Donuimun ghost cat: a quiet seated vignette, tail only moves. */
-.ghost-cat-scene{position:relative;min-height:610px;display:flex;align-items:flex-end;justify-content:center;overflow:visible}
-.ghost-cat-figure{position:relative;width:min(195px,48%);aspect-ratio:290/925;margin-bottom:10px;isolation:isolate}
-.ghost-cat-figure img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:fill;mix-blend-mode:multiply;pointer-events:none}
-.ghost-cat-body{clip-path:inset(0 0 39% 0)}
-.ghost-cat-tail{clip-path:inset(59% 0 0 0);transform-origin:43% 60%;animation:ghost-cat-tail-sway 5.4s ease-in-out infinite}
-.ghost-cat-ledge{position:absolute;bottom:8px;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,#dfdfdf 25%,#dfdfdf 75%,transparent);z-index:-1}
-@keyframes ghost-cat-tail-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(3deg)}}
-@media(prefers-reduced-motion:reduce){.ghost-cat-tail{animation:none;transform:none}}
-@media(max-width:760px){.ghost-cat-scene{min-height:490px}.ghost-cat-figure{width:min(160px,50%)}}
+/* Donuimun companion: original artwork stays still at left; only the little tail moves. */
+.artwork-detail-info:has(.ghost-companion){position:relative;min-height:500px}
+.ghost-companion{position:absolute;right:0;top:160px;width:90px;height:260px;pointer-events:none;z-index:1}
+.ghost-companion-figure{position:relative;width:100%;height:100%;isolation:isolate}
+.ghost-companion img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;pointer-events:none}
+.ghost-companion-body{clip-path:inset(0 0 39% 0)}
+.ghost-companion-tail{clip-path:inset(59% 0 0 0);transform-origin:45% 60%;animation:ghost-companion-tail-sway 5.6s ease-in-out infinite}
+@keyframes ghost-companion-tail-sway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(3deg)}}
+@media(prefers-reduced-motion:reduce){.ghost-companion-tail{animation:none;transform:none}}
+@media(max-width:1000px){.ghost-companion{right:-5px;top:180px;width:65px;height:200px}}
+@media(max-width:760px){.artwork-detail-info:has(.ghost-companion){min-height:420px}.ghost-companion{right:4px;top:165px;width:70px;height:215px}}
+@media(max-width:480px){.ghost-companion{right:0;top:190px;width:55px;height:170px}}
