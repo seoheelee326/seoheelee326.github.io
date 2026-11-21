@@ -60,7 +60,7 @@
       if(!active)return;
       const dt=bound(lastTime?(t-lastTime)/16.667:1,.25,1.5);
       lastTime=t;
-      const touching=t-pointer.last<110;
+      const touching=t-pointer.last<110 && Math.hypot(pointer.dx,pointer.dy)>0.35;
       for(const strand of strands){
         const a=strand.nodes;
         for(let i=0;i<a.length;i++){
