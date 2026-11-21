@@ -64,7 +64,7 @@ async function artworkDetail(){
  const ghostCompanion=ghostCat?'<span class="ghost-companion" aria-label="작품 속 유령고양이가 선에 걸터앉아 꼬리를 살랑입니다" role="img"><span class="ghost-companion-figure"><img class="ghost-companion-body" src="'+esc(w.companion_image)+'" alt="" aria-hidden="true"><img class="ghost-companion-tail" src="'+esc(w.companion_image)+'" alt="" aria-hidden="true"></span></span>':'';
 
  const dimensions=[w.height_cm,w.width_cm,w.depth_cm].filter(v=>v!==undefined&&v!==null&&v!=='').join(' × ');
- const fields=[['YEAR',w.year],['CATEGORY',w.category],['MATERIALS',materials],['DIMENSIONS',dimensions?dimensions+' cm':'']];
+ const fields=[['YEAR',w.year],['CATEGORY',w.category],['MATERIALS',materials],['DIMENSIONS',w.dimensions_text|| (dimensions?dimensions+' cm':'')]];
  const note=w.artist_statement_ko||w.artist_statement_en||w.artist_text||w.description_ko||w.description_en;
  const detailImages=(Array.isArray(w.detail_images)?w.detail_images:[]).map(x=>typeof x==='string'?{src:x}:x).concat(Array.isArray(w.gallery)?w.gallery.map(x=>typeof x==='string'?{src:x}:x):[]).filter(x=>x&&(x.src||x.image));
  const exhibitionPhotos=(Array.isArray(w.exhibition_views)?w.exhibition_views:[]).map(x=>typeof x==='string'?{src:x}:x).filter(x=>x&&(x.src||x.image));
