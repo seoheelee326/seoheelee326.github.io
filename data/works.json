@@ -58,11 +58,22 @@
     "category": "Printmaking",
     "materials_ko": "판화지에 실크, QR, 가변설치",
     "description_ko": "다 길냥이 있는데 나만 없어...\n 주변에서 쉽게 찾아볼 수 있는 길냥이들. \n 그런데 돈의문 박물관 마을에서 길냥이를 보신적이 있나요?\n .\n .\n .\n 돈의문 유령고양이 이야기.\n 없는 걸까 안보이는 걸까? \n 꽃들 사이에 숨어있을 수도 있어, \n 무늬만 보일 수도 있어,\n 지금 옆에 있을 수도 있어!",
-    "image": "assets/artworks/donuimun-ghost-cat/ghost-cat-cutout.webp",
+    "image": "assets/artworks/donuimun-ghost-cat/ghost-cat-01.webp",
     "detail_images": [
       {
-        "src": "assets/artworks/donuimun-ghost-cat/ghost-cat-silkscreen-detail.webp",
-        "caption": "실크스크린 작업 이미지"
+        "src": "assets/artworks/donuimun-ghost-cat/ghost-cat-02.webp"
+      },
+      {
+        "src": "assets/artworks/donuimun-ghost-cat/ghost-cat-03.webp"
+      },
+      {
+        "src": "assets/artworks/donuimun-ghost-cat/ghost-cat-04.webp"
+      },
+      {
+        "src": "assets/artworks/donuimun-ghost-cat/ghost-cat-05.webp"
+      },
+      {
+        "src": "assets/artworks/donuimun-ghost-cat/ghost-cat-06.webp"
       }
     ],
     "series_id": "donuimun-ghost-cat-story",
