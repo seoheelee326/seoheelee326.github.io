@@ -87,6 +87,11 @@
     "featured": false,
     "published": true,
     "companion_image": "assets/artworks/donuimun-ghost-cat/ghost-cat-01.webp",
-    "exhibition_views": []
+    "exhibition_views": [
+      {
+        "src": "assets/artworks/donuimun-ghost-cat/exhibition-view-01.jpg",
+        "caption": "《돈의문이 열려있다》 전시 전경, 2018"
+      }
+    ]
   }
 ]
