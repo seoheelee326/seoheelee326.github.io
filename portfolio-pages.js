@@ -3,11 +3,11 @@ const main=document.getElementById('page-content');
 const pageNav=document.querySelector('.page-nav');
 pageNav.prepend(pageNav.querySelector('[data-page="cv"]'));
 const headings={artwork:['ARTWORK','Painting · Installation · Moving Image · Public Art Projects · Drawing'],exhibitions:['EXHIBITIONS','Solo and group exhibitions'],education:['ARTS EDUCATION','Observation and Shared Questions'],contact:['CONTACT','Art and collaboration inquiries'],cv:['CV','SEOHEE LEE · VISUAL ARTIST']};
-document.querySelectorAll('.page-nav a').forEach(a=>{if(a.dataset.page===(page==='exhibition-detail'?'exhibitions':page))a.setAttribute('aria-current','page')});
+document.querySelectorAll('.page-nav a').forEach(a=>{if(a.dataset.page===((page==='exhibition-detail')?'exhibitions':(page==='artwork-detail'?'artwork':page)))a.setAttribute('aria-current','page')});
 const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 function heading(){const [title,subtitle]=headings[page];return `<div class="page-heading"><h1>${title}</h1><p>${subtitle}</p></div>`}
 async function json(path){try{const r=await fetch(path,{cache:'no-store'});if(!r.ok)throw Error(r.status);return await r.json()}catch{return []}}
-const category=w=>{const c=String(w.category||'').toLowerCase();if(c.includes('draw'))return'drawing';if(c.includes('install'))return'installation';if(c.includes('video')||c.includes('media')||c.includes('moving'))return'video';return'painting'};
+const category=w=>{const c=String(w.category||'').toLowerCase();if(c.includes('public'))return'public';if(c.includes('draw'))return'drawing';if(c.includes('install'))return'installation';if(c.includes('video')||c.includes('media')||c.includes('moving'))return'video';return'painting'};
 async function exhibitionArchive(){
   const [records,posts,content,localPhotos,source]=await Promise.all([json('data/exhibitions.json'),json('data/exhibition-blog.json'),json('data/exhibition-content.json'),json('data/exhibition-local-photos.json'),json('data/exhibition-source.json')]);
   const enrich=post=>post?{...post,...content.find(c=>c.post_id===post.post_id),photos_local:source[post.post_id]?.photos||localPhotos[post.post_id]||[],source_paragraphs:source[post.post_id]?.paragraphs||[]}:null;
@@ -15,11 +15,42 @@ async function exhibitionArchive(){
   for(const post of posts){if(!withPosts.some(e=>e.blog?.post_id===post.post_id))withPosts.push({year:post.year,title_ko:post.title,type_en:'Group Exhibition',venue_ko:post.venue||'',location_ko:post.location||'',blog:enrich(post)});}
   return withPosts.sort((a,b)=>Number(b.year)-Number(a.year));
 }
-async function artwork(){const works=(await json('data/works.json')).filter(w=>w.published!==false);const categories=['all','painting','installation','video','drawing'];const labels=['ALL','PAINTING','INSTALLATION','MOVING IMAGE','DRAWING'];main.innerHTML=heading()+`<div class="filters">${categories.map((c,i)=>`<button data-filter="${c}" class="${i===0?'active':''}">${labels[i]}</button>`).join('')}</div><div class="art-grid" id="art-grid"></div><div class="detail-dialog" id="work-detail" hidden role="dialog" aria-modal="true"><button class="detail-close" aria-label="Close">×</button><div class="detail-layout"><div class="detail-image"></div><div class="detail-info"></div></div></div>`;
-const grid=document.getElementById('art-grid');const render=filter=>{const selected=works.filter(w=>filter==='all'||category(w)===filter);grid.innerHTML=selected.length?selected.map(w=>{const i=works.indexOf(w);return `<button class="art-card" data-index="${i}"><div class="art-image">${w.image?`<img src="${esc(w.image)}" alt="${esc(w.title)}">`:'IMAGE TO BE ADDED'}</div><h2>${esc(w.title)}</h2><p>${esc(w.year)} · ${esc(w.category)}</p></button>`}).join(''):'<p class="empty">Works in this category will be added.</p>'};
-main.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{main.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));render(b.dataset.filter)}));
-grid.addEventListener('click',e=>{const b=e.target.closest('[data-index]');if(!b)return;const w=works[Number(b.dataset.index)],d=document.getElementById('work-detail');d.querySelector('.detail-image').innerHTML=w.image?`<img src="${esc(w.image)}" alt="${esc(w.title)}">`:'IMAGE TO BE ADDED';d.querySelector('.detail-info').innerHTML=`<h2>${esc(w.title)}</h2><p>${esc(w.year)} · ${esc(w.materials_en||w.materials_ko)}</p><p>${esc(w.height_cm&&w.width_cm?`${w.height_cm} × ${w.width_cm} cm`:'')}</p><p>${esc(w.description_en||w.description_ko)}</p>`;d.hidden=false});
-const d=document.getElementById('work-detail');d.querySelector('.detail-close').addEventListener('click',()=>d.hidden=true);d.addEventListener('click',e=>{if(e.target===d)d.hidden=true});document.addEventListener('keydown',e=>{if(e.key==='Escape')d.hidden=true});render('all')}
+const workId=(w,i)=>String(w.id||w.slug||[w.year,w.title].filter(Boolean).join('|')||i);
+const workImages=w=>[w.image,...(Array.isArray(w.gallery)?w.gallery.map(x=>typeof x==='string'?x:x?.image||x?.src):[])].filter(Boolean);
+const artCategories=[['all','ALL'],['painting','PAINTING'],['installation','INSTALLATION'],['video','MOVING IMAGE'],['public','PUBLIC ART'],['drawing','DRAWING']];
+async function artwork(){
+ const works=(await json('data/works.json')).filter(w=>w.published!==false);
+ main.innerHTML=heading()+'<div class="artwork-intro">Selected works <span>— An ongoing visual archive</span></div><div class="artwork-filters" role="group" aria-label="Artwork category">'+artCategories.map(([k,l],i)=>'<button data-art-filter="'+k+'" class="'+(i===0?'active':'')+'">'+l+'</button>').join('')+'</div><div class="artwork-gallery" id="artwork-gallery"></div>';
+ const grid=main.querySelector('#artwork-gallery');
+ function render(filter){
+  const selection=works.map((w,i)=>({...w,_index:i})).filter(w=>filter==='all'||category(w)===filter);
+  grid.innerHTML=selection.length?selection.map((w,i)=>{
+   const title=esc(w.title||w.title_ko||'Untitled');
+   const src=workImages(w)[0];
+   const href='artwork-detail.html?id='+encodeURIComponent(workId(w,w._index));
+   const prominence=(filter==='all'&&w.featured&&selection.length>2)?'artwork-card--featured':(i%4===1?'artwork-card--offset':'');
+   return '<a class="artwork-card '+prominence+'" href="'+esc(href)+'" aria-label="'+title+' — view artwork"><div class="artwork-thumb '+(src?'':'artwork-thumb--empty')+'">'+(src?'<img src="'+esc(src)+'" alt="'+title+'" loading="lazy">':'<span>IMAGE TO BE ADDED</span>')+'</div><div class="artwork-card-caption"><div><h2>'+title+'</h2><p>'+esc(w.year||'')+' · '+esc(w.category||'')+'</p></div><span aria-hidden="true">↗</span></div></a>';
+  }).join(''):'<p class="empty">Works in this category will be added.</p>';
+ }
+ main.querySelectorAll('[data-art-filter]').forEach(btn=>btn.addEventListener('click',()=>{
+  main.querySelectorAll('[data-art-filter]').forEach(x=>x.classList.toggle('active',x===btn));render(btn.dataset.artFilter);
+ }));
+ render('all');
+}
+async function artworkDetail(){
+ const works=(await json('data/works.json')).filter(w=>w.published!==false);
+ const id=new URLSearchParams(location.search).get('id');
+ const index=works.findIndex((w,i)=>workId(w,i)===id);
+ if(index===-1){main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><h1>Artwork not found</h1></article>';return;}
+ const w=works[index],title=esc(w.title||w.title_ko||'Untitled');
+ const imgs=workImages(w),materials=w.materials_ko||w.materials_en;
+ const dimensions=[w.height_cm,w.width_cm,w.depth_cm].filter(v=>v!==undefined&&v!==null&&v!=='').join(' × ');
+ const fields=[['YEAR',w.year],['CATEGORY',w.category],['MATERIALS',materials],['DIMENSIONS',dimensions?dimensions+' cm':'']];
+ const note=w.description_ko||w.description_en;
+ const prev=works[index-1],next=works[index+1];
+ main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><div class="artwork-detail-layout"><div class="artwork-detail-media">'+(imgs.length?imgs.map((src,i)=>'<figure><img src="'+esc(src)+'" alt="'+title+(i?' — detail '+i:'')+'" loading="'+(i?'lazy':'eager')+'"></figure>').join(''):'<div class="artwork-detail-empty">IMAGE TO BE ADDED</div>')+'</div><div class="artwork-detail-info"><p class="artwork-detail-eyebrow">ARTWORK / '+esc(w.category||'WORK')+'</p><h1>'+title+'</h1>'+(w.title_translation_en?'<p class="artwork-translation">'+esc(w.title_translation_en)+'</p>':'')+'<dl class="artwork-meta">'+fields.filter(([,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>'<dt>'+k+'</dt><dd>'+esc(v)+'</dd>').join('')+'</dl>'+(note?'<section class="artwork-note"><h2>ARTIST’S NOTE</h2><p>'+esc(note)+'</p></section>':'')+'</div></div><nav class="artwork-pagination" aria-label="Other artworks">'+(prev?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(prev,index-1))+'">← PREVIOUS WORK</a>':'<span></span>')+(next?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(next,index+1))+'">NEXT WORK →</a>':'<span></span>')+'</nav></article>';
+ document.title=(w.title||'Artwork')+' | SEOHEE LEE';
+}
 async function exhibitions(){
   const records=await exhibitionArchive();
   const isSolo=e=>String(e.type_en||e.type_ko).toLowerCase().includes('solo')||e.type_ko==='개인전';
@@ -117,4 +148,4 @@ async function cv(){
   ${block('ARTS EDUCATION',artsEducation,['ACTIVITY','ORGANIZATION','SUPPORT','LOCATION'])}
   <p class="cv-note">Entries with “—” require source confirmation. Some exhibition titles, dates and institutions transcribed from the supplied CV image are pending final verification.</p>`;
 }
-({artwork,exhibitions,'exhibition-detail':exhibitionDetail,education,contact,cv}[page]||contact)();
+({artwork,'artwork-detail':artworkDetail,exhibitions,'exhibition-detail':exhibitionDetail,education,contact,cv}[page]||contact)();
