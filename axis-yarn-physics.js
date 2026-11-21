@@ -1,100 +1,117 @@
-/* Strange Axis — stable, reactive red divider. No hanging strands or rotation. */
+/* Strange Axis (2019): one red, cursor-responsive line for each page divider.
+   Bounded, damped spring shape: straight at rest, no spinning or broken segments. */
 (() => {
-  if (new URLSearchParams(location.search).get('id') !== '2019|이상한 축/도르륵,도르륵,도륵!') return;
+  const expected='2019|이상한 축/도르륵,도르륵,도륵!';
+  if(new URLSearchParams(location.search).get('id')!==expected)return;
   const scroller=document.getElementById('page-content');
-  if (!scroller) return;
-  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!scroller)return;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ns='http://www.w3.org/2000/svg';
+  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+  const lines=[];
+  let activeFrame=0,lastTime=0;
 
-  function start(svg){
-    if(svg.dataset.dividerReady)return;
-    svg.dataset.dividerReady='true';
-    if(reduceMotion)return;
-    const path=svg.querySelector('path');
-    if(!path)return;
-    const count=80, base=30, width=1000;
-    const points=Array.from({length:count+1},()=>({y:base,v:0}));
-    let lastPointer=null, frame=0, visible=false, lastTime=0;
-    const clamp=(x,min,max)=>Math.min(max,Math.max(min,x));
+  function addLine(element){
+    if(element.dataset.axisDividerReady)return;
+    element.dataset.axisDividerReady='true';
+    element.classList.add('axis-reactive-divider');
+    const svg=document.createElementNS(ns,'svg');
+    svg.setAttribute('viewBox','0 0 1000 80');
+    svg.setAttribute('preserveAspectRatio','none');
+    svg.setAttribute('aria-hidden','true');
+    svg.classList.add('axis-divider-overlay');
+    const path=document.createElementNS(ns,'path');
+    path.setAttribute('d','M0 40 L1000 40');
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke','#b52e3d');
+    path.setAttribute('stroke-width','2');
+    path.setAttribute('vector-effect','non-scaling-stroke');
+    path.setAttribute('stroke-linecap','round');
+    svg.appendChild(path);
+    element.insertBefore(svg,element.firstChild);
+    lines.push({element,path,x:500,targetX:500,offset:0,velocity:0,impulse:0});
+  }
 
-    function pointerMove(event){
-      if(!visible)return;
-      const rect=svg.getBoundingClientRect();
-      if(rect.width<=0||rect.height<=0)return;
-      const px=(event.clientX-rect.left)/rect.width*width;
-      const py=(event.clientY-rect.top)/rect.height*60;
-      if(!Number.isFinite(px)||!Number.isFinite(py))return;
-      if(px<0||px>width||Math.abs(py-base)>90){
-        lastPointer=null;return;
-      }
-      const now=performance.now();
-      const prior=lastPointer;
-      lastPointer={x:px,y:py,t:now};
-      if(!prior||now-prior.t>140)return;
-      const dx=clamp(px-prior.x,-70,70);
-      const dy=clamp(py-prior.y,-70,70);
-      const movement=Math.hypot(dx,dy);
-      if(movement<.5)return;
-      // Only deform a small portion near the cursor. All nodes stay close to
-      // the straight baseline, so the line cannot spin, loop, or break.
-      const direction=Math.abs(dy)>1?Math.sign(dy):Math.sign(dx)||1;
-      for(let i=2;i<count-1;i++){
-        const x=i*width/count;
-        const distance=Math.hypot((x-px), (py-base)*1.5);
-        if(distance>95)continue;
-        const influence=(1-distance/95)**2;
-        points[i].v=clamp(points[i].v+direction*clamp(movement*.12,0,5.5)*influence,-7,7);
-      }
-      if(!frame)frame=requestAnimationFrame(tick);
+  function mount(){
+    const root=scroller.querySelector('[data-axis-detail="true"]');
+    if(!root)return false;
+    root.querySelectorAll('.artwork-meta,.artwork-jump-nav,.artwork-archive-section,.artwork-pagination').forEach(addLine);
+    return true;
+  }
+  if(!mount()){
+    const watcher=new MutationObserver(()=>{if(mount())watcher.disconnect();});
+    watcher.observe(scroller,{subtree:true,childList:true});
+  }
+
+  function draw(line){
+    const {path,x,offset}=line;
+    if(Math.abs(offset)<.025){
+      path.setAttribute('d','M0 40 L1000 40');return;
     }
-
-    function tick(now){
-      frame=0;
-      if(!svg.isConnected){clean();return;}
-      if(!visible)return;
-      const dt=clamp(lastTime?(now-lastTime)/16.67:1,.25,1.5);
-      lastTime=now;
-      let energy=0;
-      for(let i=1;i<count;i++){
-        const p=points[i];
-        const next=(points[i-1].y+points[i+1].y)*.5;
-        // Damped springs restore the original straight line.
-        p.v=(p.v+(base-p.y)*.105*dt+(next-p.y)*.09*dt)*Math.pow(.77,dt);
-        p.y=clamp(p.y+p.v*dt,base-25,base+25);
-        energy+=Math.abs(p.y-base)+Math.abs(p.v);
-      }
-      points[0].y=base;points[count].y=base;
-      const pathData=['M0 '+points[0].y.toFixed(2)];
-      for(let i=1;i<count;i++){
-        const x=i*width/count;
-        const nextX=(i+.5)*width/count;
-        const midY=(points[i].y+points[i+1].y)/2;
-        pathData.push('Q'+x.toFixed(2)+' '+points[i].y.toFixed(2)+' '+nextX.toFixed(2)+' '+midY.toFixed(2));
-      }
-      pathData.push('T1000 '+points[count].y.toFixed(2));
-      path.setAttribute('d',pathData.join(' '));
-      if(energy>.4)frame=requestAnimationFrame(tick);
-      else {
-        points.forEach(p=>{p.y=base;p.v=0;});
-        path.setAttribute('d','M0 30 L1000 30');
-        lastTime=0;
-      }
+    const sigma=62,points=80;
+    let d='M0 40';
+    const values=[];
+    for(let i=0;i<=points;i++){
+      const px=i*1000/points;
+      const fade=Math.sin(Math.PI*px/1000)**2;
+      const dy=offset*Math.exp(-((px-x)/sigma)**2/2)*fade;
+      values.push(40+dy);
     }
-    const intersect=new IntersectionObserver(entries=>{
-      visible=entries.some(e=>e.isIntersecting);
-      if(!visible){lastPointer=null;if(frame)cancelAnimationFrame(frame);frame=0;lastTime=0;}
-    },{root:scroller,rootMargin:'100px'});
-    intersect.observe(svg);
-    document.addEventListener('pointermove',pointerMove,{passive:true});
-    function clean(){intersect.disconnect();document.removeEventListener('pointermove',pointerMove);}
+    for(let i=1;i<points;i++){
+      const px=i*1000/points,midX=(i+.5)*1000/points;
+      const midY=(values[i]+values[i+1])/2;
+      d+=' Q'+px.toFixed(1)+' '+values[i].toFixed(2)+' '+midX.toFixed(1)+' '+midY.toFixed(2);
+    }
+    d+=' T1000 40';
+    path.setAttribute('d',d);
   }
 
-  if(!startIfReady()){
-    const watch=new MutationObserver(()=>{if(startIfReady())watch.disconnect();});
-    watch.observe(scroller,{childList:true,subtree:true});
+  function tick(time){
+    activeFrame=0;
+    const dt=clamp(lastTime?(time-lastTime)/16.67:1,.3,1.6);
+    lastTime=time;
+    let moving=false;
+    for(const line of lines){
+      if(!line.element.isConnected)continue;
+      // Movement itself injects a small impulse. The damped restoring spring
+      // brings the rule back to a perfectly straight line at rest.
+      line.velocity=clamp((line.velocity-line.offset*.095*dt+line.impulse)*Math.pow(.79,dt),-9,9);
+      line.impulse=0;
+      line.offset=clamp(line.offset+line.velocity*dt,-20,20);
+      line.x+=(line.targetX-line.x)*Math.min(1,.23*dt);
+      if(Math.abs(line.velocity)<.012&&Math.abs(line.offset)<.06){
+        line.velocity=0;line.offset=0;
+      }else moving=true;
+      draw(line);
+    }
+    if(moving)activeFrame=requestAnimationFrame(tick);
+    else lastTime=0;
   }
-  function startIfReady(){
-    const svg=scroller.querySelector('.axis-interactive-divider');
-    if(!svg)return false;
-    start(svg);return true;
-  }
+
+  let oldPointer=null;
+  scroller.addEventListener('pointermove',event=>{
+    if(reduced)return;
+    const now=performance.now();
+    const previous=oldPointer;
+    oldPointer={x:event.clientX,y:event.clientY,t:now};
+    const velocity=previous&&now-previous.t<200?
+      Math.hypot(event.clientX-previous.x,event.clientY-previous.y):2.5;
+    // A normal mouse pass is enough to trigger the reaction; no second
+    // movement within a narrow SVG hit box is necessary.
+    for(const line of lines){
+      const rect=line.element.getBoundingClientRect();
+      const y=rect.top;
+      const dx=event.clientX-rect.left;
+      const distance=Math.abs(event.clientY-y);
+      if(dx<0||dx>rect.width||distance>40||rect.width<1)continue;
+      const px=clamp(dx/rect.width*1000,0,1000);
+      const impact=(1-distance/40)**1.5;
+      const direction=previous&&Math.abs(event.clientY-previous.y)>.6?
+        Math.sign(event.clientY-previous.y):event.clientY>=y?1:-1;
+      line.targetX=px;
+      // Clamp every impulse, including fast pointer jumps.
+      line.impulse=clamp(line.impulse+direction*(1.2+Math.min(velocity,24)*.19)*impact,-7,7);
+      if(!activeFrame)activeFrame=requestAnimationFrame(tick);
+    }
+  },{passive:true});
 })();
