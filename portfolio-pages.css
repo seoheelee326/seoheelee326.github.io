@@ -251,3 +251,16 @@ body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{
 .artwork-jump-nav .ghost-companion-tail{clip-path:inset(60% 0 0 0)}
 @media(max-width:760px){.artwork-jump-nav .ghost-companion{height:195px!important;right:5px!important}}
 @media(max-width:480px){.artwork-jump-nav .ghost-companion{height:165px!important;right:3px!important}}
+
+
+/* Quiet editorial controls: text-free sections and unframed, light arrows. */
+.artwork-section-top{margin-bottom:28px}
+.artwork-carousel-controls{gap:30px;padding:20px 0 5px}
+.artwork-carousel-arrow{appearance:none;border:0;border-radius:0;background:transparent;width:38px;height:42px;padding:0;display:grid;place-items:center;color:#8b8b8b;cursor:pointer;box-shadow:none;transition:color .18s ease,transform .18s ease}
+.artwork-carousel-arrow span{display:block;font-family:Georgia,serif;font-size:32px;font-weight:400;line-height:1;transform:translateY(-2px)}
+.artwork-carousel-arrow:hover{background:transparent;color:#252525}
+.artwork-carousel-arrow:first-child:hover{transform:translateX(-3px)}
+.artwork-carousel-arrow:last-child:hover{transform:translateX(3px)}
+.artwork-carousel-arrow:focus-visible{outline:1px solid #888;outline-offset:2px}
+.artwork-carousel-count{font-size:11px;min-width:55px;letter-spacing:.10em;color:#a0a0a0}
+@media(max-width:760px){.artwork-carousel-controls{gap:24px}.artwork-carousel-arrow{width:40px;height:42px}}
