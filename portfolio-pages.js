@@ -61,7 +61,7 @@ async function artworkDetail(){
  const src=workImages(w)[0],materials=w.materials_ko||w.materials_en;
  const ghostCat=(Number(w.year)===2018&&w.title==='돈의문 유령고양이'&&!!src);
  const heroMedia=src?'<figure><img src="'+esc(src)+'" alt="'+title+'" loading="eager"></figure>':'<div class="artwork-detail-empty">IMAGE TO BE ADDED</div>';
- const ghostCompanion=ghostCat?'<div class="ghost-companion" aria-label="작품 속 유령고양이가 앉아 꼬리를 살랑입니다" role="img"><div class="ghost-companion-figure"><img class="ghost-companion-body" src="'+esc(src)+'" alt="" aria-hidden="true"><img class="ghost-companion-tail" src="'+esc(src)+'" alt="" aria-hidden="true"></div></div>':'';
+ const ghostCompanion=ghostCat?'<span class="ghost-companion" aria-label="작품 속 유령고양이가 선에 걸터앉아 꼬리를 살랑입니다" role="img"><span class="ghost-companion-figure"><img class="ghost-companion-body" src="'+esc(src)+'" alt="" aria-hidden="true"><img class="ghost-companion-tail" src="'+esc(src)+'" alt="" aria-hidden="true"></span></span>':'';
 
  const dimensions=[w.height_cm,w.width_cm,w.depth_cm].filter(v=>v!==undefined&&v!==null&&v!=='').join(' × ');
  const fields=[['YEAR',w.year],['CATEGORY',w.category],['MATERIALS',materials],['DIMENSIONS',dimensions?dimensions+' cm':'']];
@@ -74,14 +74,14 @@ async function artworkDetail(){
  const block=(label,desc,body)=>'<section class="artwork-archive-section"><div class="artwork-section-top"><h2>'+label+'</h2><p>'+desc+'</p></div>'+body+'</section>';
  const empty=msg=>'<p class="artwork-section-empty">'+msg+'</p>';
  const detailBlock=block('DETAIL VIEWS','A closer look at materials, surfaces and process',
-  detailImages.length?'<div class="artwork-detail-gallery">'+detailImages.map((item,i)=>'<figure><img src="'+esc(item.src||item.image)+'" alt="'+title+' — detail '+(i+1)+'" loading="lazy">'+(item.caption?'<figcaption>'+esc(item.caption)+'</figcaption>':'')+'</figure>').join('')+'</div>':empty('Detail photographs will be added.'));
+  detailImages.length?'<div class="artwork-detail-carousel" aria-label="Artwork detail photographs"><div class="artwork-carousel-stage">'+detailImages.map((item,i)=>'<figure class="artwork-carousel-slide" data-slide="'+i+'" '+(i?'hidden':'')+'><img src="'+esc(item.src||item.image)+'" alt="'+title+' — detail '+(i+1)+' of '+detailImages.length+'" loading="'+(i?'lazy':'eager')+'">'+(item.caption?'<figcaption>'+esc(item.caption)+'</figcaption>':'')+'</figure>').join('')+'</div><div class="artwork-carousel-controls"><button class="artwork-carousel-arrow" data-carousel-step="-1" aria-label="Previous detail photograph">←</button><span class="artwork-carousel-count" aria-live="polite">01 / '+String(detailImages.length).padStart(2,'0')+'</span><button class="artwork-carousel-arrow" data-carousel-step="1" aria-label="Next detail photograph">→</button></div></div>':empty('Detail photographs will be added.'));
  const noteBlock=block('ARTIST’S NOTE','Words behind the work',note?'<div class="artwork-statement">'+esc(note)+'</div>':empty('Artist’s text will be added.'));
  const seriesBlock=block('RELATED WORKS',w.series_name?esc(w.series_name):'Works from the same series',
   relatedWorks.length?'<div class="artwork-related-grid">'+relatedWorks.map(({work,i})=>{const image=workImages(work)[0],name=esc(work.title||work.title_ko||'Untitled');return '<a class="artwork-related-card" href="artwork-detail.html?id='+encodeURIComponent(workId(work,i))+'"><div class="artwork-related-image">'+(image?'<img src="'+esc(image)+'" alt="'+name+'" loading="lazy">':'<span>IMAGE TO BE ADDED</span>')+'</div><h3>'+name+'</h3><p>'+esc(work.year||'')+' · '+esc(work.category||'')+'</p></a>'}).join('')+'</div>':empty(w.series_name?'Other works from this series will be linked here.':'Related works will appear here when a series is linked.'));
  const exhibitionBlock=block('RELATED EXHIBITIONS','Where this work has been presented',
   relatedExhibitions.length?'<div class="artwork-exhibitions">'+relatedExhibitions.map(e=>{const name=esc(e.title_ko||e.title_en),href='exhibition-detail.html?id='+encodeURIComponent([e.year,e.title_ko||e.title_en].join('|')),poster=e.image||e.blog?.photos_local?.[0];return '<a class="artwork-exhibition-card" href="'+esc(href)+'"><div class="artwork-exhibition-preview">'+(poster?'<img src="'+esc(poster)+'" alt="'+name+'" loading="lazy">':'<span>EXHIBITION ARCHIVE</span>')+'</div><div><p>'+esc(e.year_label||e.year)+'</p><h3>'+name+'</h3><span>'+esc(e.venue_ko||e.venue_en||'')+'</span></div><span class="artwork-exhibition-arrow">↗</span></a>'}).join('')+'</div>':empty('Related exhibition records will be linked here.'));
  const prev=visible[index-1],next=visible[index+1];
- main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><div class="artwork-detail-layout"><div class="artwork-detail-media">'+heroMedia+'</div><div class="artwork-detail-info"><p class="artwork-detail-eyebrow">ARTWORK / '+esc(w.category||'WORK')+'</p><h1>'+title+'</h1>'+(w.title_translation_en?'<p class="artwork-translation">'+esc(w.title_translation_en)+'</p>':'')+'<dl class="artwork-meta">'+fields.filter(([,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>'<dt>'+k+'</dt><dd>'+esc(v)+'</dd>').join('')+'</dl><nav class="artwork-jump-nav" aria-label="Artwork page sections"><a href="#work-details">DETAIL VIEWS</a><a href="#work-statement">ARTIST’S NOTE</a><a href="#work-series">RELATED WORKS</a><a href="#work-exhibitions">EXHIBITIONS</a></nav>'+ghostCompanion+'</div></div><div class="artwork-archive-content"><div id="work-details">'+detailBlock+'</div><div id="work-statement">'+noteBlock+'</div><div id="work-series">'+seriesBlock+'</div><div id="work-exhibitions">'+exhibitionBlock+'</div></div><nav class="artwork-pagination" aria-label="Other artworks">'+(prev?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(prev,index-1))+'">← PREVIOUS WORK</a>':'<span></span>')+(next?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(next,index+1))+'">NEXT WORK →</a>':'<span></span>')+'</nav></article>';
+ main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><div class="artwork-detail-layout"><div class="artwork-detail-media">'+heroMedia+'</div><div class="artwork-detail-info"><p class="artwork-detail-eyebrow">ARTWORK / '+esc(w.category||'WORK')+'</p><h1>'+title+'</h1>'+(w.title_translation_en?'<p class="artwork-translation">'+esc(w.title_translation_en)+'</p>':'')+'<dl class="artwork-meta">'+fields.filter(([,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>'<dt>'+k+'</dt><dd>'+esc(v)+'</dd>').join('')+'</dl><nav class="artwork-jump-nav" aria-label="Artwork page sections"><a href="#work-details">DETAIL VIEWS</a><a href="#work-statement">ARTIST’S NOTE</a><a href="#work-series">RELATED WORKS</a><a href="#work-exhibitions">EXHIBITIONS</a>'+ghostCompanion+'</nav></div></div><div class="artwork-archive-content"><div id="work-details">'+detailBlock+'</div><div id="work-statement">'+noteBlock+'</div><div id="work-series">'+seriesBlock+'</div><div id="work-exhibitions">'+exhibitionBlock+'</div></div><nav class="artwork-pagination" aria-label="Other artworks">'+(prev?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(prev,index-1))+'">← PREVIOUS WORK</a>':'<span></span>')+(next?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(next,index+1))+'">NEXT WORK →</a>':'<span></span>')+'</nav></article>';
  // Turn the companion's source white paper into actual transparency without changing the artwork image.
  if(ghostCat){
   const iconImgs=[...main.querySelectorAll('.ghost-companion img')];
@@ -101,6 +101,25 @@ async function artworkDetail(){
    }catch(e){/* Original image remains available with multiply blending as a fallback. */}
   };
   source.src=src;
+ }
+ // Detail images are a single-image carousel: arrows, counter and keyboard controls.
+ const carousel=main.querySelector('.artwork-detail-carousel');
+ if(carousel){
+  const slides=[...carousel.querySelectorAll('.artwork-carousel-slide')];
+  const count=carousel.querySelector('.artwork-carousel-count');
+  let selected=0;
+  const showSlide=next=>{
+   selected=(next+slides.length)%slides.length;
+   slides.forEach((slide,i)=>{slide.hidden=i!==selected;});
+   count.textContent=String(selected+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  };
+  carousel.querySelectorAll('[data-carousel-step]').forEach(button=>button.addEventListener('click',()=>showSlide(selected+Number(button.dataset.carouselStep))));
+  carousel.tabIndex=0;
+  carousel.addEventListener('keydown',event=>{
+   if(event.key==='ArrowLeft'||event.key==='ArrowRight'){
+    event.preventDefault();showSlide(selected+(event.key==='ArrowRight'?1:-1));
+   }
+  });
  }
  // The page content is the scroll container, so section navigation scrolls within it.
  main.querySelectorAll('.artwork-jump-nav a').forEach(a=>a.addEventListener('click',event=>{const target=main.querySelector(a.getAttribute('href'));if(target){event.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}}));
