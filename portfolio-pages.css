@@ -292,3 +292,10 @@ body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{
   .page-language{position:absolute;top:9px;right:20px}
   .page-content{height:calc(100svh - 120px)}
 }
+
+/* Separate exhibition framing from the artwork's own original statement. */
+.artwork-exhibition-context{max-width:800px;margin-top:48px;padding-top:26px;border-top:1px solid var(--line)}
+.artwork-exhibition-context h3{margin:0 0 16px;font-size:12px;font-weight:500;letter-spacing:.06em}
+.artwork-exhibition-context p{margin:0;font-size:14px;color:#777;line-height:1.9;white-space:pre-line;word-break:keep-all}
+.artwork-related-pending{cursor:default}
+.artwork-related-pending .artwork-related-image{border:1px dashed #e4e4e4;background:transparent}
