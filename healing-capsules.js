@@ -36,7 +36,7 @@
     const number=clamp(Math.round(w*h/4200),70,230);
     const radiusScale=clamp(w/1000,.64,1.12);
     balls=Array.from({length:number},(_,i)=>{
-      const r=(19+rand()*13)*radiusScale;
+      const r=(19+rand()*13)*radiusScale*1.15;
       return {x:r+rand()*Math.max(1,w-2*r),y:-r-15-rand()*h*1.6-i*2.1,
         vx:(rand()-.5)*2.7,vy:rand()*1.2,r,angle:rand()*Math.PI,
         spin:(rand()-.5)*.025,color:palettes[Math.floor(rand()*palettes.length)],
@@ -107,7 +107,7 @@
     // Multiple positional constraint passes allow a pile to become stable,
     // rather than repeatedly injecting energy into overlapping capsules.
     for(let pass=0;pass<4;pass++){
-      const cell=76,grid=new Map();
+      const cell=96,grid=new Map();
       for(let i=0;i<balls.length;i++){
         const p=balls[i];if(p.cleared||p.opacity<=0||p.y<-70)continue;
         if(p.y+p.r>floorY){
