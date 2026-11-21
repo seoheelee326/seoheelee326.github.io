@@ -82,23 +82,34 @@ async function artworkDetail(){
   relatedExhibitions.length?'<div class="artwork-exhibitions">'+relatedExhibitions.map(e=>{const name=esc(e.title_ko||e.title_en),href='exhibition-detail.html?id='+encodeURIComponent([e.year,e.title_ko||e.title_en].join('|')),poster=e.image||e.blog?.photos_local?.[0];return '<a class="artwork-exhibition-card" href="'+esc(href)+'"><div class="artwork-exhibition-preview">'+(poster?'<img src="'+esc(poster)+'" alt="'+name+'" loading="lazy">':'<span>EXHIBITION ARCHIVE</span>')+'</div><div><p>'+esc(e.year_label||e.year)+'</p><h3>'+name+'</h3><span>'+esc(e.venue_ko||e.venue_en||'')+'</span></div><span class="artwork-exhibition-arrow">↗</span></a>'}).join('')+'</div>':empty('Related exhibition records will be linked here.'));
  const prev=visible[index-1],next=visible[index+1];
  main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><div class="artwork-detail-layout"><div class="artwork-detail-media">'+heroMedia+'</div><div class="artwork-detail-info"><p class="artwork-detail-eyebrow">ARTWORK / '+esc(w.category||'WORK')+'</p><h1>'+title+'</h1>'+(w.title_translation_en?'<p class="artwork-translation">'+esc(w.title_translation_en)+'</p>':'')+'<dl class="artwork-meta">'+fields.filter(([,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>'<dt>'+k+'</dt><dd>'+esc(v)+'</dd>').join('')+'</dl><nav class="artwork-jump-nav" aria-label="Artwork page sections"><a href="#work-details">DETAIL VIEWS</a><a href="#work-statement">ARTIST’S NOTE</a><a href="#work-series">RELATED WORKS</a><a href="#work-exhibitions">EXHIBITIONS</a>'+ghostCompanion+'</nav></div></div><div class="artwork-archive-content"><div id="work-details">'+detailBlock+'</div><div id="work-statement">'+noteBlock+'</div><div id="work-series">'+seriesBlock+'</div><div id="work-exhibitions">'+exhibitionBlock+'</div></div><nav class="artwork-pagination" aria-label="Other artworks">'+(prev?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(prev,index-1))+'">← PREVIOUS WORK</a>':'<span></span>')+(next?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(next,index+1))+'">NEXT WORK →</a>':'<span></span>')+'</nav></article>';
- // Turn the companion's source white paper into actual transparency without changing the artwork image.
+ // The companion is a separate decorative cutout, not the original artwork.
+ // Crop transparent margins for this decorative copy only, then align the seated rump to the rule.
  if(ghostCat){
   const iconImgs=[...main.querySelectorAll('.ghost-companion img')];
+  const companion=main.querySelector('.ghost-companion');
   const source=new Image();
   source.onload=()=>{
    try{
     const canvas=document.createElement('canvas');canvas.width=source.naturalWidth;canvas.height=source.naturalHeight;
     const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)return;
     ctx.drawImage(source,0,0);const pixels=ctx.getImageData(0,0,canvas.width,canvas.height);
-    for(let i=0;i<pixels.data.length;i+=4){
-     const r=pixels.data[i],g=pixels.data[i+1],b=pixels.data[i+2];
-     const white=Math.min(r,g,b);
+    let x0=canvas.width,y0=canvas.height,x1=0,y1=0;
+    for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++){
+     const i=(y*canvas.width+x)*4,r=pixels.data[i],g=pixels.data[i+1],blue=pixels.data[i+2],white=Math.min(r,g,blue);
      if(white>=252){pixels.data[i+3]=0;continue;}
-     if(white>215){pixels.data[i+3]=Math.round(pixels.data[i+3]*(252-white)/37);}
+     if(white>215)pixels.data[i+3]=Math.round(pixels.data[i+3]*(252-white)/37);
+     if(pixels.data[i+3]>40){x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}
     }
-    ctx.putImageData(pixels,0,0);const url=canvas.toDataURL('image/png');iconImgs.forEach(el=>el.src=url);
-   }catch(e){/* Original image remains available with multiply blending as a fallback. */}
+    ctx.putImageData(pixels,0,0);
+    if(x1<=x0||y1<=y0)return;
+    const pad=5,left=Math.max(0,x0-pad),top=Math.max(0,y0-pad),right=Math.min(canvas.width,x1+pad+1),bottom=Math.min(canvas.height,y1+pad+1);
+    const cropped=document.createElement('canvas');cropped.width=right-left;cropped.height=bottom-top;
+    cropped.getContext('2d').drawImage(canvas,left,top,cropped.width,cropped.height,0,0,cropped.width,cropped.height);
+    const url=cropped.toDataURL('image/png');
+    iconImgs.forEach(el=>el.src=url);
+    companion.style.setProperty('--ghost-aspect',cropped.width+' / '+cropped.height);
+    companion.classList.add('ghost-companion--ready');
+   }catch(e){/* Keep static original companion if canvas conversion is unavailable. */}
   };
   source.src=src;
  }
