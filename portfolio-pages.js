@@ -22,6 +22,10 @@ async function artwork(){
  const works=(await json('data/works.json')).filter(w=>w.published!==false);
  main.innerHTML=heading()+'<div class="artwork-intro">Selected works <span>— An ongoing visual archive</span></div><div class="artwork-filters" role="group" aria-label="Artwork category">'+artCategories.map(([k,l],i)=>'<button data-art-filter="'+k+'" class="'+(i===0?'active':'')+'">'+l+'</button>').join('')+'</div><div class="artwork-gallery" id="artwork-gallery"></div>';
  const grid=main.querySelector('#artwork-gallery');
+ const scrollKey='seohee-artwork-return-v1';
+ const scroller=main;
+ const savePosition=()=>{try{sessionStorage.setItem(scrollKey,JSON.stringify({top:scroller.scrollTop,filter:main.querySelector('[data-art-filter].active')?.dataset.artFilter||'all'}));}catch{}};
+ grid.addEventListener('click',event=>{if(event.target.closest('.artwork-card'))savePosition();});
  function render(filter){
   const selection=works.map((w,i)=>({...w,_index:i})).filter(w=>filter==='all'||category(w)===filter);
   grid.innerHTML=selection.length?selection.map((w,i)=>{
@@ -35,7 +39,18 @@ async function artwork(){
  main.querySelectorAll('[data-art-filter]').forEach(btn=>btn.addEventListener('click',()=>{
   main.querySelectorAll('[data-art-filter]').forEach(x=>x.classList.toggle('active',x===btn));render(btn.dataset.artFilter);
  }));
- render('all');
+ let saved=null;
+ try{saved=JSON.parse(sessionStorage.getItem(scrollKey)||'null');sessionStorage.removeItem(scrollKey);}catch{}
+ const activeFilter=artCategories.some(([key])=>key===saved?.filter)?saved.filter:'all';
+ main.querySelectorAll('[data-art-filter]').forEach(x=>x.classList.toggle('active',x.dataset.artFilter===activeFilter));
+ render(activeFilter);
+ if(saved&&Number.isFinite(Number(saved.top))){
+  const restore=()=>{scroller.scrollTop=Math.max(0,Number(saved.top));};
+  requestAnimationFrame(()=>{restore();requestAnimationFrame(restore);});
+  // Images can finish loading after layout. Restore once more when the gallery settles.
+  const images=[...grid.querySelectorAll('img')];
+  if(images.length)Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});}))).then(restore);
+ }
 }
 async function artworkDetail(){
  const [works,exhibitions]=await Promise.all([json('data/works.json'),exhibitionArchive()]);
