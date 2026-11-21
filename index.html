@@ -187,8 +187,33 @@ const showExhibitions = type => {
 };
 document.querySelectorAll('[data-exhibition-filter]').forEach(link => link.addEventListener('click', () => showExhibitions(link.dataset.exhibitionFilter)));
 document.querySelectorAll('a[href="#exhibitions"]:not([data-exhibition-filter])').forEach(link => link.addEventListener('click', () => showExhibitions('all')));
+const landingLabels = {
+  ko: [
+    ['이서희', '시각예술가', '2000년생', '서울 / 경기도', '이력'],
+    ['작업', '회화', '설치', '영상', '공공미술', '드로잉'],
+    ['전시', '개인전', '단체전'],
+    ['문화예술교육', '관찰과 함께 나누는 질문'],
+    ['연락', 'seoheelee.artwork@gmail.com', 'Instagram · @seohee_work', "YouTube · SEOHEE's Palette"]
+  ],
+  en: [
+    ['SEOHEE LEE', 'VISUAL ARTIST', 'BORN IN 2000', 'SEOUL / GYEONGGI-DO', 'CV'],
+    ['ARTWORK', 'PAINTING', 'INSTALLATION', 'MOVING IMAGE', 'PUBLIC ART PROJECTS', 'DRAWING'],
+    ['EXHIBITIONS', 'SOLO EXHIBITIONS', 'GROUP EXHIBITIONS'],
+    ['ARTS EDUCATION', 'Observation and Shared Questions'],
+    ['CONTACT', 'seoheelee.artwork@gmail.com', 'Instagram · @seohee_work', "YouTube · SEOHEE's Palette"]
+  ]
+};
 const syncLandingLanguage = () => {
   document.querySelectorAll('[data-home-lang]').forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.homeLang === lang)));
+  const labels = landingLabels[lang] || landingLabels.ko;
+  document.querySelectorAll('.landing-grid .landing-tile').forEach((tile, i) => {
+    const parts = [tile.querySelector('.landing-title'), ...tile.querySelectorAll('.landing-desc > span')];
+    parts.forEach((part, j) => { if(part && labels[i]?.[j] !== undefined) part.textContent = labels[i][j]; });
+  });
+  const role = document.querySelector('.landing-masthead small');
+  if(role) role.textContent = lang === 'ko' ? '시각예술가' : 'VISUAL ARTIST';
+  const landingNav = document.querySelector('.landing-grid');
+  if(landingNav) landingNav.setAttribute('aria-label', lang === 'ko' ? '포트폴리오 메뉴' : 'Portfolio sections');
 };
 document.querySelectorAll('[data-home-lang]').forEach(btn => btn.addEventListener('click', () => { setLanguage(btn.dataset.homeLang); syncLandingLanguage(); }));
 document.querySelectorAll('.language button').forEach(btn => btn.addEventListener('click', syncLandingLanguage));
