@@ -60,7 +60,8 @@ async function artworkDetail(){
  const w=visible[index],title=esc(w.title||w.title_ko||'Untitled');
  const src=workImages(w)[0],materials=w.materials_ko||w.materials_en;
  const ghostCat=(Number(w.year)===2018&&w.title==='돈의문 유령고양이'&&!!src);
- const heroMedia=ghostCat?'<div class="ghost-cat-scene" aria-label="A floral ghost cat sits quietly and gently sways its tail"><div class="ghost-cat-figure"><img class="ghost-cat-body" src="'+esc(src)+'" alt="'+title+'"><img class="ghost-cat-tail" src="'+esc(src)+'" alt="" aria-hidden="true"></div><span class="ghost-cat-ledge" aria-hidden="true"></span></div>':src?'<figure><img src="'+esc(src)+'" alt="'+title+'" loading="eager"></figure>':'<div class="artwork-detail-empty">IMAGE TO BE ADDED</div>';
+ const heroMedia=src?'<figure><img src="'+esc(src)+'" alt="'+title+'" loading="eager"></figure>':'<div class="artwork-detail-empty">IMAGE TO BE ADDED</div>';
+ const ghostCompanion=ghostCat?'<div class="ghost-companion" aria-label="작품 속 유령고양이가 앉아 꼬리를 살랑입니다" role="img"><div class="ghost-companion-figure"><img class="ghost-companion-body" src="'+esc(src)+'" alt="" aria-hidden="true"><img class="ghost-companion-tail" src="'+esc(src)+'" alt="" aria-hidden="true"></div></div>':'';
 
  const dimensions=[w.height_cm,w.width_cm,w.depth_cm].filter(v=>v!==undefined&&v!==null&&v!=='').join(' × ');
  const fields=[['YEAR',w.year],['CATEGORY',w.category],['MATERIALS',materials],['DIMENSIONS',dimensions?dimensions+' cm':'']];
@@ -80,7 +81,27 @@ async function artworkDetail(){
  const exhibitionBlock=block('RELATED EXHIBITIONS','Where this work has been presented',
   relatedExhibitions.length?'<div class="artwork-exhibitions">'+relatedExhibitions.map(e=>{const name=esc(e.title_ko||e.title_en),href='exhibition-detail.html?id='+encodeURIComponent([e.year,e.title_ko||e.title_en].join('|')),poster=e.image||e.blog?.photos_local?.[0];return '<a class="artwork-exhibition-card" href="'+esc(href)+'"><div class="artwork-exhibition-preview">'+(poster?'<img src="'+esc(poster)+'" alt="'+name+'" loading="lazy">':'<span>EXHIBITION ARCHIVE</span>')+'</div><div><p>'+esc(e.year_label||e.year)+'</p><h3>'+name+'</h3><span>'+esc(e.venue_ko||e.venue_en||'')+'</span></div><span class="artwork-exhibition-arrow">↗</span></a>'}).join('')+'</div>':empty('Related exhibition records will be linked here.'));
  const prev=visible[index-1],next=visible[index+1];
- main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><div class="artwork-detail-layout"><div class="artwork-detail-media">'+heroMedia+'</div><div class="artwork-detail-info"><p class="artwork-detail-eyebrow">ARTWORK / '+esc(w.category||'WORK')+'</p><h1>'+title+'</h1>'+(w.title_translation_en?'<p class="artwork-translation">'+esc(w.title_translation_en)+'</p>':'')+'<dl class="artwork-meta">'+fields.filter(([,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>'<dt>'+k+'</dt><dd>'+esc(v)+'</dd>').join('')+'</dl><nav class="artwork-jump-nav" aria-label="Artwork page sections"><a href="#work-details">DETAIL VIEWS</a><a href="#work-statement">ARTIST’S NOTE</a><a href="#work-series">RELATED WORKS</a><a href="#work-exhibitions">EXHIBITIONS</a></nav></div></div><div class="artwork-archive-content"><div id="work-details">'+detailBlock+'</div><div id="work-statement">'+noteBlock+'</div><div id="work-series">'+seriesBlock+'</div><div id="work-exhibitions">'+exhibitionBlock+'</div></div><nav class="artwork-pagination" aria-label="Other artworks">'+(prev?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(prev,index-1))+'">← PREVIOUS WORK</a>':'<span></span>')+(next?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(next,index+1))+'">NEXT WORK →</a>':'<span></span>')+'</nav></article>';
+ main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><div class="artwork-detail-layout"><div class="artwork-detail-media">'+heroMedia+'</div><div class="artwork-detail-info"><p class="artwork-detail-eyebrow">ARTWORK / '+esc(w.category||'WORK')+'</p><h1>'+title+'</h1>'+(w.title_translation_en?'<p class="artwork-translation">'+esc(w.title_translation_en)+'</p>':'')+'<dl class="artwork-meta">'+fields.filter(([,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>'<dt>'+k+'</dt><dd>'+esc(v)+'</dd>').join('')+'</dl><nav class="artwork-jump-nav" aria-label="Artwork page sections"><a href="#work-details">DETAIL VIEWS</a><a href="#work-statement">ARTIST’S NOTE</a><a href="#work-series">RELATED WORKS</a><a href="#work-exhibitions">EXHIBITIONS</a></nav>'+ghostCompanion+'</div></div><div class="artwork-archive-content"><div id="work-details">'+detailBlock+'</div><div id="work-statement">'+noteBlock+'</div><div id="work-series">'+seriesBlock+'</div><div id="work-exhibitions">'+exhibitionBlock+'</div></div><nav class="artwork-pagination" aria-label="Other artworks">'+(prev?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(prev,index-1))+'">← PREVIOUS WORK</a>':'<span></span>')+(next?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(next,index+1))+'">NEXT WORK →</a>':'<span></span>')+'</nav></article>';
+ // Turn the companion's source white paper into actual transparency without changing the artwork image.
+ if(ghostCat){
+  const iconImgs=[...main.querySelectorAll('.ghost-companion img')];
+  const source=new Image();
+  source.onload=()=>{
+   try{
+    const canvas=document.createElement('canvas');canvas.width=source.naturalWidth;canvas.height=source.naturalHeight;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)return;
+    ctx.drawImage(source,0,0);const pixels=ctx.getImageData(0,0,canvas.width,canvas.height);
+    for(let i=0;i<pixels.data.length;i+=4){
+     const r=pixels.data[i],g=pixels.data[i+1],b=pixels.data[i+2];
+     const white=Math.min(r,g,b);
+     if(white>=252){pixels.data[i+3]=0;continue;}
+     if(white>215){pixels.data[i+3]=Math.round(pixels.data[i+3]*(252-white)/37);}
+    }
+    ctx.putImageData(pixels,0,0);const url=canvas.toDataURL('image/png');iconImgs.forEach(el=>el.src=url);
+   }catch(e){/* Original image remains available with multiply blending as a fallback. */}
+  };
+  source.src=src;
+ }
  // The page content is the scroll container, so section navigation scrolls within it.
  main.querySelectorAll('.artwork-jump-nav a').forEach(a=>a.addEventListener('click',event=>{const target=main.querySelector(a.getAttribute('href'));if(target){event.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}}));
  document.title=(w.title||'Artwork')+' | SEOHEE LEE';
