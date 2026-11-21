@@ -10,7 +10,7 @@
     svg.dataset.ropeReady = 'true';
     const paths = [...svg.querySelectorAll('g > path')];
     // One physical strand for each group of decorative paths (shadow, wool, highlight).
-    const strands = [[0,1,2],[3,4,5],[6,7],[8,9]].map(indices => {
+    const strands = [[0,1,2],[3,4,5],[6,7],[8,9]].map((indices,strandIndex) => {
       const elements=indices.map(i=>paths[i]).filter(Boolean);
       const source=elements.find(e=>e.classList.contains('axis-yarn-main'))||elements[0];
       if (!source) return null;
@@ -18,7 +18,7 @@
       const count=Math.max(18,Math.min(46,Math.ceil(length/23)));
       const nodes=Array.from({length:count+1},(_,i)=>{
         const p=source.getPointAtLength(length*i/count);
-        return {x:p.x,y:p.y,oldX:p.x,oldY:p.y,homeX:p.x,homeY:p.y,pinned:i===0||i===count};
+        return {x:p.x,y:p.y,oldX:p.x,oldY:p.y,homeX:p.x,homeY:p.y,pinned:i===0||(i===count&&strandIndex!==0)};
       });
       return {elements,nodes,segment:length/count};
     }).filter(Boolean);
@@ -80,7 +80,7 @@
             }
           }
         }
-        // Inextensible segments: non-elastic distance constraints for taut yarn.
+        // The first strand hangs free at its far end; the other three are attached\n      // to the divider line at both ends. Their anchors never move.\n      // Inextensible segments: non-elastic distance constraints for taut yarn.
         for(let pass=0;pass<6;pass++){
           for(let i=0;i<a.length-1;i++){
             const p=a[i],q=a[i+1];
