@@ -80,7 +80,9 @@
             }
           }
         }
-        // The first strand hangs free at its far end; the other three are attached\n      // to the divider line at both ends. Their anchors never move.\n      // Inextensible segments: non-elastic distance constraints for taut yarn.
+        // The strand begins at the divider line with no visible knot or tie.
+        // The left strand has a free end, while the right strands drape between points.
+        // Inextensible distance constraints keep the yarn behaving like a flexible thread.
         for(let pass=0;pass<6;pass++){
           for(let i=0;i<a.length-1;i++){
             const p=a[i],q=a[i+1];
