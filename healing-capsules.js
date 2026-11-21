@@ -32,15 +32,16 @@
     if(balls.length) for(const p of balls) {p.x=clamp(p.x,p.r,w-p.r);p.y=Math.min(p.y,h-p.r);}
   }
   function spawn(){
-    // Dense falling pile; the caps will occupy approximately the lower half of the viewport.
-    const number=clamp(Math.round(w*h/4200),70,230);
-    const radiusScale=clamp(w/1000,.64,1.12);
+    // Slow cascade rather than fast, chaotic rain. Natural accumulation fills the lower view.
+    const number=clamp(Math.round(w*h/4800),85,205);
+    const radiusScale=clamp(w/1000,.70,1.10);
     balls=Array.from({length:number},(_,i)=>{
-      const r=(19+rand()*13)*radiusScale;
-      return {x:r+rand()*Math.max(1,w-2*r),y:-r-15-rand()*h*1.6-i*2.1,
-        vx:(rand()-.5)*2.7,vy:rand()*1.2,r,angle:rand()*Math.PI,
-        spin:(rand()-.5)*.025,color:palettes[Math.floor(rand()*palettes.length)],
-        opacity:1,cleared:false,rest:0};
+      const r=(21+rand()*10)*radiusScale;
+      return {x:r+rand()*Math.max(1,w-2*r),
+        y:-r-15-rand()*h*.55-i*.65,
+        vx:(rand()-.5)*.40,vy:0,r,angle:rand()*Math.PI,
+        spin:(rand()-.5)*.002,color:palettes[Math.floor(rand()*palettes.length)],
+        opacity:1,cleared:false,rest:0,asleep:false,contact:false};
     });
   }
   const frameImage=(p)=>{
@@ -63,62 +64,115 @@
     ctx.fillStyle='rgba(255,255,255,.6)';ctx.fill();
     ctx.restore();
   };
-  function advance(dt) {
-    const gravity=.27*dt;
-    const radius=145;
-    for (const p of balls) {
+  function advance(dt){
+    // Fixed-step-like semi-implicit integration: low restitution and strong tangential
+    // friction remove collision energy. A quiet contact enters a sleeping state.
+    const gravity=.095, terminalSpeed=3.05, restitution=.075, floorY=h-8;
+    const pointerMoving=pointer.active && pointer.energy>1.35 && !clearing && !scrolled;
+    const pointerRadius=82;
+    for(const p of balls){
       if(p.opacity<=0)continue;
-      if(pointer.active && !scrolled && !p.cleared){
-        const dx=p.x-pointer.x,dy=p.y-pointer.y,dist=Math.hypot(dx,dy)||1;
-        if(dist<radius+p.r){
-          const strength=(1-dist/(radius+p.r));
-          p.vx+=((dx/dist)*2.5+(pointer.x-pointer.px)*.5)*strength*dt;
-          p.vy+=((dy/dist)*2.5+(pointer.y-pointer.py)*.38-2.2)*strength*dt;
-          // Sweeping the cursor clears capsules rather than trapping them on screen.
-          if(strength>.58 || pointer.energy>15 && strength>.28){
-            p.cleared=true;
-            p.vy-=3.5;
-            p.vx+=(dx>=0?1:-1)*(2+rand()*4);
+      if(p.cleared||clearing||scrolled){
+        if(!p.cleared){p.cleared=true;p.vy=-.7;}
+        p.opacity=Math.max(0,p.opacity-.022*dt);
+        p.vx*=Math.pow(.91,dt);
+        p.vy=(p.vy-.015*dt)*Math.pow(.95,dt);
+        p.x+=p.vx*dt;p.y+=p.vy*dt;
+        continue;
+      }
+      p.contact=false;
+      if(pointerMoving){
+        const dx=p.x-pointer.x,dy=p.y-pointer.y;
+        const dist=Math.hypot(dx,dy)||.0001;
+        if(dist<pointerRadius+p.r){
+          // No constant force from a stationary pointer; only an intentional sweep.
+          const strength=1-dist/(pointerRadius+p.r);
+          const moveX=pointer.x-pointer.px,moveY=pointer.y-pointer.py;
+          p.vx+=clamp(moveX*.25,-2.8,2.8)*strength+(dx/dist)*.22;
+          p.vy+=clamp(moveY*.18,-2,2)*strength+(dy/dist)*.2;
+          p.asleep=false;p.rest=0;
+          if(dist<p.r+14 && pointer.energy>4){
+            p.cleared=true;p.vy=-.6;p.vx*=.5;
           }
         }
       }
-      if(p.cleared || clearing || scrolled){
-        if(!p.cleared){p.cleared=true;p.vy-=1.5;}
-        p.opacity-=.016*dt;
-        p.x+=p.vx*dt;p.y+=(p.vy-1)*dt;p.vy+=.06*dt;
-        continue;
-      }
-      p.vy+=gravity;
-      p.vx*=Math.pow(.994,dt);
-      p.vy*=Math.pow(.996,dt);
+      if(p.asleep)continue;
+      p.vy=Math.min(terminalSpeed,p.vy+gravity*dt);
+      p.vx*=Math.pow(.976,dt);
+      p.vy*=Math.pow(.995,dt);
       p.x+=p.vx*dt;p.y+=p.vy*dt;
+      p.spin*=Math.pow(.98,dt);
       p.angle+=p.spin*dt;
-      if(p.x-p.r<0){p.x=p.r;p.vx=Math.abs(p.vx)*.58;}
-      if(p.x+p.r>w){p.x=w-p.r;p.vx=-Math.abs(p.vx)*.58;}
-      if(p.y+p.r>h-8){p.y=h-p.r-8;p.vy*=-.25;p.vx*=.94;}
+      if(p.x<p.r){p.x=p.r;p.vx=Math.abs(p.vx)*restitution;p.vy*=.94;p.contact=true;}
+      if(p.x>w-p.r){p.x=w-p.r;p.vx=-Math.abs(p.vx)*restitution;p.vy*=.94;p.contact=true;}
     }
-    // Capsule-to-capsule collisions produce a loose, irregular pile.
-    const cell=76,grid=new Map();
-    for(let i=0;i<balls.length;i++){
-      const p=balls[i];if(p.cleared||p.opacity<=0||p.y<-75)continue;
-      const gx=Math.floor(p.x/cell),gy=Math.floor(p.y/cell);
-      for(let ix=-1;ix<=1;ix++)for(let iy=-1;iy<=1;iy++){
-        const neighbors=grid.get((gx+ix)+','+(gy+iy));if(!neighbors)continue;
-        for(const j of neighbors){
-          const q=balls[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.hypot(dx,dy)||.001;
-          const target=p.r+q.r;
-          if(d>=target)continue;
-          const nx=dx/d,ny=dy/d,overlap=(target-d)*.52;
-          p.x+=nx*overlap;q.x-=nx*overlap;p.y+=ny*overlap;q.y-=ny*overlap;
-          const v=(p.vx-q.vx)*nx+(p.vy-q.vy)*ny;
-          if(v<0){const kick=-v*.33;p.vx+=nx*kick;p.vy+=ny*kick;q.vx-=nx*kick;q.vy-=ny*kick;}
+    // Multiple positional constraint passes allow a pile to become stable,
+    // rather than repeatedly injecting energy into overlapping capsules.
+    for(let pass=0;pass<4;pass++){
+      const cell=76,grid=new Map();
+      for(let i=0;i<balls.length;i++){
+        const p=balls[i];if(p.cleared||p.opacity<=0||p.y<-70)continue;
+        if(p.y+p.r>floorY){
+          p.y=floorY-p.r;p.contact=true;
+          if(p.vy>0)p.vy=-p.vy*restitution;
+          p.vx*=.76;
+          if(Math.abs(p.vy)<.32)p.vy=0;
         }
+        const gx=Math.floor(p.x/cell),gy=Math.floor(p.y/cell);
+        for(let ix=-1;ix<=1;ix++)for(let iy=-1;iy<=1;iy++){
+          const neighbors=grid.get((gx+ix)+','+(gy+iy));
+          if(!neighbors)continue;
+          for(const j of neighbors){
+            const q=balls[j],dx=p.x-q.x,dy=p.y-q.y;
+            const limit=p.r+q.r;
+            const distance=Math.hypot(dx,dy);
+            if(distance>=limit || distance===0)continue;
+            const nx=dx/distance,ny=dy/distance;
+            // Slop avoids endless micro-adjustments when stacked.
+            const overlap=Math.max(0,limit-distance-.20);
+            if(overlap===0)continue;
+            const displacement=overlap*.49;
+            p.x+=nx*displacement;p.y+=ny*displacement;
+            q.x-=nx*displacement;q.y-=ny*displacement;
+            if(ny<-.30)p.contact=true;
+            if(ny>.30)q.contact=true;
+            // Normal impulse for an inelastic collision, plus Coulomb-like friction.
+            if(pass===0){
+              const rvx=p.vx-q.vx,rvy=p.vy-q.vy,normal=rvx*nx+rvy*ny;
+              if(normal<0){
+                const impulse=-(1+restitution)*normal*.5;
+                p.vx+=impulse*nx;p.vy+=impulse*ny;
+                q.vx-=impulse*nx;q.vy-=impulse*ny;
+                const tangentX=-ny,tangentY=nx;
+                const slip=rvx*tangentX+rvy*tangentY;
+                const friction=clamp(-slip*.24,-Math.abs(impulse)*.55,Math.abs(impulse)*.55);
+                p.vx+=friction*tangentX;p.vy+=friction*tangentY;
+                q.vx-=friction*tangentX;q.vy-=friction*tangentY;
+                if(Math.abs(normal)>.50){p.asleep=false;q.asleep=false;p.rest=0;q.rest=0;}
+              }
+            }
+          }
+        }
+        const key=gx+','+gy;
+        if(!grid.has(key))grid.set(key,[]);
+        grid.get(key).push(i);
       }
-      const key=gx+','+gy;if(!grid.has(key))grid.set(key,[]);grid.get(key).push(i);
+    }
+    for(const p of balls){
+      if(p.cleared||p.opacity<=0)continue;
+      p.x=clamp(p.x,p.r,w-p.r);
+      if(p.y+p.r>=floorY-.7){p.y=Math.min(p.y,floorY-p.r);p.contact=true;}
+      // Contact velocity damping and sleep suppress sub-pixel jitter.
+      if(p.contact){
+        p.vx*=.74;p.vy*=.52;
+        const speed=Math.hypot(p.vx,p.vy);
+        p.rest=speed<.32?p.rest+dt:0;
+        if(p.rest>25){p.vx=0;p.vy=0;p.spin=0;p.asleep=true;}
+      }else{p.rest=0;p.asleep=false;}
     }
   }
   function tick(now){
-    const dt=clamp(last?(now-last)/16.67:1,.35,2);last=now;
+    const dt=clamp(last?(now-last)/16.67:1,.35,1.5);last=now;
     ctx.clearRect(0,0,w,h);
     advance(dt);
     for(const p of balls){
