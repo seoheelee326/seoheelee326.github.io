@@ -38,17 +38,33 @@ async function artwork(){
  render('all');
 }
 async function artworkDetail(){
- const works=(await json('data/works.json')).filter(w=>w.published!==false);
- const id=new URLSearchParams(location.search).get('id');
- const index=works.findIndex((w,i)=>workId(w,i)===id);
+ const [works,exhibitions]=await Promise.all([json('data/works.json'),exhibitionArchive()]);
+ const visible=works.filter(w=>w.published!==false),id=new URLSearchParams(location.search).get('id');
+ const index=visible.findIndex((w,i)=>workId(w,i)===id);
  if(index===-1){main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><h1>Artwork not found</h1></article>';return;}
- const w=works[index],title=esc(w.title||w.title_ko||'Untitled');
- const imgs=workImages(w),materials=w.materials_ko||w.materials_en;
+ const w=visible[index],title=esc(w.title||w.title_ko||'Untitled');
+ const src=workImages(w)[0],materials=w.materials_ko||w.materials_en;
  const dimensions=[w.height_cm,w.width_cm,w.depth_cm].filter(v=>v!==undefined&&v!==null&&v!=='').join(' × ');
  const fields=[['YEAR',w.year],['CATEGORY',w.category],['MATERIALS',materials],['DIMENSIONS',dimensions?dimensions+' cm':'']];
- const note=w.description_ko||w.description_en;
- const prev=works[index-1],next=works[index+1];
- main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><div class="artwork-detail-layout"><div class="artwork-detail-media">'+(imgs.length?imgs.map((src,i)=>'<figure><img src="'+esc(src)+'" alt="'+title+(i?' — detail '+i:'')+'" loading="'+(i?'lazy':'eager')+'"></figure>').join(''):'<div class="artwork-detail-empty">IMAGE TO BE ADDED</div>')+'</div><div class="artwork-detail-info"><p class="artwork-detail-eyebrow">ARTWORK / '+esc(w.category||'WORK')+'</p><h1>'+title+'</h1>'+(w.title_translation_en?'<p class="artwork-translation">'+esc(w.title_translation_en)+'</p>':'')+'<dl class="artwork-meta">'+fields.filter(([,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>'<dt>'+k+'</dt><dd>'+esc(v)+'</dd>').join('')+'</dl>'+(note?'<section class="artwork-note"><h2>ARTIST’S NOTE</h2><p>'+esc(note)+'</p></section>':'')+'</div></div><nav class="artwork-pagination" aria-label="Other artworks">'+(prev?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(prev,index-1))+'">← PREVIOUS WORK</a>':'<span></span>')+(next?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(next,index+1))+'">NEXT WORK →</a>':'<span></span>')+'</nav></article>';
+ const note=w.artist_statement_ko||w.artist_statement_en||w.artist_text||w.description_ko||w.description_en;
+ const detailImages=(Array.isArray(w.detail_images)?w.detail_images:[]).map(x=>typeof x==='string'?{src:x}:x).concat(Array.isArray(w.gallery)?w.gallery.map(x=>typeof x==='string'?{src:x}:x):[]).filter(x=>x&&(x.src||x.image));
+ const seriesIds=Array.isArray(w.related_works)?w.related_works.map(String):[];
+ const relatedWorks=visible.map((work,i)=>({work,i})).filter(({work,i})=>i!==index&&(seriesIds.includes(workId(work,i))||(w.series_id&&work.series_id===w.series_id)));
+ const exIds=Array.isArray(w.related_exhibitions)?w.related_exhibitions.map(String):[];
+ const relatedExhibitions=exhibitions.filter(e=>exIds.includes(String(e.id||[e.year,e.title_ko||e.title_en].join('|'))));
+ const block=(label,desc,body)=>'<section class="artwork-archive-section"><div class="artwork-section-top"><h2>'+label+'</h2><p>'+desc+'</p></div>'+body+'</section>';
+ const empty=msg=>'<p class="artwork-section-empty">'+msg+'</p>';
+ const detailBlock=block('DETAIL VIEWS','A closer look at materials, surfaces and process',
+  detailImages.length?'<div class="artwork-detail-gallery">'+detailImages.map((item,i)=>'<figure><img src="'+esc(item.src||item.image)+'" alt="'+title+' — detail '+(i+1)+'" loading="lazy">'+(item.caption?'<figcaption>'+esc(item.caption)+'</figcaption>':'')+'</figure>').join('')+'</div>':empty('Detail photographs will be added.'));
+ const noteBlock=block('ARTIST’S NOTE','Words behind the work',note?'<div class="artwork-statement">'+esc(note)+'</div>':empty('Artist’s text will be added.'));
+ const seriesBlock=block('RELATED WORKS','Works from the same series',
+  relatedWorks.length?'<div class="artwork-related-grid">'+relatedWorks.map(({work,i})=>{const image=workImages(work)[0],name=esc(work.title||work.title_ko||'Untitled');return '<a class="artwork-related-card" href="artwork-detail.html?id='+encodeURIComponent(workId(work,i))+'"><div class="artwork-related-image">'+(image?'<img src="'+esc(image)+'" alt="'+name+'" loading="lazy">':'<span>IMAGE TO BE ADDED</span>')+'</div><h3>'+name+'</h3><p>'+esc(work.year||'')+' · '+esc(work.category||'')+'</p></a>'}).join('')+'</div>':empty('Related works will appear here when a series is linked.'));
+ const exhibitionBlock=block('RELATED EXHIBITIONS','Where this work has been presented',
+  relatedExhibitions.length?'<div class="artwork-exhibitions">'+relatedExhibitions.map(e=>{const name=esc(e.title_ko||e.title_en),href='exhibition-detail.html?id='+encodeURIComponent([e.year,e.title_ko||e.title_en].join('|')),poster=e.image||e.blog?.photos_local?.[0];return '<a class="artwork-exhibition-card" href="'+esc(href)+'"><div class="artwork-exhibition-preview">'+(poster?'<img src="'+esc(poster)+'" alt="'+name+'" loading="lazy">':'<span>EXHIBITION ARCHIVE</span>')+'</div><div><p>'+esc(e.year_label||e.year)+'</p><h3>'+name+'</h3><span>'+esc(e.venue_ko||e.venue_en||'')+'</span></div><span class="artwork-exhibition-arrow">↗</span></a>'}).join('')+'</div>':empty('Related exhibition records will be linked here.'));
+ const prev=visible[index-1],next=visible[index+1];
+ main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><div class="artwork-detail-layout"><div class="artwork-detail-media">'+(src?'<figure><img src="'+esc(src)+'" alt="'+title+'" loading="eager"></figure>':'<div class="artwork-detail-empty">IMAGE TO BE ADDED</div>')+'</div><div class="artwork-detail-info"><p class="artwork-detail-eyebrow">ARTWORK / '+esc(w.category||'WORK')+'</p><h1>'+title+'</h1>'+(w.title_translation_en?'<p class="artwork-translation">'+esc(w.title_translation_en)+'</p>':'')+'<dl class="artwork-meta">'+fields.filter(([,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>'<dt>'+k+'</dt><dd>'+esc(v)+'</dd>').join('')+'</dl><nav class="artwork-jump-nav" aria-label="Artwork page sections"><a href="#work-details">DETAIL VIEWS</a><a href="#work-statement">ARTIST’S NOTE</a><a href="#work-series">RELATED WORKS</a><a href="#work-exhibitions">EXHIBITIONS</a></nav></div></div><div class="artwork-archive-content"><div id="work-details">'+detailBlock+'</div><div id="work-statement">'+noteBlock+'</div><div id="work-series">'+seriesBlock+'</div><div id="work-exhibitions">'+exhibitionBlock+'</div></div><nav class="artwork-pagination" aria-label="Other artworks">'+(prev?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(prev,index-1))+'">← PREVIOUS WORK</a>':'<span></span>')+(next?'<a href="artwork-detail.html?id='+encodeURIComponent(workId(next,index+1))+'">NEXT WORK →</a>':'<span></span>')+'</nav></article>';
+ // The page content is the scroll container, so section navigation scrolls within it.
+ main.querySelectorAll('.artwork-jump-nav a').forEach(a=>a.addEventListener('click',event=>{const target=main.querySelector(a.getAttribute('href'));if(target){event.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}}));
  document.title=(w.title||'Artwork')+' | SEOHEE LEE';
 }
 async function exhibitions(){
