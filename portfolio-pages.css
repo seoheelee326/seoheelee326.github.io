@@ -300,9 +300,26 @@ body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{
 .artwork-related-pending{cursor:default}
 .artwork-related-pending .artwork-related-image{border:1px dashed #e4e4e4;background:transparent}
 
-/* Strange Axis (2019): its original divider becomes one responsive red line. */
-.axis-yarn-note{position:relative}
-.axis-yarn-note .artwork-archive-section{position:relative;border-top:0}
-.axis-interactive-divider{position:absolute;top:-30px;left:0;display:block;width:100%;height:60px;overflow:visible;z-index:1;pointer-events:none;user-select:none}
-.axis-interactive-divider path{stroke:#b52e3d;stroke-width:2;fill:none;vector-effect:non-scaling-stroke}
-@media(prefers-reduced-motion:reduce){.axis-interactive-divider path{transition:none}}
+/* Strange Axis detail only: every structural divider is an interactive red line. */
+[data-axis-detail="true"] .axis-reactive-divider{
+  position:relative;
+  border-top:0!important;
+  overflow:visible;
+}
+[data-axis-detail="true"] .axis-divider-overlay{
+  position:absolute;
+  left:0;top:-40px;
+  width:100%;height:80px;
+  z-index:1;
+  display:block;
+  pointer-events:none;
+  overflow:visible;
+  user-select:none;
+}
+[data-axis-detail="true"] .axis-divider-overlay path{
+  fill:none;
+  stroke:#b52e3d;
+  stroke-width:2px;
+  vector-effect:non-scaling-stroke;
+  stroke-linecap:round;
+}
