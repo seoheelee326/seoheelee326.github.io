@@ -264,3 +264,11 @@ body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{
 .artwork-carousel-arrow:focus-visible{outline:1px solid #888;outline-offset:2px}
 .artwork-carousel-count{font-size:11px;min-width:55px;letter-spacing:.10em;color:#a0a0a0}
 @media(max-width:760px){.artwork-carousel-controls{gap:24px}.artwork-carousel-arrow{width:40px;height:42px}}
+
+
+/* FROM DAY TO DAY_힐링 — translucent interactive capsules */
+.healing-capsule-canvas{position:fixed;inset:0;z-index:20;pointer-events:none;opacity:1}
+.healing-clear{position:fixed;right:clamp(16px,3.6vw,48px);bottom:clamp(16px,3vw,35px);z-index:21;border:0;border-bottom:1px solid rgba(85,85,85,.4);border-radius:0;padding:7px 0 6px;background:rgba(255,255,255,.72);font-size:10px;letter-spacing:.15em;font-weight:400;color:#777;cursor:pointer;transition:color .2s,opacity .3s}
+.healing-clear:hover{color:#111}
+.healing-clear:focus-visible{outline:1px solid #777;outline-offset:5px}
+@media(prefers-reduced-motion:reduce){.healing-capsule-canvas,.healing-clear{display:none!important}}
