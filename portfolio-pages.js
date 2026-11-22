@@ -19,7 +19,7 @@ const workId=(w,i)=>String(w.id||w.slug||[w.year,w.title].filter(Boolean).join('
 const workImages=w=>[w.image,...(Array.isArray(w.gallery)?w.gallery.map(x=>typeof x==='string'?x:x?.image||x?.src):[])].filter(Boolean);
 const artCategories=[['all','ALL'],['painting','PAINTING'],['installation','INSTALLATION'],['video','MOVING IMAGE'],['public','PUBLIC ART'],['printmaking','PRINTMAKING'],['drawing','DRAWING']];
 async function artwork(){
- const works=(await json('data/works.json')).filter(w=>w.published!==false);
+ const works=(await json('data/works.json')).filter(w=>w.published!==false).sort((a,b)=>Number(b.year||0)-Number(a.year||0));
  main.innerHTML=heading()+'<div class="artwork-intro">Selected works <span>— An ongoing visual archive</span></div><div class="artwork-filters" role="group" aria-label="Artwork category">'+artCategories.map(([k,l],i)=>'<button data-art-filter="'+k+'" class="'+(i===0?'active':'')+'">'+l+'</button>').join('')+'</div><div class="artwork-gallery" id="artwork-gallery"></div>';
  const grid=main.querySelector('#artwork-gallery');
  const scrollKey='seohee-artwork-return-v1';
@@ -54,7 +54,7 @@ async function artwork(){
 }
 async function artworkDetail(){
  const [works,exhibitions]=await Promise.all([json('data/works.json'),exhibitionArchive()]);
- const visible=works.filter(w=>w.published!==false),id=new URLSearchParams(location.search).get('id');
+ const visible=works.filter(w=>w.published!==false).sort((a,b)=>Number(b.year||0)-Number(a.year||0)),id=new URLSearchParams(location.search).get('id');
  const index=visible.findIndex((w,i)=>workId(w,i)===id);
  if(index===-1){main.innerHTML='<article class="artwork-detail-page"><a class="artwork-back" href="artwork.html">← BACK TO ARTWORK</a><h1>Artwork not found</h1></article>';return;}
  const w=visible[index],title=esc(w.title||w.title_ko||'Untitled');
