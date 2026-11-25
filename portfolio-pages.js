@@ -181,9 +181,35 @@ async function exhibitionDetail(){
 }
 function education(){main.innerHTML=heading()+`<h2 class="statement">Art as a way to observe, question and create together.</h2><p class="body-copy">Through observation, making and dialogue, arts education becomes an extension of artistic practice. Experiences with places, environments and materials are translated into shared questions and individual forms of expression.</p><p class="body-copy"><a href="https://sites.google.com/view/culturemakingart/" target="_blank" rel="noopener noreferrer">Culturemakingart Archive</a></p>`}
 function contact(){main.innerHTML=heading()+`<div class="contact-list"><a href="mailto:seoheelee.artwork@gmail.com">seoheelee.artwork@gmail.com</a></div>`}
-function news(){
+async function news(){
   const soloId=encodeURIComponent("2026|Yesterday’s Tomorrow_어제의 내일");
-  main.innerHTML=heading()+`<section class="news-feed" aria-label="Latest news"><a class="news-entry" href="exhibition-detail.html?id=${soloId}"><span class="news-date">2026.09.15 — 09.30</span><div><h2>Yesterday’s Tomorrow_어제의 내일</h2><p>Solo Exhibition · 더나르떼, 남양주</p></div></a></section><section class="news-social" aria-label="Social media"><h2>SNS</h2><div class="news-social-links"><a href="https://www.instagram.com/seohee_work/" target="_blank" rel="noopener noreferrer">Instagram · @seohee_work</a><a href="https://www.youtube.com/results?search_query=SEOHEE%27s+Palette" target="_blank" rel="noopener noreferrer" title="Channel URL pending confirmation">YouTube · SEOHEE’s Palette</a></div></section>`;
+  main.innerHTML=heading()+`<div class="news-tabs" role="tablist" aria-label="News sections"><button id="news-tab-updates" type="button" role="tab" aria-controls="news-panel-updates" aria-selected="true" data-news-tab="updates">NEWS</button><button id="news-tab-social" type="button" role="tab" aria-controls="news-panel-social" aria-selected="false" tabindex="-1" data-news-tab="social">SNS</button></div><div id="news-panel-updates" role="tabpanel" aria-labelledby="news-tab-updates" class="news-panel"><section class="news-feed" aria-label="Latest news"><a class="news-entry" href="exhibition-detail.html?id=${soloId}"><span class="news-date">2026.09.15 — 09.30</span><div><h2>Yesterday’s Tomorrow_어제의 내일</h2><p>Solo Exhibition · 더나르떼, 남양주</p></div></a></section></div><div id="news-panel-social" role="tabpanel" aria-labelledby="news-tab-social" class="news-panel" hidden><div class="news-social-heading"><div><h2>INSTAGRAM</h2><p>@seohee_work</p></div><a href="https://www.instagram.com/seohee_work/" target="_blank" rel="noopener noreferrer">VIEW INSTAGRAM</a></div><div class="news-instagram-grid" id="news-instagram-grid"></div><div class="news-youtube-link"><div><h2>YOUTUBE</h2><p>SEOHEE's Palette</p></div><a href="https://www.youtube.com/results?search_query=SEOHEE%27s+Palette" target="_blank" rel="noopener noreferrer" title="Channel URL pending confirmation">VIEW YOUTUBE</a></div></div>`;
+  const tabs=[...main.querySelectorAll('[data-news-tab]')];
+  const panels={updates:main.querySelector('#news-panel-updates'),social:main.querySelector('#news-panel-social')};
+  const show=name=>{
+    tabs.forEach(btn=>{const active=btn.dataset.newsTab===name;btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1;});
+    Object.entries(panels).forEach(([key,panel])=>{panel.hidden=key!==name;});
+  };
+  tabs.forEach(btn=>{
+    btn.addEventListener('click',()=>show(btn.dataset.newsTab));
+    btn.addEventListener('keydown',event=>{
+      if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;
+      event.preventDefault();
+      const next=btn.dataset.newsTab==='updates'?'social':'updates';
+      show(next);tabs.find(t=>t.dataset.newsTab===next)?.focus();
+    });
+  });
+  const params=new URLSearchParams(location.search);
+  if(params.get('view')==='sns')show('social');
+  const grid=main.querySelector('#news-instagram-grid');
+  const posts=await json('data/instagram-posts.json');
+  const valid=Array.isArray(posts)?posts.filter(item=>typeof item?.url==='string'&&/^https:\/\/(www\.)?instagram\.com\/(p|reel)\/[A-Za-z0-9_-]+\/?(?:\?.*)?$/.test(item.url)).slice(0,3):[];
+  grid.innerHTML=Array.from({length:3},(_,i)=>{
+    const post=valid[i];
+    if(!post)return '<div class="news-instagram-placeholder"><span>INSTAGRAM</span><p>POST '+String(i+1).padStart(2,'0')+'</p><small>게시물 연결 예정</small></div>';
+    const url=post.url.split('?')[0].replace(/\/$/,'')+'/embed/';
+    return '<div class="news-instagram-embed"><iframe src="'+esc(url)+'" title="Instagram post '+(i+1)+'" loading="lazy" allowtransparency="true" allowfullscreen></iframe><a href="'+esc(post.url)+'" target="_blank" rel="noopener noreferrer">VIEW ON INSTAGRAM</a></div>';
+  }).join('');
 }
 function exhibitionRecords(){
   // The supplied CV image is the source for historical group exhibitions.
