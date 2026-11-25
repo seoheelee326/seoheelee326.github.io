@@ -2,7 +2,7 @@ const page=document.body.dataset.page;
 const main=document.getElementById('page-content');
 const pageNav=document.querySelector('.page-nav');
 pageNav.prepend(pageNav.querySelector('[data-page="cv"]'));
-const headings={artwork:['ARTWORK','Painting · Installation · Moving Image · Public Art Projects · Drawing'],exhibitions:['EXHIBITIONS','Solo and group exhibitions'],education:['ARTS EDUCATION','Observation and Shared Questions'],contact:['CONTACT','Art and collaboration inquiries'],cv:['CV','SEOHEE LEE · VISUAL ARTIST']};
+const headings={artwork:['ARTWORK','Painting · Installation · Moving Image · Public Art Projects · Drawing'],exhibitions:['EXHIBITIONS','Solo and group exhibitions'],education:['ARTS EDUCATION','Observation and Shared Questions'],news:['NEWS','Latest Updates'],contact:['CONTACT','Art and collaboration inquiries'],cv:['CV','SEOHEE LEE · VISUAL ARTIST']};
 document.querySelectorAll('.page-nav a').forEach(a=>{if(a.dataset.page===((page==='exhibition-detail')?'exhibitions':(page==='artwork-detail'?'artwork':page)))a.setAttribute('aria-current','page')});
 const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 function heading(){const [title,subtitle]=headings[page];return `<div class="page-heading"><h1>${title}</h1><p>${subtitle}</p></div>`}
@@ -180,7 +180,11 @@ async function exhibitionDetail(){
   document.title=`${e.title_ko||e.title_en} | SEOHEE LEE`;
 }
 function education(){main.innerHTML=heading()+`<h2 class="statement">Art as a way to observe, question and create together.</h2><p class="body-copy">Through observation, making and dialogue, arts education becomes an extension of artistic practice. Experiences with places, environments and materials are translated into shared questions and individual forms of expression.</p><p class="body-copy"><a href="https://sites.google.com/view/culturemakingart/" target="_blank" rel="noopener noreferrer">Culturemakingart Archive</a></p>`}
-function contact(){main.innerHTML=heading()+`<div class="contact-list"><a href="mailto:seoheelee.artwork@gmail.com">seoheelee.artwork@gmail.com</a><a href="https://www.instagram.com/seohee_work/" target="_blank" rel="noopener noreferrer">Instagram · @seohee_work</a><a href="https://www.youtube.com/results?search_query=SEOHEE%27s+Palette" target="_blank" rel="noopener noreferrer" title="Channel URL pending confirmation">YouTube · SEOHEE's Palette</a></div>`}
+function contact(){main.innerHTML=heading()+`<div class="contact-list"><a href="mailto:seoheelee.artwork@gmail.com">seoheelee.artwork@gmail.com</a></div>`}
+function news(){
+  const soloId=encodeURIComponent("2026|Yesterday’s Tomorrow_어제의 내일");
+  main.innerHTML=heading()+`<section class="news-feed" aria-label="Latest news"><a class="news-entry" href="exhibition-detail.html?id=${soloId}"><span class="news-date">2026.09.15 — 09.30</span><div><h2>Yesterday’s Tomorrow_어제의 내일</h2><p>Solo Exhibition · 더나르떼, 남양주</p></div></a></section><section class="news-social" aria-label="Social media"><h2>SNS</h2><div class="news-social-links"><a href="https://www.instagram.com/seohee_work/" target="_blank" rel="noopener noreferrer">Instagram · @seohee_work</a><a href="https://www.youtube.com/results?search_query=SEOHEE%27s+Palette" target="_blank" rel="noopener noreferrer" title="Channel URL pending confirmation">YouTube · SEOHEE’s Palette</a></div></section>`;
+}
 function exhibitionRecords(){
   // The supplied CV image is the source for historical group exhibitions.
   // Unverified venues/supporters are deliberately left blank.
@@ -239,4 +243,4 @@ async function cv(){
   ${block('ARTS EDUCATION',artsEducation,['ACTIVITY','ORGANIZATION','SUPPORT','LOCATION'])}
   <p class="cv-note">Entries with “—” require source confirmation. Some exhibition titles, dates and institutions transcribed from the supplied CV image are pending final verification.</p>`;
 }
-({artwork,'artwork-detail':artworkDetail,exhibitions,'exhibition-detail':exhibitionDetail,education,contact,cv}[page]||contact)();
+({artwork,'artwork-detail':artworkDetail,exhibitions,'exhibition-detail':exhibitionDetail,education,news,contact,cv}[page]||contact)();
