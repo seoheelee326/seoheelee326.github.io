@@ -330,3 +330,10 @@ body[data-page="artwork-detail"],body[data-page="artwork-detail"] .page-content{
 @media(prefers-reduced-motion:reduce){
  [data-axis-detail="true"] .axis-divider-overlay{animation:none}
 }
+
+/* Latest updates: one chronological feed, without category filters. */
+.news-feed{margin:clamp(35px,6vw,72px) 0 0;border-top:1px solid var(--line);max-width:1000px}
+.news-entry{display:grid;grid-template-columns:minmax(145px,24%) 1fr;gap:30px;padding:24px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
+.news-date{font-size:12px;color:#777}.news-entry h2{margin:0 0 8px;font-size:clamp(18px,2vw,28px);font-weight:500;line-height:1.35}.news-entry p{margin:0;font-size:13px;color:#777}.news-entry:hover h2{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:5px}
+.news-social{max-width:1000px;margin-top:clamp(45px,7vw,85px)}.news-social h2{font-size:15px;font-weight:500;margin:0 0 16px}.news-social-links{border-top:1px solid var(--line)}.news-social-links a{display:block;padding:16px 0;border-bottom:1px solid var(--line);color:#555;text-decoration:none;font-size:14px}.news-social-links a:hover{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:600px){.news-entry{grid-template-columns:1fr;gap:7px;padding:20px 0}}
