@@ -4,13 +4,13 @@
   const labels = {
     ko: {
       artwork:'작업', exhibitions:'전시', education:'문화예술교육',
-      contact:'연락', cv:'이력',
-      heading: {artwork:['작업','회화 · 설치 · 영상 · 공공미술 · 드로잉'],exhibitions:['전시','개인전과 단체전'],education:['문화예술교육','관찰과 함께 나누는 질문'],contact:['연락','예술과 협업 문의'],cv:['이력','이서희 · 시각예술가']}
+      news:'소식', contact:'연락', cv:'이력',
+      heading: {artwork:['작업','회화 · 설치 · 영상 · 공공미술 · 드로잉'],exhibitions:['전시','개인전과 단체전'],education:['문화예술교육','관찰과 함께 나누는 질문'],news:['소식','최근 소식'],contact:['연락','예술과 협업 문의'],cv:['이력','이서희 · 시각예술가']}
     },
     en: {
       artwork:'ARTWORK', exhibitions:'EXHIBITIONS', education:'ARTS EDUCATION',
-      contact:'CONTACT', cv:'CV',
-      heading: {artwork:['ARTWORK','Painting · Installation · Moving Image · Public Art Projects · Drawing'],exhibitions:['EXHIBITIONS','Solo and group exhibitions'],education:['ARTS EDUCATION','Observation and Shared Questions'],contact:['CONTACT','Art and collaboration inquiries'],cv:['CV','SEOHEE LEE · VISUAL ARTIST']}
+      news:'NEWS', contact:'CONTACT', cv:'CV',
+      heading: {artwork:['ARTWORK','Painting · Installation · Moving Image · Public Art Projects · Drawing'],exhibitions:['EXHIBITIONS','Solo and group exhibitions'],education:['ARTS EDUCATION','Observation and Shared Questions'],news:['NEWS','Latest Updates'],contact:['CONTACT','Art and collaboration inquiries'],cv:['CV','SEOHEE LEE · VISUAL ARTIST']}
     }
   };
   let lang;
